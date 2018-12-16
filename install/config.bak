@@ -1,0 +1,35 @@
+<?php
+
+class CONFIG {
+    
+    /**
+     * CONFIG
+     *
+     * @author John Zhang
+     * @param string $KEY
+     */
+
+    public static function GET($KEY)
+    {
+        $config=array(
+            "MHS_DEBUG_MYSQL_HOST"=>"localhost",
+            "MHS_DEBUG_MYSQL_PORT"=>"3306",
+            "MHS_DEBUG_MYSQL_USER"=>"root",
+            "MHS_DEBUG_MYSQL_DATABASE"=>"sastmhs",
+            "MHS_DEBUG_MYSQL_PASSWORD"=>"root",
+
+            "MHS_MYSQL_HOST"=>"",
+            "MHS_MYSQL_PORT"=>"",
+            "MHS_MYSQL_USER"=>"",
+            "MHS_MYSQL_DATABASE"=>"",
+            "MHS_MYSQL_PASSWORD"=>"",
+
+            "MHS_CDN"=>"https://static.1cf.co",
+            "MHS_DOMAIN"=>"",
+            "MHS_SALT"=>"12345678"
+        );
+        return $config[$KEY];
+    }
+    
+
+}
