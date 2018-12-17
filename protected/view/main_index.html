@@ -53,7 +53,7 @@
         color: rgba(0,0,0,.26);
         margin-bottom: .5rem;
     }
-    .pb-title{
+    .mhs-title{
         color: #7a8e97;
         text-align:center;
     }
@@ -86,6 +86,19 @@
 </style>
 <div class="container mundb-standard-container">
     <div style="width:100%;">
-        <h5 class="pb-title mb-5 mt-5"><i class="MDI gift"></i> SAST 物品借还系统</h5>
+        <h5 class="mhs-title mb-5 mt-5"><i class="MDI gift"></i> SAST 物品借还系统</h5>
+        <{if $islogin}>
+        <card class="mb-3">
+            <div class="row atsast-empty">
+                <badge onclick="location.href='<{$MHS_DOMAIN}>/account'"><i class="MDI account-circle"></i> 您已登录//TODO</badge>
+            </div>
+        </div>
+        <{else}>
+        <card class="mb-3">
+            <div class="row atsast-empty">
+                <badge onclick="location.href='<{$MHS_DOMAIN}>/account'"><i class="MDI account-circle"></i> 请先登录</badge>
+            </div>
+        </div>
+        <{/if}>
     </div>
 </div>

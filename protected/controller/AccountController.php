@@ -11,7 +11,7 @@ class AccountController extends BaseController
     {
         $this->current=0;
         if ($this->islogin) {
-            $this->jump("{$this->PB_DOMAIN}/");
+            $this->jump("{$this->MHS_DOMAIN}/");
         } else {
             $this->title="登录 / 注册";
         }
@@ -51,7 +51,7 @@ class AccountController extends BaseController
 
             $ip=getIP();
             $rtime=date("Y-m-d H:i:s");
-            $OPENID=sha1(strtolower($email).CONFIG::GET("PB_SALT").md5($password));
+            $OPENID=sha1(strtolower($email).CONFIG::GET("MHS_SALT").md5($password));
             $user=array(
                 'rtime'=>$rtime,
                 'name'=>$username,
@@ -66,7 +66,7 @@ class AccountController extends BaseController
             $uid=$db->create($user);
             $_SESSION['OPENID']=$OPENID;
 
-            $this->jump("{$this->PB_DOMAIN}/");
+            $this->jump("{$this->MHS_DOMAIN}/");
 
         //echo json_encode($output);
         } elseif ($action==="login") { //如果是登录
@@ -78,14 +78,14 @@ class AccountController extends BaseController
                 return self::account_err_report("请不要皮这个系统", 0);
             }
 
-            $OPENID=sha1(strtolower($email).CONFIG::GET("PB_SALT").md5($password));
+            $OPENID=sha1(strtolower($email).CONFIG::GET("MHS_SALT").md5($password));
             $db=new Model("users");
             $result=$db->find(array("OPENID=:OPENID",":OPENID"=>$OPENID));
             if (empty($result)) {
                 return self::account_err_report("邮箱或密码错误", 0);
             } else {
                 $_SESSION['OPENID']=$OPENID;
-                $this->jump("{$this->PB_DOMAIN}/");
+                $this->jump("{$this->MHS_DOMAIN}/");
             }
         }
     }
@@ -94,7 +94,7 @@ class AccountController extends BaseController
     {
         session_unset();
         session_destroy();
-        $this->jump("{$this->PB_DOMAIN}/");
+        $this->jump("{$this->MHS_DOMAIN}/");
     }
     
 }
