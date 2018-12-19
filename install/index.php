@@ -1,10 +1,13 @@
 <?php
+
     /**
      * This is a install script
      */
+
     if (file_exists(".installed")) {
         Header("Location: ../"); //Successfully Installed
     }
+
     try {
         $_sql = file_get_contents('sastmhs.lite.sql');
         $_arr = explode(';', $_sql);
@@ -24,6 +27,7 @@
     } catch (Exception $e) {
         exit("请检查服务器用户名密码是否正确");
     }
+    
     try {
         $config=file_get_contents("config.bak");
         file_put_contents("../protected/model/CONFIG.php", $config);
