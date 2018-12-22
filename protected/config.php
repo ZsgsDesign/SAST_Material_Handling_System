@@ -10,6 +10,8 @@ $config = array(
         'ajax/<a>'                                           => 'ajax/<a>',
         'account/<a>'                                        => 'account/<a>',
         'account/'                                           => 'account/index',
+        'usercenter/<a>'                                     => 'usercenter/<a>',
+        'usercenter/'                                        => 'usercenter/index',
         '<a>'                                                => 'main/<a>',
         '/'                                                  => 'main/index',
     ),

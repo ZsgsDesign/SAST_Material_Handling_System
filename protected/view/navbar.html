@@ -5,13 +5,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item <{if $title=='首页' }> active <{/if}>/>">
+        <li class="nav-item <{if $title=='首页' }> active <{/if}>">
           <a class="nav-link" href="<{$MHS_DOMAIN}>/">首页</a>
         </li>
       </ul>
   
       <ul class="navbar-nav mundb-nav-right">
         <{if $islogin }>
+          <li class="nav-item <{if $title=='个人中心' }> active <{/if}>">
+            <a class="nav-link" href="<{$MHS_DOMAIN}>/usercenter/">个人中心</a>
+          </li>
           <li class="nav-item dropdown mundb-btn-ucenter">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><{$greeting}>，<{$userinfo['display_name']}></a>
               <div class="dropdown-menu dropdown-menu-right">

@@ -90,7 +90,7 @@
         <{if $islogin}>
         <card class="mb-3">
             <div class="row atsast-empty">
-                <badge onclick="location.href='<{$MHS_DOMAIN}>/account'"><i class="MDI account-circle"></i> 您已登录//TODO</badge>
+                <badge onclick="location.href='<{$MHS_DOMAIN}>/account'"><i class="MDI account-circle"></i><{$userinfo['name']}></badge>
             </div>
         </div>
         <{else}>
