@@ -24,7 +24,7 @@ class CONFIG {
             "MHS_MYSQL_DATABASE"=>"",
             "MHS_MYSQL_PASSWORD"=>"",
 
-            "MHS_CDN"=>"https://static.1cf.co",
+            "MHS_CDN"=>"https://cdn.mundb.xyz",
             "MHS_DOMAIN"=>"",
             "MHS_SALT"=>"12345678"
         );

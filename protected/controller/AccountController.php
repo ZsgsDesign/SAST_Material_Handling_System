@@ -61,7 +61,7 @@ class AccountController extends BaseController
                 'email'=>$email,
                 'ip'=>$ip,
                 'OPENID'=>$OPENID,
-                'avatar'=>"https://static.1cf.co/img/avatar/default.png"
+                'avatar'=>"https://cdn.mundb.xyz/img/avatar/default.png"
             );
             $uid=$db->create($user);
             $_SESSION['OPENID']=$OPENID;
