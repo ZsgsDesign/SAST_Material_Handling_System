@@ -1,0 +1,69 @@
+<style>
+        card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+        }
+        .mhs-img-detail {
+            width:10rem;
+            height:10rem;
+        }  
+        card.mhs-card > div{
+            text-align: center;
+            padding: 1rem;
+        }
+
+</style>
+<div class="container mundb-standard-container"> 
+    <h3 class="mhs-title mb-5 mt-5">购物车</h3>
+    <div>
+        <button type="button" class="btn btn-primary ">全选</button>
+        <button type="button" class="btn btn-primary ">全不选</button>
+        <button type="button" class="btn btn-warning ">删除所选</button>
+    </div>
+    <card class="mhs-card">
+        <div class="row">
+                <div class="col-md-1 col-sm-1 col-1">       
+                <div class="form-group">
+                        <div class="checkbox">
+                            <label for="agreement"><input class="form-control" type="checkbox" name="agreement" id="agreement"></label>
+                        </div>
+                </div>
+                </div>        
+                <div class="col-md-2 col-sm-11 col-11">
+                        <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                </div>
+                <div class="col-md-9 col-sm-12 col-12">
+                        <h4 class="text-left"><a href="detail">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</a></h4>
+                        <p class="text-left">出借方：一个用户</p>
+                </div>
+                <div class="col">
+                        <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
+                                    var count1 = $('#count').text();               
+                                    $('#count').text(++count1);
+                                    $('#minus').attr('disabled',false);
+                                    ">+</button>
+                                    <button id="count" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                                    <button id="minus" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
+                                    var count1 = $('#count').text();
+                                    $('#count').text(--count1);
+                                    if(count1==1)
+                                        $('#minus').attr('disabled',true); //防止减到1以下
+                                    ">-</button>
+                        </div>
+                        <button type="button" class="btn btn-primary ">删除</button>
+                </div>
+        </div>
+    </card>
+    <div class="text-right">
+                <button type="button" class="btn btn-primary ">结算</button>
+    </div>
+</div>

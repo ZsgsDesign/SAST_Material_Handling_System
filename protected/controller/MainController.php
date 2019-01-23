@@ -13,6 +13,12 @@ class MainController extends BaseController
         $this->title="物品详情";
     }
 
+    public function actionCart()
+    {
+        $this->url="cart";
+        $this->title="购物车";
+    }
+
     public function actionMhs()
     {
         $this->jump("{$this->MHS_DOMAIN}/");

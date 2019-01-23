@@ -15,6 +15,9 @@
           <li class="nav-item <{if $title=='个人中心' }> active <{/if}>">
             <a class="nav-link" href="<{$MHS_DOMAIN}>/usercenter/">个人中心</a>
           </li>
+          <li class="nav-item <{if $title=='购物车' }> active <{/if}>">
+            <a class="nav-link" href="<{$MHS_DOMAIN}>/cart">购物车</a>
+          </li>
           <li class="nav-item dropdown mundb-btn-ucenter">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><{$greeting}>，<{$userinfo['display_name']}></a>
               <div class="dropdown-menu dropdown-menu-right">

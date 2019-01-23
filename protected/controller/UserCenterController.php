@@ -5,7 +5,7 @@ class UserCenterController extends BaseController
     {
         $userinfo = getuserinfo(@$_SESSION['OPENID']);
         $this->url="usercenter";
-        $this->title="用户中心";       
+        $this->title="个人中心";       
         if(!$this->islogin)
         {
             $this->jump("{$this->MHS_DOMAIN}/account/");
