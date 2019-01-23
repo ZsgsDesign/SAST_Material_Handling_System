@@ -7,6 +7,12 @@ class MainController extends BaseController
         $this->title="首页";
     }
 
+    public function actionDetail()
+    {
+        $this->url="detail";
+        $this->title="物品详情";
+    }
+
     public function actionMhs()
     {
         $this->jump("{$this->MHS_DOMAIN}/");

@@ -1,0 +1,116 @@
+<style>
+    card {
+    display: block;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+    border-radius: 4px;
+    transition: .2s ease-out .0s;
+    color: #7a8e97;
+    background: #fff;
+    padding: 1rem;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 2rem;
+    }
+    .mhs-img-detail {
+        width:15rem;
+        height:15rem;
+    }  
+    card.mhs-card > div{
+        text-align: center;
+        padding: 1rem;
+    }
+    statistic{
+        display: block;
+    }
+</style>
+
+<div class="container mundb-standard-container"> 
+    <h3 class="mhs-title mb-5 mt-5">物品详情</h3>
+    <card class="mhs-card">
+        <div class="row">
+            <div class="col-md-3 col-sm-12 col-12">
+                <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+            </div>
+            <div class="col-md-9 col-sm-12 col-12">
+                <h4 class="text-left">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</h4>
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th scope="row"><i class="MDI clock"></i>发布时间</th>
+                            <td>2019/1/10 12:00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">借用时限</th>
+                            <td>3天</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">当前库存</th>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">信用分限制</th>
+                            <td>大于 60</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">物品地点</th>
+                            <td>大活</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">出借笔数</th>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12">
+                    <p class="text-left">文字描述：超视网膜显示屏现以两种尺寸为你演绎广阔的精彩，其中一款更是 iPhone 史上最大的显示屏。此外，更有识别速度进一步提升的面容 ID、iPhone 迄今最智能最强大的芯片，以及支持景深控制的突破性双镜头系统。iPhone XS 云集了 iPhone 无数深得人心的亮点，并展现得淋漓尽致。</p>
+            </div>        
+            <div class="col">
+                <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
+                            var count1 = $('#count').text();               
+                            $('#count').text(++count1);
+                            $('#minus').attr('disabled',false);
+                            ">+</button>
+                            <button id="count" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                            <button id="minus" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
+                            var count1 = $('#count').text();
+                            $('#count').text(--count1);
+                            if(count1==1)
+                                $('#minus').attr('disabled',true); //防止减到1以下
+                            ">-</button>
+                </div>
+                <button type="button" class="btn btn-primary">立即借用</button>
+                <button class="btn btn-primary" onclick=""><i class="MDI cart"></i>加入购物车</button>
+            </div>
+        </div>
+    </card>
+    <card class="mhs-card">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <statistic>
+                        <h1><a href="#"><{$userinfo['name']}></a></h1>
+                        <p>出借者</p>
+                    </statistic>
+                </div>
+                <div class="col-md-3 col-6">
+                    <statistic>
+                        <h1><{$userinfo['credit']}></h1>
+                        <p>出借者信用</p>
+                    </statistic>
+                </div>
+                <div class="col-md-3 col-6">
+                    <statistic>
+                        <h1>200</h1>
+                        <p>总出借笔数</p>
+                    </statistic>
+                </div>
+                <div class="col-md-3 col-6">
+                    <statistic>
+                        <h1>3</h1>
+                        <p>发布物品数</p>
+                    </statistic>
+                </div>
+            </div>
+    </card>
+</div>
