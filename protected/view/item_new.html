@@ -1,0 +1,71 @@
+<style>
+    card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+    }
+    .mhs-img-detail {
+        width:15rem;
+        height:15rem;
+    }
+    
+</style>
+
+<div class="container mundb-standard-container">
+    <h3 class="mhs-title mb-5 mt-5">发布物品</h3>
+    <card>
+        <div class="row">
+            <div class="col-md-3 col-sm-12 col-12 text-center">
+                <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                <button class="btn btn-primary" onclick="">上传图片</button>
+            </div>
+            <div class="col-md-9 col-sm-12 col-12">
+                <div class="form-group">
+                    <label for="item_name" class="bmd-label-floating">物品名称</label>
+                    <input type="text" id="item_name" name="name" class="form-control" required>
+                    <span class="bmd-help">物品名称包含关键词可以更好地被搜索到哦。</span>
+                </div>
+                <div class="form-group">
+                    <label for="time_limit" class="bmd-label-floating">借用时限</label>
+                    <select class="form-control" id="time_limit" name="item_time_limit" required>
+                        <option>1 天</option>
+                        <option>3 天</option>
+                        <option>7 天</option>
+                        <option>15天</option>
+                        <option>30天</option>
+                        <option>无限制</option>
+                    </select>
+                    <span class="bmd-help">该物品在"确认借用"后要求在这一时限内归还。</span>
+                </div>
+                <div class="form-group">
+                    <label for="credit_required" class="bmd-label-floating">最低信用</label>
+                    <select class="form-control" id="credit_required" name="item_credit_required" required>
+                        <option>无</option>
+                        <option>信用良好</option>
+                        <option>信用优秀</option>
+                        <option>信用极佳</option>
+                    </select>
+                    <span class="bmd-help">信用分低于该等级的用户将不能借用该物品。</span>
+                </div>
+                <div class="form-group">
+                    <label for="location" class="bmd-label-floating">物品位置</label>
+                    <input type="text"  id="location" name="item_location" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="desc" class="bmd-label-floating">物品介绍</label>
+                    <textarea class="form-control" id="desc" name="item_desc" rows="10" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="text-right">
+            <button class="btn btn-primary" onclick="">发布物品</button>
+        </div>
+    </card>
+</div>
