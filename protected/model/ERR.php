@@ -53,6 +53,7 @@ class ERR {
 
             '3005' => "乔波",  // Reserved for Copper in memory of OASIS and those who contributed a lot
 
+            '100001' => "请填写物品名称",
         );
         return isset($ERR_DESC[$ERR_CODE])?$ERR_DESC[$ERR_CODE]:$ERR_DESC['1000'];
     }
