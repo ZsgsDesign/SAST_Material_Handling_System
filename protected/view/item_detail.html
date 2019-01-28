@@ -32,38 +32,42 @@
                 <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
             </div>
             <div class="col-md-9 col-sm-12 col-12">
-                <h4 class="text-left">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</h4>
+                <h4 class="text-left"><{$item_info["name"]}></h4>
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <th scope="row"><i class="MDI clock"></i>发布时间</th>
-                            <td>2019/1/10 12:00</td>
+                            <td><{$item_info["create_time"]}></td>
                         </tr>
                         <tr>
                             <th scope="row">借用时限</th>
-                            <td>3天</td>
+                            <{if $item_info["limit_time"] !=0 }>
+                            <td><{$item_info["limit_time"]}>天</td>
+                            <{else}>
+                            <td>无限制</td>
+                            <{/if}>
                         </tr>
                         <tr>
                             <th scope="row">当前库存</th>
-                            <td>1</td>
+                            <td><{$item_info["count"]}></td>
                         </tr>
                         <tr>
                             <th scope="row">信用分限制</th>
-                            <td>大于 60</td>
+                            <td>大于 <{$item_info["credit_limit"]}></td>
                         </tr>
                         <tr>
                             <th scope="row">物品地点</th>
-                            <td>大活</td>
+                            <td><{$item_info["location"]}></td>
                         </tr>
                         <tr>
                             <th scope="row">出借笔数</th>
-                            <td>1</td>
+                            <td><{$item_info["order_count"]}></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="col-12">
-                    <p class="text-left">文字描述：超视网膜显示屏现以两种尺寸为你演绎广阔的精彩，其中一款更是 iPhone 史上最大的显示屏。此外，更有识别速度进一步提升的面容 ID、iPhone 迄今最智能最强大的芯片，以及支持景深控制的突破性双镜头系统。iPhone XS 云集了 iPhone 无数深得人心的亮点，并展现得淋漓尽致。</p>
+                    <p class="text-left"><{$item_info["desc"]}></p>
             </div>        
             <div class="col">
                 <div class="btn-group">
@@ -89,25 +93,25 @@
             <div class="row">
                 <div class="col-md-3 col-6">
                     <statistic>
-                        <h1><a href="#"><{$userinfo['name']}></a></h1>
+                        <h1><a href="../usercenter?<{$publisher_info["publisher"]}>"><{$publisher_info["publisher"]}></a></h1>
                         <p>出借者</p>
                     </statistic>
                 </div>
                 <div class="col-md-3 col-6">
                     <statistic>
-                        <h1><{$userinfo['credit']}></h1>
+                        <h1><{$publisher_info["publisher_credit"]}></h1>
                         <p>出借者信用</p>
                     </statistic>
                 </div>
                 <div class="col-md-3 col-6">
                     <statistic>
-                        <h1>200</h1>
+                        <h1><{$publisher_info["publisher_order_count"]}></h1>
                         <p>总出借笔数</p>
                     </statistic>
                 </div>
                 <div class="col-md-3 col-6">
                     <statistic>
-                        <h1>3</h1>
+                        <h1><{$publisher_info["publisher_item_count"]}></h1>
                         <p>发布物品数</p>
                     </statistic>
                 </div>
