@@ -123,18 +123,18 @@
                         <h5 class="card-title">金士顿（Kingston）64GB USB3.0 U盘 DTSE9G2 银色 金属外壳 高速读写</h5>
                         <p class="card-text">一个U盘</p>
                         <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
-                                var count1 = $('#count').text();               
-                                $('#count').text(++count1);
-                                $('#minus').attr('disabled',false);
-                                ">+</button>
-                                <button id="count" type="button" class="btn btn-sm btn-outline-secondary">1</button>
-                                <button id="minus" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
-                                var count1 = $('#count').text();
-                                $('#count').text(--count1);
+                                <button id="minus1" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
+                                var count1 = $('#count1').text();
+                                $('#count1').text(--count1);
                                 if(count1==1)
-                                    $('#minus').attr('disabled',true); //防止减到1以下
+                                    $('#minus1').attr('disabled',true); //防止减到1以下
                                 ">-</button>
+                                <button id="count1" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
+                                var count1 = $('#count1').text();               
+                                $('#count1').text(++count1);
+                                $('#minus1').attr('disabled',false);
+                                ">+</button>
                             </div>
                         <button class="btn btn-primary" onclick="">我想借</button>
                         <button class="btn btn-primary" onclick=""><i class="MDI cart"></i></button>
@@ -151,18 +151,18 @@
                             <h5 class="card-title">闪迪 （SanDisk）64GB USB3.0 U盘 CZ73酷铄 银色 读速150MB/s 金属外壳 内含安全加密软件</h5>
                             <p class="card-text">一个U盘</p>
                             <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
-                                    var count1 = $('#count').text();               
-                                    $('#count').text(++count1);
-                                    $('#minus').attr('disabled',false);
-                                    ">+</button>
-                                    <button id="count" type="button" class="btn btn-sm btn-outline-secondary">1</button>
-                                    <button id="minus" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
-                                    var count1 = $('#count').text();
-                                    $('#count').text(--count1);
-                                    if(count1==1)
-                                        $('#minus').attr('disabled',true); //防止减到1以下
+                                    <button id="minus2" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
+                                    var count2 = $('#count2').text();
+                                    $('#count2').text(--count2);
+                                    if(count2==1)
+                                        $('#minus2').attr('disabled',true); //防止减到1以下
                                     ">-</button>
+                                    <button id="count2" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
+                                    var count2 = $('#count2').text();               
+                                    $('#count2').text(++count2);
+                                    $('#minus2').attr('disabled',false);
+                                    ">+</button>
                                 </div>
                             <button class="btn btn-primary" onclick="">我想借</button>
                             <button class="btn btn-primary" onclick=""><i class="MDI cart"></i></button>
