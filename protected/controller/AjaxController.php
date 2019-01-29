@@ -21,7 +21,6 @@ class AjaxController extends BaseController
             $desc=arg("desc");
             $iid=$item->create(
                 array(
-                    'iid' => "",
                     'scode' => "1",//此处约定物品无库存的状态码为0，物品有库存为1
                     'name' => $name,
                     'count' => $number,
@@ -31,10 +30,6 @@ class AjaxController extends BaseController
                     "limit_time" => $timeLimit,
                     "pic" => "",//等前端部分可以上传图片了再补充
                     "location" => $location,
-                    "gcount" => "",
-                    "mcount" => "",
-                    "bcount" => "",
-                    "order_count" => "",
                     "credit_limit" => $creditRequired,   
                 )
             );

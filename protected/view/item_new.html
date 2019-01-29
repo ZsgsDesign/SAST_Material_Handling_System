@@ -114,16 +114,25 @@
     
     function publish() {
         //使用Ajax提交，实时返回结果。
+        var timelimit_ = parseInt($("#time_limit").val());
+        var options=$("#credit_required").index();
+        if (options == 1)
+            options = 80;
+        else if (options == 2)
+            options = 100;
+        else if (options == 3)
+            options = 120;
         $.post("<{$MHS_DOMAIN}>/ajax/PublishItem",{
             name:$("#item_name").val(),
-            timeLimit:$("#time_limit").val(),
+            timeLimit:isNaN(timelimit_) ? 0 : timelimit_,
             location:$("#location").val(),
-            creditRequired:$("#credit_required").val(),
+            creditRequired:options,
             number:$("#number").val(),
             desc:$("#desc").val(),
             //TODO：上传图片
         },function(result){
             $('#info').html("");
+            console.log(result);
             result=JSON.parse(result);
             console.log(result);
             if(result.ret==200){
@@ -134,7 +143,7 @@
                     "        </button>\n" +
                     "    </div>");
                 setTimeout(function(){
-                    location.href="<{$MHS_DOMAIN}>/item/detail?"+result.data.itemid;
+                    location.href="<{$MHS_DOMAIN}>/item/detail?iid="+result.data.itemid;
                 },1000);
             }
             else
