@@ -45,15 +45,15 @@ $domain = array(
             'MYSQL_CHARSET' => 'utf8',
         ),
     ),
-    "credit.winter.mundb.xyz" => array( //生产环境配置
-        'debug' => 0,
+    "credit.winter.mundb.xyz" => array( //本地域名映射配置
+        'debug' => 1,
         'maintain' => 0,
         'mysql' => array(
-            'MYSQL_HOST' => CONFIG::GET('MHS_MYSQL_HOST'),
-            'MYSQL_PORT' => CONFIG::GET('MHS_MYSQL_PORT'),
-            'MYSQL_USER' => CONFIG::GET('MHS_MYSQL_USER'),
-            'MYSQL_DB'   => CONFIG::GET('MHS_MYSQL_DATABASE'),
-            'MYSQL_PASS' => CONFIG::GET('MHS_MYSQL_PASSWORD'),
+            'MYSQL_HOST' => CONFIG::GET('MHS_DEBUG_MYSQL_HOST'),
+            'MYSQL_PORT' => CONFIG::GET('MHS_DEBUG_MYSQL_PORT'),
+            'MYSQL_USER' => CONFIG::GET('MHS_DEBUG_MYSQL_USER'),
+            'MYSQL_DB'   => CONFIG::GET('MHS_DEBUG_MYSQL_DATABASE'),
+            'MYSQL_PASS' => CONFIG::GET('MHS_DEBUG_MYSQL_PASSWORD'),
             'MYSQL_CHARSET' => 'utf8',
         ),
     ),
