@@ -9,4 +9,10 @@ class OrderController extends BaseController
         $this->title="查看订单";
     }
 
+    public function actionCreate()
+    {
+        $this->url="order/create";
+        $this->title="创建订单";
+    }
+
 }
