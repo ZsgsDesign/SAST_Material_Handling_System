@@ -115,7 +115,7 @@
     function publish() {
         //使用Ajax提交，实时返回结果。
         var timelimit_ = parseInt($("#time_limit").val());
-        var options=$("#credit_required").index();
+        var options=$("#credit_required option:selected").index();
         if (options == 1)
             options = 80;
         else if (options == 2)
