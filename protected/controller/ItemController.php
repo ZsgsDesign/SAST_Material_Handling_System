@@ -53,11 +53,12 @@ class ItemController extends BaseController
                 "uid=:uid",
                 ":uid" => $item_res["owner"],
             ));
+            $item_count=count($item->findAll(array("owner=:owner",":owner" => $item_res["owner"],)));
             $this->publisher_info = array(
                 "publisher" => $user_res["name"],
                 "publisher_credit" => $user_res["credit"], //出借者信用
                 "publisher_order_count" => "暂时空缺", //总出借笔数
-                "publisher_item_count" => "暂时空缺" //发布物品数
+                "publisher_item_count" => $item_count, //发布物品数
             );//TODO上面两处空缺需要一些sql方面的高级操作，后续再补
             
         }
