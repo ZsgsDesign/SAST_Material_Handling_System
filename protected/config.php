@@ -46,7 +46,7 @@ $domain = array(
         ),
     ),
     "credit.winter.mundb.xyz" => array( //生产环境配置
-        'debug' => 0,
+        'debug' => 1,
         'maintain' => 0,
         'mysql' => array(
             'MYSQL_HOST' => CONFIG::GET('MHS_MYSQL_HOST'),
