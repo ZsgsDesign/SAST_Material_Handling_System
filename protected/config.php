@@ -45,7 +45,7 @@ $domain = array(
             'MYSQL_CHARSET' => 'utf8',
         ),
     ),
-    "domain.never.use" => array( //生产环境配置
+    "credit.winter.mundb.xyz" => array( //生产环境配置
         'debug' => 0,
         'maintain' => 0,
         'mysql' => array(
