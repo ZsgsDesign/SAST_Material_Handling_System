@@ -96,13 +96,13 @@
         </div>
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="#">默认排序</a>
+                <a class="nav-link active" href="./?sort=default">默认排序</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">最多借用</a>
+                <a class="nav-link" href="./?sort=bycount">最多借用</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">最受好评</a>
+                <a class="nav-link" href="./?sort=bycredit">最受好评</a>
             </li>
             <li class="nav-item dropdown ml-auto">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选</a>
@@ -116,61 +116,35 @@
                   </li>
         </ul>
         <div class="row">
+            <{foreach $items_info as $seq => $r}>
             <div class="col-md-4">
                 <card>
                     <img class="card-img-top" src="https://img14.360buyimg.com/n0/jfs/t27172/335/2024347954/43675/4030087a/5bf51187N1182c646.jpg" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">金士顿（Kingston）64GB USB3.0 U盘 DTSE9G2 银色 金属外壳 高速读写</h5>
-                        <p class="card-text">一个U盘</p>
+                        <h5 class="card-title"><{$r['name']}></h5>
+                        <p class="card-text"><{$r['dec']}></p>
                         <div class="btn-group">
-                                <button id="minus1" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
-                                var count1 = $('#count1').text();
-                                $('#count1').text(--count1);
-                                if(count1==1)
-                                    $('#minus1').attr('disabled',true); //防止减到1以下
+                                <button id="minus<{$seq}>" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
+                                var count<{$seq}> = $('#count<{$seq}>').text();
+                                $('#count<{$seq}>').text(--count<{$seq}>);
+                                if(count<{$seq}>==1)
+                                    $('#minus<{$seq}>').attr('disabled',true); //防止减到1以下
                                 ">-</button>
-                                <button id="count1" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                                <button id="count<{$seq}>" type="button" class="btn btn-sm btn-outline-secondary">1</button>
                                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
-                                var count1 = $('#count1').text();               
-                                $('#count1').text(++count1);
-                                $('#minus1').attr('disabled',false);
+                                var count<{$seq}> = $('#count<{$seq}>').text();               
+                                $('#count<{$seq}>').text(++count<{$seq}>);
+                                $('#minus<{$seq}>').attr('disabled',false);
                                 ">+</button>
                             </div>
                         <button class="btn btn-primary" onclick="">我想借</button>
                         <button class="btn btn-primary" onclick=""><i class="MDI cart"></i></button>
                         <br>
-                        <small>借用数：200 评分：5.0</small>
+                        <small>借用数：<{$r['order_count']}> 评分：暂时空缺</small>
                     </div>
                 </card>
             </div>
-
-            <div class="col-md-4">
-                <card>
-                        <img class="card-img-top" src="https://img14.360buyimg.com/n0/jfs/t25351/132/1985977155/138936/9fd6b152/5bc0554eNa378a60d.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">闪迪 （SanDisk）64GB USB3.0 U盘 CZ73酷铄 银色 读速150MB/s 金属外壳 内含安全加密软件</h5>
-                            <p class="card-text">一个U盘</p>
-                            <div class="btn-group">
-                                    <button id="minus2" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
-                                    var count2 = $('#count2').text();
-                                    $('#count2').text(--count2);
-                                    if(count2==1)
-                                        $('#minus2').attr('disabled',true); //防止减到1以下
-                                    ">-</button>
-                                    <button id="count2" type="button" class="btn btn-sm btn-outline-secondary">1</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
-                                    var count2 = $('#count2').text();               
-                                    $('#count2').text(++count2);
-                                    $('#minus2').attr('disabled',false);
-                                    ">+</button>
-                                </div>
-                            <button class="btn btn-primary" onclick="">我想借</button>
-                            <button class="btn btn-primary" onclick=""><i class="MDI cart"></i></button>
-                            <br>
-                            <small>借用数：200 评分：5.0</small>
-                        </div>
-                </card>
-            </div>
+            <{/foreach}>
         </div>
         <br>
         <br>
