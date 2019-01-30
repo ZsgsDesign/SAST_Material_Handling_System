@@ -95,3 +95,4 @@ function image_resize($imagedata, $width, $height, $per = 0) {
 
     return $image;
 }
+

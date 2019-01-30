@@ -25,7 +25,7 @@ class PicController extends Controller
                     echo file_get_contents($pic); //原图输出模式
             }
             else{
-                // TODO 返回一个默认的空图片
+                echo file_get_contents(APP_DIR.'/res/NoPic.jpg');
             }
 
 
