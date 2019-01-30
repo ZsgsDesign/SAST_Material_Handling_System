@@ -58,7 +58,7 @@ class ItemController extends BaseController
             ));
             $item_count=count($item->findAll(array("owner=:owner",":owner" => $item_res["owner"],)));
             $this->publisher_info = array(
-                "publisher" => $user_res["name"],
+                "publisher" => $user_res["real_name"],
                 "publisher_credit" => $user_res["credit"], //出借者信用
                 "publisher_order_count" => "暂时空缺", //总出借笔数
                 "publisher_item_count" => $item_count, //发布物品数
