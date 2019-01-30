@@ -16,6 +16,18 @@
         width:15rem;
         height:15rem;
     }
+    @media all and (max-width:1250px) and (min-width:990px){
+        .test>div{
+            min-width: 600px;
+            float: right;
+        }
+    }
+    @media all and (max-width:990px){
+        .test>div{
+            width: 300px;
+            float: right;
+        }
+    }
     
 </style>
 
@@ -35,7 +47,7 @@
                     </label>
                 </div>
             </div>
-            <div class="col-md-9 col-sm-12 col-12">
+            <div class="test col-md-9 col-sm-12 col-12">
                 <div class="form-group">
                     <label for="item_name" class="bmd-label-floating">物品名称</label>
                     <input type="text" id="item_name" class="form-control">
