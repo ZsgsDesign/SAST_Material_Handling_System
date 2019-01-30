@@ -33,7 +33,12 @@ class BaseController extends Controller
         }
 
         header("Content-type: text/html; charset=utf-8");
+
         require(APP_DIR.'/protected/include/functions.php');
+        require(APP_DIR.'/protected/include/Item.php');
+        require(APP_DIR.'/protected/include/Image.php');
+
+
         $this->islogin=is_login();
         $this->url="";
 
