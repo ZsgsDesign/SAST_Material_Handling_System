@@ -99,6 +99,13 @@
                     </a>
                 </div>
         </div>
+        <script>
+            document.querySelector("#keyword").addEventListener('keyup',function(e){
+                if(e.keyCode===13){
+                    window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val();
+                }
+            });
+        </script>
         <ul class="nav nav-pills">
             <li class="nav-item">
                 <a class="nav-link active" href="./?sort=default">默认排序</a>

@@ -20,7 +20,7 @@ class AjaxController extends BaseController
             $desc=arg("desc");
             $iid=$item->create(
                 array(
-                    'scode' => "1",//此处约定物品无库存的状态码为0，物品有库存为1
+                    'scode' => "1",//此处约定物品无库存的状态码为0，物品有库存为1，物品下架为-1
                     'name' => $name,
                     'count' => $number,
                     "owner" => $this->userinfo['uid'],
