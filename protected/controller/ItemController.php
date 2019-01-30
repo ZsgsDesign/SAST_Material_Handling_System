@@ -7,7 +7,8 @@ class ItemController extends BaseController
     {
         $iid=arg('iid');
         $this->iid=arg('iid');
-        $this->url="item/detail";
+        $this->isMyItem=IsMyItem($iid);
+        $this->url="item/detail/".$iid;
 
         //TODO 当$iid($iid为订单的编号)为空，显示的是测试内容，后期记得改为跳转至404页面
         $user=new Model("users");

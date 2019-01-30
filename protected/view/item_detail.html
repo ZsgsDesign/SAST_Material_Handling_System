@@ -70,6 +70,7 @@
                     <p class="text-left"><{$item_info["desc"]}></p>
             </div>        
             <div class="col">
+                <{if !$isMyItem}>
                 <div class="btn-group">
                             <button id="minus" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
                             var count1 = $('#count').text();
@@ -86,6 +87,11 @@
                 </div>
                 <button type="button" class="btn btn-primary">立即借用</button>
                 <button class="btn btn-primary" onclick=""><i class="MDI cart"></i>加入购物车</button>
+                <{else}>
+                <p>这是您发布的物品。</p>
+                <button type="button" class="btn btn-primary">编辑</button>
+                <button type="button" class="btn btn-warning"><i class="MDI close-box"></i>下架</button>
+                <{/if}>
                 <button class="btn btn-primary" onclick=""><i class="MDI share"></i>分享</button>
             </div>
         </div>
