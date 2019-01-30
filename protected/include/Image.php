@@ -31,7 +31,8 @@ function UploadPic($iid)
         }
 
     }
-
+    //没有图片，无需上传
+    return 200; //成功
 }
 
 //来自https://blog.csdn.net/maoxinwen1/article/details/79202442

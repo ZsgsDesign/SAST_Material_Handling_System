@@ -34,7 +34,7 @@ class AjaxController extends BaseController
 
             $result = UploadPic($iid);
             if($result != 200){
-                ERR::Catcher(2001); //上传图片失败
+                ERR::Catcher($result); //上传图片失败
                 $item->delete(array("iid=:id",":id"=>$iid));
             }
             else
