@@ -124,9 +124,8 @@
         <div class="row">
             <{foreach $items_info as $seq => $r}>
             <div class="col-md-4">
-                <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>">
                 <card class="img-card mb-3">
-                    <img class="card-img-top" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400">
+                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
                     <div class="card-body">
                         <h5 class="card-title"><{$r['name']}></h5>
                             <div class="btn-group">
@@ -149,7 +148,6 @@
                             <small>借用数：<{$r['order_count']}> 评分：暂时空缺</small>
                     </div>
                 </card>
-                </a>
             </div>
             <{/foreach}>
         </div>
