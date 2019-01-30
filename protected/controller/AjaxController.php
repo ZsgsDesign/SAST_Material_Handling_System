@@ -7,8 +7,7 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!(arg("name")))
-        {
+        if (!(arg("name"))) {
             ERR::Catcher(100001); //提示名称为空
         }
         else{
@@ -28,14 +27,22 @@ class AjaxController extends BaseController
                     "dec" => $desc,
                     "create_time"=> date("Y-m-d H:i:s",time()),
                     "limit_time" => $timeLimit,
-                    "pic" => "",//等前端部分可以上传图片了再补充
                     "location" => $location,
-                    "credit_limit" => $creditRequired,   
+                    "credit_limit" => $creditRequired,
                 )
             );
-            SUCCESS::Catcher("发布成功！",array(
-                'itemid'=>$iid, //传回物品id
-            ));
+
+            $result = UploadPic($iid);
+            if($result != 200){
+                ERR::Catcher(2001); //上传图片失败
+                $item->delete(array("iid=:id",":id"=>$iid));
+            }
+            else
+            {
+                SUCCESS::Catcher("发布成功！",array(
+                    'itemid'=>$iid, //传回物品id
+                ));
+            }
         }
         
     }
