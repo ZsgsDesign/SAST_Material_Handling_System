@@ -47,7 +47,7 @@ $domain = array(
             'MYSQL_CHARSET' => 'utf8',
         ),
     ),
-    "credit.winter.mundb.xyz" => array( //本地域名映射配置
+    "credit.winter.mundb.xyz" => array( //生产环境配置
         'debug' => 1,
         'maintain' => 0,
         'mysql' => array(
