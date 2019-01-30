@@ -36,7 +36,9 @@ class CONFIG {
 
 			"MHS_CDN"=>"https://cdn.mundb.xyz",
 			"MHS_DOMAIN"=>"",
-			"MHS_SALT"=>""
+			"MHS_SALT"=>""，
+
+			"MHS_PIC_SERVICE_ROOT" =>  realpath(dirname(__FILE__).'/../../').'/pics/' //图片存放目录
 		);
 		return $config[$KEY];
 	}
