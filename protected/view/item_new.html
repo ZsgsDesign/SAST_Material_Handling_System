@@ -17,15 +17,23 @@
         height:15rem;
     }
     @media all and (max-width:1200px) and (min-width:992px){
-        .test>div{
+        .responsive>div{
             min-width: 600px;
             float: right;
         }
+        .responsive-text{
+            padding: 0 !important;
+            width: 15rem;
+        }
     }
     @media all and (max-width:992px) and (min-width:768px){
-        .test>div{
+        .responsive>div{
             width: 300px;
             float: right;
+        }
+        .responsive-text{
+            padding: 0 !important;
+            width: 15rem;
         }
     }
     
@@ -34,7 +42,6 @@
 <div class="container mundb-standard-container">
     <h3 class="mhs-title mb-5 mt-5">发布物品</h3>
     <div id="info">
-
     </div>
     <card>
         <div class="card-body row">
@@ -42,12 +49,12 @@
                 <div class="bg-light mb-4">
                     <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="https://static.1cf.co/img/avatar/default.png">
                 </div>
-                <div class="p-5 text-center">拖动图片到页面或
+                <div class="p-5 text-center responsive-text">拖动图片到页面或
                     <label class="text-primary">选择图片... <input type="file" class="sr-only" id="pic_upload" accept="image/*" ref="input" onchange="SelectedImg(this.files[0])">
                     </label>
                 </div>
             </div>
-            <div class="test col-md-9 col-sm-12 col-12">
+            <div class="responsive col-md-9 col-sm-12 col-12">
                 <div class="form-group">
                     <label for="item_name" class="bmd-label-floating">物品名称</label>
                     <input type="text" id="item_name" class="form-control">
