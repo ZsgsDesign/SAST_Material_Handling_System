@@ -14,12 +14,10 @@
     card.img-card{
         padding:0;
         overflow: hidden;
-        cursor: pointer;
     }
 
     card.img-card > img{
         width:100%;
-        height:10rem;
         object-fit: cover;
     }
     card.img-card > div{
@@ -83,6 +81,10 @@
         border: 1px solid rgba(0, 0, 0, 0.15);
         cursor: pointer;
     }
+    a.card-link{
+        text-decoration: none;
+        color:#212529;
+    }
 </style>
 <div class="container mundb-standard-container">
     <div style="width:100%;">        
@@ -105,28 +107,29 @@
                 <a class="nav-link" href="./?sort=bycount">最多借用</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./?sort=bycredit">最受好评</a>
+                <a class="nav-link" href="./?sort=bycredit">信用优先</a>
             </li>
             <li class="nav-item dropdown ml-auto">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选</a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">TODO</a>
-                      <a class="dropdown-item" href="#">Another TODO</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Separated link</a>
+                      <a class="dropdown-item" href="#">仅看可借用</a>
+                        <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">显示无货</a>
+                      <a class="dropdown-item" href="#">显示高于当前信用</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">我发布的</a>
                     </div>
                   </li>
         </ul>
         <div class="row">
             <{foreach $items_info as $seq => $r}>
             <div class="col-md-4">
-                <card>
-                    <img class="card-img-top" src="https://img14.360buyimg.com/n0/jfs/t27172/335/2024347954/43675/4030087a/5bf51187N1182c646.jpg" alt="Card image cap">
+                <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>">
+                <card class="img-card mb-3">
+                    <img class="card-img-top" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400">
                     <div class="card-body">
                         <h5 class="card-title"><{$r['name']}></h5>
-                        <p class="card-text"><{$r['dec']}></p>
-                        <div class="btn-group">
+                            <div class="btn-group">
                                 <button id="minus<{$seq}>" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
                                 var count<{$seq}> = $('#count<{$seq}>').text();
                                 $('#count<{$seq}>').text(--count<{$seq}>);
@@ -140,12 +143,13 @@
                                 $('#minus<{$seq}>').attr('disabled',false);
                                 ">+</button>
                             </div>
-                        <button class="btn btn-primary" onclick="">我想借</button>
-                        <button class="btn btn-primary" onclick=""><i class="MDI cart"></i></button>
-                        <br>
-                        <small>借用数：<{$r['order_count']}> 评分：暂时空缺</small>
+                            <button class="btn btn-primary" onclick="">我想借</button>
+                            <button class="btn btn-primary" onclick=""><i class="MDI cart"></i></button>
+                            <br>
+                            <small>借用数：<{$r['order_count']}> 评分：暂时空缺</small>
                     </div>
                 </card>
+                </a>
             </div>
             <{/foreach}>
         </div>
