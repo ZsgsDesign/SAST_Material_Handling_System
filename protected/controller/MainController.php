@@ -36,8 +36,8 @@ class MainController extends BaseController
             else{
                 $items_res=$items->query("select * from item where name like $keyword order by create_time DESC");
             }
-            if(!empty($items_res)){
-                $pageSize=10;
+            if(!empty($items_res)&&strtolower($page)!=='all'){//TODO 这个all是测试用的，后期记得删除
+                $pageSize=6;//TODO 分页的值后期再调整,测试时值比较小
                 $page=intval($page);
                 $pageScope=ceil(count($items_res)/$pageSize);
                 $page=min(max(1,$page),$pageScope);
