@@ -1,0 +1,279 @@
+<style>
+    card {
+        display: block;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        padding: 1rem;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
+    }
+
+    card.item-card {
+        padding: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    card.order-card {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    card.item-card > p {
+        font-size: larger;
+        color: black;
+        text-align: left;
+        margin-bottom: 0.5rem;
+        margin-left: 1rem;
+    }
+
+    .mhs-button {
+        padding:0.3rem 0.3rem;
+        line-height:2;
+    }
+    card.item-card > div{
+        text-align: center;
+    }
+    card.item-card > img{
+        width:100%;
+        object-fit: cover;
+    }
+
+    .center{
+        text-align: center;
+    }
+    avatar{
+        display: block;
+        position: relative;
+        text-align: center;
+        height: 8rem;
+    }
+
+    avatar > img{
+        display: block;
+        width:8rem;
+        height:8rem;
+        border-radius: 2000px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        top:0%;
+        left:0;
+        right:0;
+        position: absolute;
+        margin: auto;
+    }
+
+    card.img-card > div{
+        text-align: center;
+    }
+
+    card.item-card:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    }
+
+    statistic{
+        display: block;
+    }
+
+    hr.atsast-line{
+        width: auto;
+        margin-left:1rem;
+        margin-right: 1rem;
+    }
+
+    badge{
+        display: inline-block;
+        padding: 0.25rem 0.75em;
+        font-weight: 700;
+        line-height: 1.5;
+        text-align: center;
+        vertical-align: baseline;
+        border-radius: 0.125rem;
+        background-color: #f5f5f5;
+        margin: 1rem;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border-radius: 4px;
+        transition: .2s ease-out .0s;
+        color: #7a8e97;
+        background: #fff;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .atsast-empty{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height: 10rem;
+    }
+
+    .tab .card-header{
+        padding:0;
+        border-radius: 4px;
+    }
+    .tab .card-header > ul{
+        margin:0;
+    }
+
+    .tab .card-header > ul .nav-link{
+        padding:1rem;
+    }
+
+    @media all and (min-width:768px){
+        .tab .card-header > ul .nav-link{
+            font-size: medium;
+        }
+    }
+
+    .tab .card-header .nav-tabs .nav-link.active {
+        color: #D32F2F;
+        border-color: #FF5252;
+    }
+
+    #userTab{
+        position:relative;
+    }
+    .mhs-item-img {
+        max-width:15rem;
+        max-height:15rem;
+    }
+
+</style>
+
+<div class="container mundb-standard-container"> 
+    <h2 class="mhs-title mb-5 mt-5"><{if $isMe}>个人中心<{else}><{$call}>的主页<{/if}></h2>
+    <div class="tab">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs nav-justified nav-tabs-material" id="userTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link <{ if $current_tab=='basic' }>active<{/if}>" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">
+                        基本信息</a>
+                </li>
+                <{if $isMe}>
+                <li class="nav-item">
+                    <a class="nav-link <{ if $current_tab=='order' }>active<{/if}>" id="order-tab" data-toggle="tab" href="#order" role="tab" aria-controls="order" aria-selected="false">
+                        我的订单</a>
+                </li>
+                <{/if}>
+                <li class="nav-item">
+                    <a class="nav-link <{ if $current_tab=='item' }>active<{/if}>" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="false">
+                        <{$call}>发布的</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <{ if $current_tab=='review' }>active<{/if}>" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">
+                        <{$call}>的评价</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="userTabContent">
+            <div class="tab-pane fade <{ if $current_tab=='basic' }>show active<{/if}>" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+                    <div class="card-body">
+                        <card>
+                        <div class="row center">
+                            <div class="col-md-4">
+                                <avatar><img src="<{$userinfo['avatar']}>"></avatar>
+                                <h3 class="text-center"><{$uinfo['name']}></h3>
+                                <p class="text-center"><{$uinfo['real_name']}></p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <statistic>
+                                            <h1><{$uinfo['credit']}></h1>
+                                            <p>信用分</p>
+                                        </statistic>
+                                    </div>
+                                    <div class="col-4">
+                                        <statistic>
+                                            <h1>敬请期待</h1>
+                                            <p>借用数</p>
+                                        </statistic>
+                                    </div>
+                                    <div class="col-4">
+                                        <statistic>
+                                            <h1>敬请期待</h1>
+                                            <p>发布数</p>
+                                        </statistic>
+                                    </div>
+                                    <div class="col-4">
+                                        <statistic>
+                                            <h1>1</h1>
+                                            <p>好评数</p>
+                                        </statistic>
+                                    </div>
+                                    <div class="col-4">
+                                        <statistic>
+                                            <h1>2</h1>
+                                            <p>中评数</p>
+                                        </statistic>
+                                    </div>
+                                    <div class="col-4">
+                                        <statistic>
+                                            <h1>3</h1>
+                                            <p>差评数</p>
+                                        </statistic>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <hr class="atsast-line">
+                            <div class="card-body">
+                                <div class="atsast-empty">
+                                    <badge>敬请期待</badge>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+            </div>
+            <{if $isMe}>
+            <div class="tab-pane fade <{ if $current_tab=='order' }>show active<{/if}>" id="order" role="tabpanel" aria-labelledby="order-tab">
+                    <div class="card-body">
+                            <card class="order-card">
+                                <div class="row">
+                                    <div class="col-4"><p class="text-left">2019/1/21 21:00</p></div>
+                                    <div class="col-4"><p>出借方</p></div>
+                                    <div class="col-4"><p class="text-right text-success">交易成功</p></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <img class="mhs-item-img rounded" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                                    </div>
+                                    <div class="col-md-9 col-12">
+                                        <h4 class="text-left"><a href="order/view">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</a></h4>
+                                        <p class="text-left">订单号：1000</p>
+                                    </div>
+                                </div>
+                            </card>
+                    </div>
+            </div>
+            <{/if}>
+            <div class="tab-pane fade <{ if $current_tab=='item' }>show active<{/if}>" id="item" role="tabpanel" aria-labelledby="item-tab">
+                <div class="card-body">
+                    <div class="row">
+                            <div class="col-md-3 col-12">
+                                <card class="item-card text-center">
+                                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/"><img class="card-img-top mhs-item-img rounded" src="<{$MHS_DOMAIN}>/pic/35?size=400"></a>
+                                        <p class="card-title">我的物品我的物品我的物品我的物品我的物品我的物品</p>
+                                        <{if $isMe}>
+                                        <button type="button" class="btn btn-primary mhs-button">编辑</button>
+                                        <button type="button" class="btn btn-warning mhs-button"><i class="MDI close-box"></i>下架</button>
+                                        <{/if}>
+
+                                </card>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade <{ if $current_tab=='review' }>show active<{/if}>" id="review" role="tabpanel" aria-labelledby="review-tab">
+                    <div class="card-body">
+                        <div class="atsast-empty">
+                            <badge>暂未开放功能</badge>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

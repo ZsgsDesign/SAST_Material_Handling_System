@@ -14,8 +14,8 @@ $config = array(
         'item/detail/<iid>'                                  => 'item/detail',
         'item/<a>'                                           => 'item/<a>',
         'order/<a>'                                          => 'order/<a>',
-        'usercenter/<a>'                                     => 'usercenter/<a>',
-        'usercenter'                                         => 'usercenter/index',
+        'user/<uid>'                                         => 'user/index',
+        'user'                                               => 'user/index',
         '<a>'                                                => 'main/<a>',
         '/'                                                  => 'main/index',
 

@@ -63,6 +63,12 @@ function getuserinfo($OPENID)
     return $user_db->find(array("OPENID = :OPENID",":OPENID" => $OPENID));
 }
 
+function getuserinfo_id($uid)
+{
+    $user_db=new Model("users");
+    return $user_db->find(array("uid = :uid",":uid" => $uid));
+}
+
 function generateRandStr($len)
 {
     $code = '';
