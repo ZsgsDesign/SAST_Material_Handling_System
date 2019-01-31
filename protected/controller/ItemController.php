@@ -22,7 +22,7 @@ class ItemController extends BaseController
             $this->item_info = array(
                 "name" => $item_res["name"],
                 "scode" => $item_res["scode"],
-                //"owner" => $item_res["owner"],
+                "owner" => $item_res["owner"],
                 "create_time" => $item_res["create_time"], //发布时间
                 "limit_time" => $item_res["limit_time"],//借用时限
                 "count" => $item_res["count"],

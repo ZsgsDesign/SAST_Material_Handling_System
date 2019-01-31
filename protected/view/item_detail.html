@@ -11,13 +11,13 @@
     border: 1px solid rgba(0, 0, 0, 0.15);
     margin-bottom: 2rem;
     }
-    .mhs-img-detail {
-        width:15rem;
-        height:15rem;
-    }  
+    .mhs-item-img {
+        max-width:15rem;
+        max-height:15rem;
+    }
     card.mhs-card > div{
         text-align: center;
-        padding: 1rem;
+        padding: 0.5rem;
     }
     statistic{
         display: block;
@@ -29,7 +29,7 @@
     <card class="mhs-card">
         <div class="row">
             <div class="col-md-3 col-sm-12 col-12">
-                <img class="mhs-img-detail rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$iid}>?size=400">
+                <img class="mhs-item-img rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$iid}>?size=400">
             </div>
             <div class="col-md-9 col-sm-12 col-12">
                 <h4 class="text-left"><{$item_info["name"]}></h4>
@@ -66,9 +66,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-12">
-                    <p class="text-left"><{$item_info["desc"]}></p>
-            </div>        
+
             <div class="col">
                 <{if !$isMyItem}>
                 <div class="btn-group">
@@ -96,11 +94,14 @@
             </div>
         </div>
     </card>
+    <card class="mhs-card text-left" id="desc">
+
+    </card>
     <card class="mhs-card">
             <div class="row">
                 <div class="col-md-3 col-6">
                     <statistic>
-                        <h1><a href="../usercenter?<{$publisher_info["publisher"]}>"><{$publisher_info["publisher"]}></a></h1>
+                        <h1><a href="<{$MHS_DOMAIN}>/user/<{$item_info['owner']}>"><{$publisher_info["publisher"]}></a></h1>
                         <p>出借者</p>
                     </statistic>
                 </div>
@@ -125,3 +126,12 @@
             </div>
     </card>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行
+        $('#desc').html(marked("<{$item_info['desc']}>"));
+    });
+
+</script>
