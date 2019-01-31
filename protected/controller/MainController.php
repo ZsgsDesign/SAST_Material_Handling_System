@@ -14,7 +14,6 @@ class MainController extends BaseController
             'keyword' => $keyword,
             'page' => $page,
         ];
-        dump($this->args);
         if(!empty($keyword)){
             $keyword=str_replace("[","[[]",$keyword);
             $keyword=str_replace("_","[_]",$keyword);
