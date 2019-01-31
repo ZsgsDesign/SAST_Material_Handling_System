@@ -13,7 +13,7 @@ class MainController extends BaseController
             'sort' => $sort,
             'keyword' => $keyword,
             'page' => $page,
-        ];
+        ];  
         if(!empty($keyword)){
             $keyword=str_replace("[","[[]",$keyword);
             $keyword=str_replace("_","[_]",$keyword);

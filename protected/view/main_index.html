@@ -168,6 +168,7 @@
         <br>
         <br>
         <nav aria-label="Page navigation">
+            <{if $pager !==null }>
             <ul class="pagination justify-content-center">
                 <li class="page-item <{if $pager['current_page'] == $pager['prev_page']}> disabled <{/if}>">
                     <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['prev_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>" tabindex="-1"  aria-disabled="true" >上一页</a>
@@ -179,6 +180,7 @@
                     <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['next_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">下一页</a>
                 </li>
             </ul>
+            <{/if}>
           </nav>
         <{else}>
         <card class="mb-3">
