@@ -9,6 +9,12 @@ class MainController extends BaseController
         $sort=strtolower(@arg("sort"));
         $keyword=strtolower(@arg("keyword"));
         $page=arg("page");
+        $this->args=[
+            'sort' => $sort,
+            'keyword' => $keyword,
+            'page' => $page,
+        ];
+        dump($this->args);
         if(!empty($keyword)){
             $keyword=str_replace("[","[[]",$keyword);
             $keyword=str_replace("_","[_]",$keyword);
@@ -32,10 +38,11 @@ class MainController extends BaseController
         }
         else{
             $items_res=$items->findAll($conditions,'create_time DESC',"*",array($page,6,6));
+            $this->args['sort']='default';
         }
         $this->pager=$items->page;
         $this->items_info=$items_res;
-        }
+    }
 
     public function actionDetail()
     {
