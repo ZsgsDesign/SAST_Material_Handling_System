@@ -253,17 +253,18 @@
             <div class="tab-pane fade <{ if $current_tab=='item' }>show active<{/if}>" id="item" role="tabpanel" aria-labelledby="item-tab">
                 <div class="card-body">
                     <div class="row">
+                        <{foreach $items_info as $seq => $r}>
                             <div class="col-md-3 col-12">
                                 <card class="item-card text-center">
-                                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/"><img class="card-img-top mhs-item-img rounded" src="<{$MHS_DOMAIN}>/pic/35?size=400"></a>
-                                        <p class="card-title">我的物品我的物品我的物品我的物品我的物品我的物品</p>
+                                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top mhs-item-img rounded" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
+                                        <p class="card-title"><{$r['name']}></p>
                                         <{if $isMe}>
                                         <button type="button" class="btn btn-primary mhs-button">编辑</button>
                                         <button type="button" class="btn btn-warning mhs-button"><i class="MDI close-box"></i>下架</button>
                                         <{/if}>
-
                                 </card>
                             </div>
+                        <{/foreach}>
                     </div>
                 </div>
             </div>
