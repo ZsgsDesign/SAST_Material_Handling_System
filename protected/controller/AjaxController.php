@@ -46,6 +46,37 @@ class AjaxController extends BaseController
                 ));
             }
         }
-        
+    }
+    public function actionAddToCart(){
+        $iid=arg('iid');
+        $count=arg('count');
+        $uid=$this->userinfo['uid'];
+        $cart=new Model("cart");
+        $item=new Model("item");
+        if(empty($uid)){
+            ERR::Catcher(2001);
+        }
+        else{
+            if(empty($iid)||empty($count)){
+                ERR::Catcher(1003);
+            }
+            else{
+                if(intval($count)<1||$item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
+                    ERR::Catcher(1004);
+                }
+                else{
+                    $cid=$cart->create(
+                        array(
+                            'user' => $uid,
+                            'item_id' => $iid,
+                            'count' => $count,
+                        )
+                    );
+                    SUCCESS::Catcher("添加成功",array(
+                        'cid' => $cid,
+                    ));
+                }
+            }
+        }
     }
 }
