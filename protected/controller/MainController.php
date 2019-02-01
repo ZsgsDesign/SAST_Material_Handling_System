@@ -29,21 +29,28 @@ class MainController extends BaseController
         $items = new Model("item");
         //TODO2   关于是否展示已出借完的物品，后期再讨论讨论吧
         if($sort==="bycount"){
-            $items_res=$items->findAll($conditions,'order_count DESC',"*",array($page,6,6));
+            $items_res=$items->findAll($conditions,'order_count DESC',"*",array($page,8,6));
         }
         else if($sort==="bycredit"){
             $keyword="'%".$keyword."%'";
             $items_res=$items->query("select item.*,users.credit from item join users on item.owner=users.uid where item.name like $keyword ORDER BY users.credit DESC;");
             $page=max(1,$page);
-            $items->pager($page,6,6,count($items_res));
+            $items->pager($page,8,6,count($items_res));
             if(!empty($items->page)){
                 $items_res=array_slice($items_res,($page-1)*6,6,true);
             }
         }
         else{
-            $items_res=$items->findAll($conditions,'create_time DESC',"*",array($page,6,6));
+            $items_res=$items->findAll($conditions,'create_time DESC',"*",array($page,8,6));
             $this->args['sort']='default';
         }
+
+        $user=new Model("users"); //显示发布者
+        for($i = 0;$i < count($items_res);$i++) {
+            $user_res=$user->find(array("uid=:uid",":uid" => $items_res[$i]["owner"]));
+            $items_res[$i]['publisher_real_name'] = $user_res['real_name'];
+        }
+
         $this->pager=$items->page;
         $this->items_info=$items_res;
     }
