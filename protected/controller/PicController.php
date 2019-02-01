@@ -25,7 +25,8 @@ class PicController extends Controller
                     echo file_get_contents($pic); //原图输出模式
             }
             else{
-                echo file_get_contents(APP_DIR.'/res/NoPic.jpg');
+                echo image_resize(file_get_contents(APP_DIR.'/res/NoPic.jpg'), 400, 400);
+                // TODO 这个资源之后再调整吧
             }
 
 

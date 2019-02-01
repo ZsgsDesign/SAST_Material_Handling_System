@@ -15,9 +15,6 @@ function IsMyItem($iid)
         return false;
     $userinfo = getuserinfo(@$_SESSION['OPENID']);
     $items = new Model("item");
-    $item_res=$items->find(array(
-        "iid=:iid",
-        ":iid" => $iid,
-    ));
+    $item_res=$items->find(array("iid=:iid", ":iid" => $iid));
     return $item_res['owner'] == $userinfo['uid'];
 }
