@@ -188,15 +188,9 @@
         <nav aria-label="Page navigation">
             <{if $pager !==null }>
             <ul class="pagination justify-content-center">
-                <li class="page-item <{if $pager['current_page'] == $pager['prev_page']}> disabled <{/if}>">
-<<<<<<< HEAD
+                <li style="display:inherit" class="page-item <{if $pager['current_page'] == $pager['prev_page']}> disabled <{/if}>">
+                    <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['prev_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>" tabindex="-1"  aria-disabled="true" >首页</a>
                     <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['prev_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>" tabindex="-1"  aria-disabled="true" >上一页</a>
-=======
-                    <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=1<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>" tabindex="-1"  aria-disabled="true" >首页</a>
-                </li>
-                <li class="page-item <{if $pager['current_page'] == $pager['prev_page']}> disabled <{/if}>">
-                    <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['prev_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>" tabindex="-1"  aria-disabled="true" >上一页</a>
->>>>>>> 77d51095d23d28556cbc005faed538250aa768eb
                 </li>
                 <{foreach $pager["all_pages"] as $i}>
                     <li class="page-item <{if $i == $pager['current_page']}> active <{/if}> "><a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$i}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>"><{$i}></a></li>
