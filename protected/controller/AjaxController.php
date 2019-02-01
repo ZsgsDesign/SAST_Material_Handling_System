@@ -18,6 +18,11 @@ class AjaxController extends BaseController
             $creditRequired=arg("creditRequired");
             $number=arg("number");
             $desc=arg("desc");
+            $desc = str_replace("\\", "/" ,$desc);  // 斜杠问题
+            $desc = str_replace("\n","\\n",$desc); //解决换行问题
+            $desc = str_replace('"','\"',$desc);  // 双引号bug修复
+
+
             $iid=$item->create(
                 array(
                     'scode' => "1",//此处约定物品无库存的状态码为0，物品有库存为1，物品下架为-1
@@ -44,6 +49,37 @@ class AjaxController extends BaseController
                 ));
             }
         }
-        
+    }
+    public function actionAddToCart(){
+        $iid=arg('iid');
+        $count=arg('count');
+        $uid=$this->userinfo['uid'];
+        $cart=new Model("cart");
+        $item=new Model("item");
+        if(empty($uid)){
+            ERR::Catcher(2001);
+        }
+        else{
+            if(empty($iid)||empty($count)){
+                ERR::Catcher(1003);
+            }
+            else{
+                if(intval($count)<1||$item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
+                    ERR::Catcher(1004);
+                }
+                else{
+                    $cid=$cart->create(
+                        array(
+                            'user' => $uid,
+                            'item_id' => $iid,
+                            'count' => $count,
+                        )
+                    );
+                    SUCCESS::Catcher("添加成功",array(
+                        'cid' => $cid,
+                    ));
+                }
+            }
+        }
     }
 }

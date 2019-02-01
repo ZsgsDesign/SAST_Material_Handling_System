@@ -93,7 +93,7 @@
         <div class="input-group text-center">
                 <input id="keyword" type="text" class="form-control" placeholder="搜索物品..." aria-describedby="basic-addon1">
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()">搜索</button>
+                    <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}>'">搜索</button>
                     <a href="<{$MHS_DOMAIN}>/item/new">
                         <button type="button" class="btn btn-raised btn-info" aria-label="Left Align">发布物品</button>
                     </a>
@@ -102,19 +102,20 @@
         <script>
             document.querySelector("#keyword").addEventListener('keyup',function(e){
                 if(e.keyCode===13){
-                    window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val();
+                    window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}>';
                 }
             });
         </script>
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="./?sort=default">默认排序</a>
+                <a class="nav-link <{if $args['sort']==='default' || empty($args['sort'])}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=default<{if !empty($args['keyword'])}>&page=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}>">默认排序</a>
+                <!--TODO感觉如果上一行那边如果用上三目表达式，应该会更优雅，下同（留下了不学无术的泪水-->
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./?sort=bycount">最多借用</a>
+                <a class="nav-link <{if $args['sort'] === 'bycount'}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=bycount<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}>">最多借用</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./?sort=bycredit">信用优先</a>
+                <a class="nav-link <{if $args['sort'] === 'bycredit'}> active <{/if}> " href="<{$MHS_DOMAIN}>/index/?sort=bycredit<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}>">信用优先</a>
             </li>
             <li class="nav-item dropdown ml-auto">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选</a>
@@ -167,19 +168,19 @@
         <br>
         <br>
         <nav aria-label="Page navigation">
+            <{if $pager !==null }>
             <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                <li class="page-item <{if $pager['current_page'] == $pager['prev_page']}> disabled <{/if}>">
+                    <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['prev_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>" tabindex="-1"  aria-disabled="true" >上一页</a>
                 </li>
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">1<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">下一页</a>
+                <{foreach $pager["all_pages"] as $i}>
+                    <li class="page-item <{if $i == $pager['current_page']}> active <{/if}> "><a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$i}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>"><{$i}></a></li>
+                <{/foreach}>
+                <li class="page-item <{if $pager['current_page'] == $pager['next_page']}> disabled <{/if}>">
+                    <a class="page-link" href="<{$MHS_DOMAIN}>/index/?page=<{$pager['next_page']}><{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">下一页</a>
                 </li>
             </ul>
+            <{/if}>
           </nav>
         <{else}>
         <card class="mb-3">

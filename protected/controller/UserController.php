@@ -20,7 +20,7 @@ class UserController extends BaseController
         $this->title="个人中心";
 
         $item = new model('item');
-        $this->items_info = $item->findAll(array("owner=:uid",":uid" => $uid));
+        $this->items_info = $item->findAll(array("owner=:uid",":uid" => $uid),'create_time DESC');
         //dump($this->items_info);
     }
 }
