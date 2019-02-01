@@ -28,6 +28,7 @@
         <button type="button" class="btn btn-primary ">全不选</button>
         <button type="button" class="btn btn-warning ">删除所选</button>
     </div>
+    <{foreach $cart_items as $item}>
     <card class="mhs-card">
         <div class="row">
                 <div class="col-md-1 col-sm-1 col-1">       
@@ -39,10 +40,11 @@
                 </div>        
                 <div class="col-md-2 col-sm-11 col-11">
                         <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                        <!--TODO物品图片我还没实现，不过物品的iid已经可以获取得到了，传送门 => 64行注释-->>
                 </div>
                 <div class="col-md-9 col-sm-12 col-12">
-                        <h4 class="text-left"><a href="item/detail">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</a></h4>
-                        <p class="text-left">出借方：一个用户</p>
+                        <h4 class="text-left"><a href="item/detail"><{$item['name']}></a></h4>
+                        <p class="text-left">出借方：<{$item['real_name']}></p>
                 </div>
                 <div class="col">
                         <div class="btn-group">
@@ -52,17 +54,18 @@
                             if(count1==1)
                                 $('#minus').attr('disabled',true); //防止减到1以下
                             ">-</button>
-                            <button id="count" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                            <button id="count" type="button" class="btn btn-sm btn-outline-secondary"><{$item['count']}></button>
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
                             var count1 = $('#count').text();               
                             $('#count').text(++count1);
                             $('#minus').attr('disabled',false);
                             ">+</button>        
                         </div>
-                        <button type="button" class="btn btn-primary ">删除</button>
+                        <button type="button" class="btn btn-primary ">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
                 </div>
         </div>
     </card>
+    <{/foreach}>
     <div class="text-right">
                 <button type="button" class="btn btn-primary ">结算</button>
     </div>
