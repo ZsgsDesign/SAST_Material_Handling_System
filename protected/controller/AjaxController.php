@@ -18,7 +18,10 @@ class AjaxController extends BaseController
             $creditRequired=arg("creditRequired");
             $number=arg("number");
             $desc=arg("desc");
+            $desc = str_replace("\\", "/" ,$desc);  // 斜杠问题
             $desc = str_replace("\n","\\n",$desc); //解决换行问题
+            $desc = str_replace('"','\"',$desc);  // 双引号bug修复
+
 
             $iid=$item->create(
                 array(
