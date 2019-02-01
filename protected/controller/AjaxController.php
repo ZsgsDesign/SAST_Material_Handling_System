@@ -68,16 +68,35 @@ class AjaxController extends BaseController
                     ERR::Catcher(1004);
                 }
                 else{
-                    $cid=$cart->create(
-                        array(
-                            'user' => $uid,
-                            'item_id' => $iid,
-                            'count' => $count,
-                        )
-                    );
-                    SUCCESS::Catcher("添加成功",array(
-                        'cid' => $cid,
-                    ));
+                    if($cart->find(array(
+                        "user = :user AND item_id = :iid",
+                        ":user" => $uid,
+                        ":iid" => $iid,
+                    ))===false){
+                        $cid=$cart->create(
+                            array(
+                                'user' => $uid,
+                                'item_id' => $iid,
+                                'count' => $count,
+                            )
+                        );
+                        SUCCESS::Catcher("成功创建添加",array(
+                            'cid' => $cid,
+                        ));
+                    }
+                    else{
+                        $cart->update(
+                            array(
+                                'user = :user AND item_id = :iid',
+                                ":user" => $uid,
+                                ":iid" => $iid,
+                            ),
+                            array(
+                                "count" => $count,
+                            )
+                        );
+                        SUCCESS::Catcher("成功修改");
+                    }
                 }
             }
         }
