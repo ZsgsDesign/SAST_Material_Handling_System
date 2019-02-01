@@ -32,8 +32,13 @@ class MainController extends BaseController
             $items_res=$items->findAll($conditions,'order_count DESC',"*",array($page,6,6));
         }
         else if($sort==="bycredit"){
-            $items_res=$items->findAll($conditions,'credit_limit DESC',"*",array($page,6,6));
-            //TODO4   这个需要跨表查询，先用credit_limit将就着，后期再改
+            $keyword="'%".$keyword."%'";
+            $items_res=$items->query("select item.*,users.credit from item join users on item.owner=users.uid where item.name like $keyword ORDER BY users.credit DESC;");
+            $page=max(1,$page);
+            $items->pager($page,6,6,count($items_res));
+            if(!empty($items->page)){
+                $items_res=array_slice($items_res,($page-1)*6,6,true);
+            }
         }
         else{
             $items_res=$items->findAll($conditions,'create_time DESC',"*",array($page,6,6));
@@ -53,6 +58,11 @@ class MainController extends BaseController
     {
         $this->url="cart";
         $this->title="购物车";
+        $cart=new Model("cart");
+        $item=new Model("item");
+        $users=new Model("users");
+        $cart_res=$cart->findAll();
+        
     }
 
     public function actionMhs()
