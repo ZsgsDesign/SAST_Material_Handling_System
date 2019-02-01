@@ -11,6 +11,7 @@ class ItemController extends BaseController
 
         $user=new Model("users");
         $item=new Model("item");
+        $order=new Model("order");
         $item_res=$item->find(array("iid=:iid",":iid" => $iid));
 
         if(empty($iid)||empty($item_res)){
@@ -37,10 +38,11 @@ class ItemController extends BaseController
             );
             $user_res=$user->find(array("uid=:uid",":uid" => $item_res["owner"]));
             $item_count=count($item->findAll(array("owner=:owner",":owner" => $item_res["owner"],)));
+            $order_count=count($order->query("SELECT `order`.*,item.`owner` FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `owner`=".$user_res['uid']));
             $this->publisher_info = array(
                 "publisher" => $user_res["real_name"],
                 "publisher_credit" => $user_res["credit"], //出借者信用
-                "publisher_order_count" => "暂时空缺", //总出借笔数
+                "publisher_order_count" => $order_count, //总出借笔数
                 "publisher_item_count" => $item_count, //发布物品数
             );//TODO 上面两处空缺需要一些sql方面的高级操作，后续再补
             
