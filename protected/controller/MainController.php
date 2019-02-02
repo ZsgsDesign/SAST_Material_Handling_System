@@ -26,7 +26,7 @@ class MainController extends BaseController
             case 'borrowable':
                 $conditions[0]=$conditions[0].'AND scode = :scode';
                 $conditions[':scode']='1';
-                $filter='AND scode =1';
+                $filter='AND scode = 1';
                 break;
             case 'soldout':
                 $conditions[0]=$conditions[0].'AND scode = :scode';
@@ -73,12 +73,6 @@ class MainController extends BaseController
 
         $this->pager=$items->page;
         $this->items_info=$items_res;
-    }
-
-    public function actionDetail()
-    {
-        $this->url="detail";
-        $this->title="物品详情";
     }
 
     public function actionCart()

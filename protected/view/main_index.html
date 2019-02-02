@@ -171,7 +171,7 @@
                         <button class="btn btn-primary mhs-button" onclick=""><i class="MDI share"></i></button>
                         <div class="row">
                             <div class="col-6">
-                                <small><{$r['publisher_real_name']}></small>
+                                <small><a href="<{$MHS_DOMAIN}>/user/<{$r['owner']}>"><{$r['publisher_real_name']}></a></small>
                             </div>
                             <div class="col-6">
                                 <small><{$r['order_count']}> 笔借用</small>
@@ -244,6 +244,8 @@
         $.post("<{$MHS_DOMAIN}>/ajax/RemoveItem",{
             iid:id
         },(result) => showResult(result));
-        window.location.reload();
+        setTimeout(function(){
+            window.location.reload();
+        },1000); // 跳转前等待
     }
 </script>
