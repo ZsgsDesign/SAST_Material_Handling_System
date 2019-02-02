@@ -6,7 +6,7 @@
     <div>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
-        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),index+1===arr.length?true:false)}});">删除所选</button>
+        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),false)}});setTimeout(location.reload(),400);">删除所选</button>
     </div>
     <script>
         function addToCart_delete(id,reload=true) {
