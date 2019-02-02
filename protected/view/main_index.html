@@ -146,7 +146,7 @@
         </ul>
         <{if count($items_info) == 0}>
         <br>
-        <h5 class="text-center text-warning">没有搜到你找的物品哦。</h5> <!-- 表达来自闲鱼 -->
+        <h5 class="text-center text-warning">没有搜到你找的物品哦</h5> <!-- 表达来自闲鱼 -->
         <p class="text-center">试试别的关键词</p>
         <{else}>
         <div class="row">
@@ -243,6 +243,7 @@
     function removeItem(id) {
         $.post("<{$MHS_DOMAIN}>/ajax/RemoveItem",{
             iid:id
-        },(result) => showResult(result))
+        },(result) => showResult(result));
+        window.location.reload();
     }
 </script>
