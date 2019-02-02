@@ -4,12 +4,12 @@
 <div class="container mundb-standard-container"> 
     <h3 class="mhs-title mb-5 mt-5">购物车</h3>
     <div>
-        <button type="button" class="btn btn-primary ">全选</button>
-        <button type="button" class="btn btn-primary ">全不选</button>
-        <button type="button" class="btn btn-warning ">删除所选</button>
+        <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
+        <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
+        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){addToCart_delete(value.getAttribute('iid'),index+1===arr.length?true:false)});">删除所选</button>
     </div>
     <script>
-        function addToCart_delete(id) {
+        function addToCart_delete(id,reload=true) {
             $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
                 iid:id,
                 count:-1,
@@ -19,7 +19,9 @@
                 console.log(result);
                 $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
             });
-            location.reload();
+            if(reload){
+                location.reload();
+            }
         }
         function add(i) {
             var count = $('#count' + i).text();
@@ -52,7 +54,7 @@
                 <div class="col-md-1 col-sm-1 col-1">       
                 <div class="form-group">
                         <div class="checkbox">
-                            <label for="agreement"><input class="form-control" type="checkbox" name="agreement" id="agreement"></label>
+                            <label for="agreement"><input class="form-control" type="checkbox" name="agreement" id="agreement" iid="<{$item['item_id']}>"></label>
                         </div>
                 </div>
                 </div>        
