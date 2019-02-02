@@ -98,8 +98,8 @@ class AjaxController extends BaseController
                 ERR::Catcher(1003);//空iid或空数量或数量为0 报错  参数不全
             }
             else{
-                if($item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
-                    ERR::Catcher(1004);//当不符合 有此物品，且物品的状态为有库存， 报错  参数非法
+                if(($target_item=$item->find(array("iid=:iid",":iid" => $iid)))===false){
+                    ERR::Catcher(1004);//当不符合 有此物品， 报错  参数非法
                 }
                 else{
                     if($count<1){
@@ -116,16 +116,21 @@ class AjaxController extends BaseController
                             ":user" => $uid,
                             ":iid" => $iid,
                         ))===false){
-                            $cid=$cart->create(
-                                array(
-                                    'user' => $uid,
-                                    'item_id' => $iid,
-                                    'count' => $count,
-                                )
-                            );
-                            SUCCESS::Catcher("成功添加",array(
-                                'cid' => $cid,
-                            ));
+                            if($target_item['scode']==='1'){
+                                $cid=$cart->create(
+                                    array(
+                                        'user' => $uid,
+                                        'item_id' => $iid,
+                                        'count' => $count,
+                                    )
+                                );
+                                SUCCESS::Catcher("成功添加",array(
+                                    'cid' => $cid,
+                                ));
+                            }
+                            else{
+                                ERR::Catcher(1004);//添加的物品状态不为有货时 报错 参数不全
+                            }
                         }
                         else{
                             $cart->update(
