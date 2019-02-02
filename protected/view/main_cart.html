@@ -30,7 +30,7 @@
     <div>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
-        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){addToCart_delete(value.getAttribute('iid'),index+1===arr.length?true:false)});">删除所选</button>
+        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),index+1===arr.length?true:false)}});">删除所选</button>
     </div>
     <script>
         function addToCart_delete(id,reload=true) {
@@ -78,7 +78,7 @@
                 <div class="col-1">
                 <div class="form-group">
                         <div class="checkbox">
-                            <label for="agreement"><input class="form-control" type="checkbox" name="agreement" id="agreement" iid="<{$item['item_id']}>"></label>
+                            <label for="agreement<{$item['item_id']}>"><input class="form-control" type="checkbox" name="agreement" id="agreement<{$item['item_id']}>" iid="<{$item['item_id']}>"></label>
                         </div>
                 </div>
                 </div>        
