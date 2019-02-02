@@ -61,15 +61,15 @@ class AjaxController extends BaseController
         }
         else{
             $count=intval($count);
-            if(empty($iid)||empty($count)&&$count!==0){
-                ERR::Catcher(1003);//空iid或空数量 报错  参数补全
+            if(empty($iid)||empty($count)){
+                ERR::Catcher(1003);//空iid或空数量或数量为0 报错  参数补全
             }
             else{
                 if($item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
                     ERR::Catcher(1004);//当不符合 有此物品，且物品的状态为有库存， 报错  参数非法
                 }
                 else{
-                    if($count<0){
+                    if($count<1){
                         $cart->delete(array(
                             "user= :user AND item_id = :iid",
                             ":user" => $uid,

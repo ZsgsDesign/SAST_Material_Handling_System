@@ -219,8 +219,9 @@
     function minus(i) {
         var count = $('#count' + i).text();
         $('#count' + i).text(--count);
-        if(count==1)
-            $('#count' + i).attr('disabled',true); //防止减到1以下
+        if(count<=1){
+            $('#minus' + i).attr('disabled',true); //防止减到1以下
+        }
     }
     function addToCart(id,i) {
         $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
