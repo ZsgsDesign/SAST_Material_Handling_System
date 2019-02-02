@@ -95,7 +95,7 @@ class AjaxController extends BaseController
         else{
             $count=intval($count);
             if(empty($iid)||empty($count)){
-                ERR::Catcher(1003);//空iid或空数量或数量为0 报错  参数补全
+                ERR::Catcher(1003);//空iid或空数量或数量为0 报错  参数不全
             }
             else{
                 if($item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
