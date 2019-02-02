@@ -1,13 +1,39 @@
 <style>
     <{include file="MHS.css" }>
+    @media all and (max-width:1200px) and (min-width:992px){
+        .responsive>div{
+            min-width: 650px;
+            float: right;
+        }
+    }
+    @media all and (max-width:992px) and (min-width:768px){
+        .responsive>div{
+            width: 450px;
+            float: right;
+        }
+    }
+    @media all and (max-width:767px) and (min-width:540px){
+        .responsive>div{
+            width: 280px;
+            float: right;
+        }
+    }
+    @media all and (max-width:540px){
+        .responsive>div{
+            width: 150px;
+            float: right;
+        }
+    }
 </style>
 <div class="container mundb-standard-container"> 
-    <h3 class="mhs-title mb-5 mt-5">购物车</h3>
+    <h2 class="mhs-title mb-5 mt-5">购物车</h2>
+    <{if count($cart_items) != 0}>
     <div>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
         <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
         <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),false)}});setTimeout(location.reload(),400);">删除所选</button>
     </div>
+    <{/if}>
     <script>
         function addToCart_delete(id,reload=true) {
             $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
@@ -23,62 +49,47 @@
                 location.reload();
             }
         }
-        function add(i) {
-            var count = $('#count' + i).text();
-            $('#count' + i).text(++count);
-            $('#minus' + i).attr('disabled',false);
-        }
-        function minus(i) {
-            var count = $('#count' + i).text();
-            $('#count' + i).text(--count);
-            if(count<=1){
-                $('#minus' + i).attr('disabled',true); //防止减到1以下
-            }
-        }
-        function addToCart(id,i) {
-            $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
-                iid:id,
-                count:$('#count' + i).text()
-            },function(result) {
-                console.log(result);
-                result = JSON.parse(result);
-                console.log(result);
-                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-                //TODO 后期记得修改一下snackbar的显示时间，修改为短一点
-            });
-        }
+        //最好放在cdn上
+        <{include file="MHS_Item.js" }>
+        //TODO 后期记得修改一下snackbar的显示时间，修改为短一点
     </script>
+    <{if count($cart_items) == 0}>
+    <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
+    <{else}>
     <{foreach $cart_items as $i => $item}>
     <card class="order-card">
-        <div class="row">
-                <div class="col-md-1 col-sm-1 col-1">       
+        <div class="row justify-content-start">
+            <div class="col-1">
                 <div class="form-group">
-                        <div class="checkbox">
-                            <label for="agreement<{$item['item_id']}>"><input class="form-control" type="checkbox" name="agreement" id="agreement<{$item['item_id']}>" iid="<{$item['item_id']}>"></label>
-                        </div>
+                    <div class="checkbox">
+                        <label for="agreement<{$item['item_id']}>"><input class="form-control" type="checkbox" name="agreement" id="agreement<{$item['item_id']}>" iid="<{$item['item_id']}>"></label>
+                    </div>
                 </div>
-                </div>        
-                <div class="col-md-2 col-sm-11 col-11">
-                        <img class="mhs-item-img-order rounded" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
+            </div>
+            <div class="col-2 text-center">
+                    <img class="mhs-item-img-order rounded float-left" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
+            </div>
+            <div class="col-9 responsive">
+                <div>
+                    <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h4>
+                    <p class="text-left">出借方：<{$item['real_name']}></p>
+                    <div class="btn-group">
+                        <button id="minus<{$i}>" type="button" class="btn btn-sm btn-primary mhs-button-count" <{if $item['count'] < 2 }> disabled="disabled" <{/if}> onclick="minus(<{$i}>);addToCart(<{$item['item_id']}>,<{$i}>)">-</button>
+                        <button id="count<{$i}>" type="button" class="btn btn-sm btn-primary mhs-button-count"><{$item['count']}></button>
+                        <button type="button<{$i}>" class="btn btn-sm btn-primary mhs-button-count" onclick="add(<{$i}>);addToCart(<{$item['item_id']}>,<{$i}>)">+</button>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="addToCart_delete(<{$item['item_id']}>)">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
+                    <p class="text-warning">TODO 物品已下架</p>
+                    <p class="text-warning">TODO 物品无库存</p>
                 </div>
-                <div class="col-md-9 col-sm-12 col-12">
-                        <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h4>
-                        <p class="text-left">出借方：<{$item['real_name']}></p>
-                </div>
-                <div class="col text-center">
-                        <div class="btn-group">
-                            <button id="minus<{$i}>" type="button" class="btn btn-sm btn-outline-secondary" <{if $item['count'] < 2 }> disabled="disabled" <{/if}> onclick="minus(<{$i}>);addToCart(<{$item['item_id']}>,<{$i}>)">-</button>
-                            <button id="count<{$i}>" type="button" class="btn btn-sm btn-outline-secondary"><{$item['count']}></button>
-                            <button type="button<{$i}>" class="btn btn-sm btn-outline-secondary" onclick="add(<{$i}>);addToCart(<{$item['item_id']}>,<{$i}>)">+</button>        
-                        </div>
-                        <button type="button" class="btn btn-primary " onclick="addToCart_delete(<{$item['item_id']}>)">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
-                </div>
+            </div>
         </div>
     </card>
     <{/foreach}>
     <br>
     <br>
     <div class="text-right">
-                <button type="button" class="btn btn-outline-primary ">结算</button>
+        <button type="button" class="btn btn-outline-primary mhs-button-cart">结算</button>
     </div>
+    <{/if}>
 </div>

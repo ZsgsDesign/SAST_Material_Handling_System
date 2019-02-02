@@ -75,7 +75,11 @@ card.order-card > div {
     padding: 0;
 }
 .mhs-item-img-order {
+    border-radius: 20px !important;
     max-width: 10rem;
     max-height: 10rem;
     object-fit: cover;
+}
+.mhs-button-cart {
+    border-radius: 20px;
 }

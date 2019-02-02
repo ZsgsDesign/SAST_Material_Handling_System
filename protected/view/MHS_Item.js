@@ -56,7 +56,7 @@ function addToCart(id,i) {
         count:$('#count' + i).text()
     },(result) => showResult(result));
 }
-function removeItem(id,name) {
+function removeItem(id) {
     $.post("<{$MHS_DOMAIN}>/ajax/RemoveItem",{
         iid:id
     },(result) => showResult(result));
