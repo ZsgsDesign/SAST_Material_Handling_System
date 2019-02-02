@@ -1,33 +1,6 @@
 <style>
-    card {
-        display: block;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-        border-radius: 20px;
-        transition: .2s ease-out .0s;
-        color: #7a8e97;
-        background: #fff;
-        padding: 0;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        margin-bottom: 2rem;
-    }
-    card.img-card{
-        padding:0;
-        overflow: hidden;
-    }
+    <{include file="MHS.css" }>
 
-    card.img-card > img{
-        width:100%;
-    }
-
-    card.img-card > div{
-        text-align: center;
-        padding:0;
-    }
-
-    card:hover {
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 80px;
-    }
     h5{
         margin-bottom:0.25rem;
     }
@@ -37,66 +10,12 @@
     input{
         height: calc(2.4375rem + 2px);
     }
-    #vscode_container{
-        opacity: 0;
-        transition: .2s ease-out .0s;
-    }
-    tips{
-        display: block;
-        font-size: .75rem;
-        color: rgba(0,0,0,.26);
-        margin-bottom: .5rem;
-    }
     .mhs-title{
         color: #7a8e97;
         text-align:center;
     }
 
-    .atsast-empty{
-        justify-content: center;
-        align-items: center;
-        height: 10rem;
-    }
 
-    badge{
-        display: inline-block;
-        padding: 0.25rem 0.75em;
-        font-weight: 700;
-        line-height: 1.5;
-        text-align: center;
-        vertical-align: baseline;
-        border-radius: 0.125rem;
-        background-color: #f5f5f5;
-        margin: 1rem;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-        transition: .2s ease-out .0s;
-        color: #7a8e97;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-    }
-    a.card-link{
-        padding:0;
-    }
-    .mhs-item-img-div {
-        border-radius: 20px;
-    }
-    .mhs-item-img {
-        object-fit: cover;
-    }
-    .mhs-button {
-        border-radius: 4px;
-        padding:0.3rem 0.3rem;
-        line-height:2;
-    }
-    .mhs-button-count {
-        font-size: larger;
-        padding:0.3rem 0.3rem;
-        line-height:2;
-    }
-    .mhs-item-text {
-        margin: 0.1rem;
-    }
 </style>
 <div class="container mundb-standard-container">
         <h5 class="mhs-title mb-5 mt-5"><i class="MDI gift"></i> SAST 物品借还系统</h5>
@@ -148,9 +67,9 @@
         <div class="row">
             <{foreach $items_info as $seq => $r}>
             <div class="col-lg-3 col-md-4 col-6">
-                <card class="img-card mb-3">
-                    <div class="">
-                        <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top mhs-item-img mhs-item-img-div" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
+                <card class="item-card mb-3">
+                    <div>
+                        <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top mhs-item-img" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title mhs-item-text"><{$r['name']}></h5>
@@ -163,7 +82,7 @@
                         <{else}>
                         <button type="button" class="btn btn-primary mhs-button">编辑</button>
                         <button type="button" class="btn btn-warning mhs-button" onclick="
-                        showDialog('您确定要下架「<{$r['name']}>」？<br>此操作不可恢复','removeItem(<{$r['iid']}>)');"><i class="MDI close-box"></i>下架</button>
+                        showDialog('您确定要下架「<{$r['name']}>」？<br>此操作不可恢复','下架物品','removeItem(<{$r['iid']}>)');"><i class="MDI close-box"></i>下架</button>
                         <{/if}>
                         <button class="btn btn-primary mhs-button" onclick=""><i class="MDI share"></i></button>
                         <div class="row">

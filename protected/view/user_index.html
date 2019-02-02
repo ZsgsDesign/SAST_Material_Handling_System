@@ -1,20 +1,9 @@
 <style>
-    card {
-        display: block;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-        border-radius: 4px;
-        transition: .2s ease-out .0s;
-        color: #7a8e97;
-        background: #fff;
-        padding: 1rem;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        margin-bottom: 2rem;
-    }
+    <{include file="MHS.css" }>
 
-    card.item-card {
+    card.item-card111 {
         padding: 0;
-        margin-bottom: 0.5rem;
+        /*margin-bottom: 0.5rem; */
     }
 
     card.order-card {
@@ -22,25 +11,6 @@
         margin-bottom: 0.5rem;
     }
 
-    card.item-card > p {
-        text-align: center;
-    }
-
-    .mhs-button {
-        padding:0.3rem 0.3rem;
-        line-height:2;
-    }
-    card.item-card > div{
-        text-align: center;
-    }
-    card.item-card > img{
-        width:100%;
-        object-fit: cover;
-    }
-
-    .center{
-        text-align: center;
-    }
     avatar{
         display: block;
         position: relative;
@@ -62,46 +32,11 @@
         margin: auto;
     }
 
-    card.img-card > div{
-        text-align: center;
-    }
-
-    card.item-card:hover {
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
-    }
-
-    statistic{
-        display: block;
-    }
 
     hr.atsast-line{
         width: auto;
         margin-left:1rem;
         margin-right: 1rem;
-    }
-
-    badge{
-        display: inline-block;
-        padding: 0.25rem 0.75em;
-        font-weight: 700;
-        line-height: 1.5;
-        text-align: center;
-        vertical-align: baseline;
-        border-radius: 0.125rem;
-        background-color: #f5f5f5;
-        margin: 1rem;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-        transition: .2s ease-out .0s;
-        color: #7a8e97;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-    }
-
-    .atsast-empty{
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        height: 10rem;
     }
 
     .tab .card-header{
@@ -166,7 +101,7 @@
             <div class="tab-pane fade <{ if $current_tab=='basic' }>show active<{/if}>" id="basic" role="tabpanel" aria-labelledby="basic-tab">
                     <div class="card-body">
                         <card>
-                        <div class="row center">
+                        <div class="row text-center">
                             <div class="col-md-4">
                                 <avatar><img src="<{$userinfo['avatar']}>"></avatar>
                                 <h3 class="text-center"><{$uinfo['name']}></h3>
@@ -249,14 +184,17 @@
                     <div class="row">
                         <{foreach $items_info as $seq => $r}>
                             <div class="col-md-3 col-12">
-                                <card class="item-card text-center">
-                                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top mhs-item-img rounded" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
-                                        <p class="card-title"><{$r['name']}></p>
+                                <card class="item-card text-center mb-3">
+                                    <div>
+                                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top mhs-item-img" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
+                                    </div>
+                                        <h5 class="card-title mhs-item-text"><{$r['name']}></h5>
                                         <{if $r['scode'] == -1}>
                                         <p class="text-danger">来晚了，该物品已下架</p>
                                         <{else if $isMe}>
                                         <button type="button" class="btn btn-primary mhs-button">编辑</button>
-                                        <button type="button" class="btn btn-warning mhs-button" onclick="removeItem(<{$r['iid']}>);"><i class="MDI close-box"></i>下架</button>
+                                        <button type="button" class="btn btn-warning mhs-button" onclick="
+                                                showDialog('您确定要下架「<{$r['name']}>」？<br>此操作不可恢复','下架物品','removeItem(<{$r['iid']}>)');"><i class="MDI close-box"></i>下架</button>
                                         <{/if}>
                                 </card>
                             </div>

@@ -24,12 +24,12 @@ function showResult(result) {
         $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
     return result.ret;
 }
-function showDialog(text,func) {
+function showDialog(text,title,func) {
     var dialog = "<div class=\"modal fade\" id=\"Confirm\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Confirm\" aria-hidden=\"true\">\n" +
         "    <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n" +
         "        <div class=\"modal-content\">\n" +
         "            <div class=\"modal-header\">\n" +
-        "                <h5 class=\"modal-title\">下架</h5>\n" +
+        "                <h5 class=\"modal-title\">" + title + "</h5>\n" +
         "            </div>\n" +
         "            <div class=\"modal-body\">\n" +
         "                <p>" + text +"</p>\n" +
