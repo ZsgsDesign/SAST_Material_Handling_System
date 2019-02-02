@@ -166,7 +166,7 @@
                         <button class="btn btn-primary mhs-button" onclick="addToCart(<{$r['iid']}>,<{$seq}>);"><i class="MDI cart"></i></button>
                         <{else}>
                         <button type="button" class="btn btn-primary mhs-button">编辑</button>
-                        <button type="button" class="btn btn-warning mhs-button"><i class="MDI close-box"></i>下架</button>
+                        <button type="button" class="btn btn-warning mhs-button" onclick="removeItem(<{$r['iid']}>);"><i class="MDI close-box"></i>下架</button>
                         <{/if}>
                         <button class="btn btn-primary mhs-button" onclick=""><i class="MDI share"></i></button>
                         <div class="row">
@@ -218,20 +218,31 @@
     }
     function minus(i) {
         var count = $('#count' + i).text();
-        $('#count' + i).text(--count);
+        if(count>1)
+            $('#count' + i).text(--count);
         if(count<=1){
             $('#minus' + i).attr('disabled',true); //防止减到1以下
         }
+    }
+    function showResult(result) {
+        console.log(result);
+        result = JSON.parse(result);
+        console.log(result);
+        if(result.ret=200)
+            $.snackbar({content: result.desc,style:"toast text-center atsast-toast text-success"});
+        else
+            $.snackbar({content: result.desc,style:"toast text-center atsast-toast text-warning"});
+        return result.ret;
     }
     function addToCart(id,i) {
         $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
             iid:id,
             count:$('#count' + i).text()
-        },function(result) {
-            console.log(result);
-            result = JSON.parse(result);
-            console.log(result);
-            $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-        });
+        },(result) => showResult(result));
+    }
+    function removeItem(id) {
+        $.post("<{$MHS_DOMAIN}>/ajax/RemoveItem",{
+            iid:id
+        },(result) => showResult(result))
     }
 </script>

@@ -30,8 +30,8 @@ class MainController extends BaseController
                 break;
             case 'soldout':
                 $conditions[0]=$conditions[0].'AND scode = :scode';
-                $conditions[':scode']='-1';
-                $filter='AND scode = -1';
+                $conditions[':scode']='0'; // 0是无货 ， -1 是 下架
+                $filter='AND scode = 0';
                 break;
             // case 'credit':
             //     $conditions[0]
@@ -41,6 +41,9 @@ class MainController extends BaseController
                 $conditions[':owner']=$this->userinfo['uid'];
                 $filter='AND owner = '.$this->userinfo['uid'];
                 break;
+            default:
+                $conditions[0]=$conditions[0].'AND scode > 0';
+                $filter='AND scode > 0';
         }
 
         $items = new Model("item");

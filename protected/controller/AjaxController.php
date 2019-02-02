@@ -2,8 +2,7 @@
 
 class AjaxController extends BaseController
 {
-    public function actionPublishItem()
-    {
+    public function actionPublishItem(){
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
@@ -50,6 +49,40 @@ class AjaxController extends BaseController
             }
         }
     }
+
+    public function actionRemoveItem(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        $iid=arg("iid");
+        if (empty($iid)) {
+            ERR::Catcher(1003);
+        }
+        $item=new Model("item");
+        $item_res=$item->find(array(
+            "iid = :iid",
+            ":iid" => $iid,
+        ));
+        if(!$item_res)
+            ERR::Catcher(100002); //没有该物品
+        else{
+            if(!IsMyItem($iid)) { //防止下架他人物品
+                ERR::Catcher(2003);
+            }
+            else if($item_res['scode'] < 0)
+                ERR::Catcher(100003); //已经下架了
+            else{
+                $item->update(array(
+                    "iid = :iid",
+                    ":iid" => $iid,
+                ),array(
+                    'scode' => '-1'
+                ));
+                SUCCESS::Catcher("下架成功！");
+            }
+        }
+    }
+
     public function actionAddToCart(){
         $iid=arg('iid');
         $count=arg('count');
