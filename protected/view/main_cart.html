@@ -79,6 +79,8 @@
                         <button type="button<{$i}>" class="btn btn-sm btn-primary mhs-button-count" onclick="add(<{$i}>);addToCart(<{$item['item_id']}>,<{$i}>)">+</button>
                     </div>
                     <button type="button" class="btn btn-danger" onclick="addToCart_delete(<{$item['item_id']}>)">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
+                    <p class="text-warning">TODO 物品已下架</p>
+                    <p class="text-warning">TODO 物品无库存</p>
                 </div>
             </div>
         </div>
