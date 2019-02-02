@@ -47,7 +47,7 @@ class MainController extends BaseController
         }
 
         $items = new Model("item");
-        //TODO2   关于是否展示已出借完的物品，后期再讨论讨论吧
+        //TODO 2   关于是否展示已出借完的物品，后期再讨论讨论吧
         if($sort==="bycount"){
             $items_res=$items->findAll($conditions,'order_count DESC',"*",array($page,8,6));
         }
