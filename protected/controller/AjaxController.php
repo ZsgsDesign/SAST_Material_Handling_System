@@ -60,42 +60,53 @@ class AjaxController extends BaseController
             ERR::Catcher(2001);
         }
         else{
-            if(empty($iid)||empty($count)){
-                ERR::Catcher(1003);
+            $count=intval($count);
+            if(empty($iid)||empty($count)&&$count!==0){
+                ERR::Catcher(1003);//空iid或空数量 报错  参数补全
             }
             else{
-                if(intval($count)<1||$item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
-                    ERR::Catcher(1004);
+                if($item->find(array("iid=:iid and scode=1",":iid" => $iid))===false){
+                    ERR::Catcher(1004);//当不符合 有此物品，且物品的状态为有库存， 报错  参数非法
                 }
                 else{
-                    if($cart->find(array(
-                        "user = :user AND item_id = :iid",
-                        ":user" => $uid,
-                        ":iid" => $iid,
-                    ))===false){
-                        $cid=$cart->create(
-                            array(
-                                'user' => $uid,
-                                'item_id' => $iid,
-                                'count' => $count,
-                            )
-                        );
-                        SUCCESS::Catcher("成功创建添加",array(
-                            'cid' => $cid,
+                    if($count<0){
+                        $cart->delete(array(
+                            "user= :user AND item_id = :iid",
+                            ":user" => $uid,
+                            ":iid" => $iid,
                         ));
+                        SUCCESS::Catcher("成功删除");//当数量为负数时，删除此物品
                     }
                     else{
-                        $cart->update(
-                            array(
-                                'user = :user AND item_id = :iid',
-                                ":user" => $uid,
-                                ":iid" => $iid,
-                            ),
-                            array(
-                                "count" => $count,
-                            )
-                        );
-                        SUCCESS::Catcher("成功修改");
+                        if($cart->find(array(
+                            "user = :user AND item_id = :iid",
+                            ":user" => $uid,
+                            ":iid" => $iid,
+                        ))===false){
+                            $cid=$cart->create(
+                                array(
+                                    'user' => $uid,
+                                    'item_id' => $iid,
+                                    'count' => $count,
+                                )
+                            );
+                            SUCCESS::Catcher("成功创建添加",array(
+                                'cid' => $cid,
+                            ));
+                        }
+                        else{
+                            $cart->update(
+                                array(
+                                    'user = :user AND item_id = :iid',
+                                    ":user" => $uid,
+                                    ":iid" => $iid,
+                                ),
+                                array(
+                                    "count" => $count,
+                                )
+                            );
+                            SUCCESS::Catcher("成功修改");
+                        }
                     }
                 }
             }
