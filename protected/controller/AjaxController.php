@@ -123,7 +123,7 @@ class AjaxController extends BaseController
                                     'count' => $count,
                                 )
                             );
-                            SUCCESS::Catcher("成功创建添加",array(
+                            SUCCESS::Catcher("成功添加",array(
                                 'cid' => $cid,
                             ));
                         }
