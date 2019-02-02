@@ -1,25 +1,5 @@
 <style>
-        card {
-        display: block;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-        border-radius: 4px;
-        transition: .2s ease-out .0s;
-        color: #7a8e97;
-        background: #fff;
-        padding: 1rem;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        margin-bottom: 2rem;
-        }
-        .mhs-img-detail {
-            width:10rem;
-            height:10rem;
-        }  
-        card.mhs-card > div{
-            text-align: center;
-            padding: 1rem;
-        }
-
+    <{include file="MHS.css" }>
 </style>
 <div class="container mundb-standard-container"> 
     <h3 class="mhs-title mb-5 mt-5">购物车</h3>
@@ -69,7 +49,7 @@
         }
     </script>
     <{foreach $cart_items as $i => $item}>
-    <card class="mhs-card">
+    <card class="order-card">
         <div class="row">
                 <div class="col-md-1 col-sm-1 col-1">       
                 <div class="form-group">
@@ -79,13 +59,13 @@
                 </div>
                 </div>        
                 <div class="col-md-2 col-sm-11 col-11">
-                        <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                        <img class="mhs-item-img-order rounded" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
                 </div>
                 <div class="col-md-9 col-sm-12 col-12">
-                        <h4 class="text-left"><a href="item/detail"><{$item['name']}></a></h4>
+                        <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h4>
                         <p class="text-left">出借方：<{$item['real_name']}></p>
                 </div>
-                <div class="col">
+                <div class="col text-center">
                         <div class="btn-group">
                             <button id="minus<{$i}>" type="button" class="btn btn-sm btn-outline-secondary" <{if $item['count'] < 2 }> disabled="disabled" <{/if}> onclick="minus(<{$i}>);addToCart(<{$item['item_id']}>,<{$i}>)">-</button>
                             <button id="count<{$i}>" type="button" class="btn btn-sm btn-outline-secondary"><{$item['count']}></button>
@@ -96,7 +76,9 @@
         </div>
     </card>
     <{/foreach}>
+    <br>
+    <br>
     <div class="text-right">
-                <button type="button" class="btn btn-primary ">结算</button>
+                <button type="button" class="btn btn-outline-primary ">结算</button>
     </div>
 </div>
