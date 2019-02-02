@@ -55,6 +55,9 @@
     </script>
     <{if count($cart_items) == 0}>
     <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
+    <div class="row atsast-empty">
+        <button type="button" class="btn btn-raised btn-info" onclick="location.href='<{$MHS_DOMAIN}>/'">返回首页</button>
+    </div>
     <{else}>
     <{foreach $cart_items as $i => $item}>
     <card class="order-card">

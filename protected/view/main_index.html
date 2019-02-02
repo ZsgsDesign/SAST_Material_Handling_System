@@ -24,9 +24,7 @@
                 <input id="keyword" type="text" class="form-control" placeholder="搜索物品..." aria-describedby="basic-addon1">
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>'">搜索</button>
-                    <a href="<{$MHS_DOMAIN}>/item/new">
-                        <button type="button" class="btn btn-raised btn-info" aria-label="Left Align">发布物品</button>
-                    </a>
+                    <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/item/new'">发布物品</button>
                 </div>
         </div>
         <script>

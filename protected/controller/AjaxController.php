@@ -108,7 +108,7 @@ class AjaxController extends BaseController
                             ":user" => $uid,
                             ":iid" => $iid,
                         ));
-                        SUCCESS::Catcher("成功删除");//当数量为负数时，删除此物品
+                        SUCCESS::Catcher("删除成功！");//当数量为负数时，删除此物品
                     }
                     else{
                         if($cart->find(array(
@@ -124,7 +124,7 @@ class AjaxController extends BaseController
                                         'count' => $count,
                                     )
                                 );
-                                SUCCESS::Catcher("成功添加",array(
+                                SUCCESS::Catcher("添加成功！",array(
                                     'cid' => $cid,
                                 ));
                             }
@@ -143,7 +143,7 @@ class AjaxController extends BaseController
                                     "count" => $count,
                                 )
                             );
-                            SUCCESS::Catcher("成功修改");
+                            SUCCESS::Catcher("修改成功！");
                         }
                     }
                 }
