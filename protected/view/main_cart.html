@@ -49,30 +49,9 @@
                 location.reload();
             }
         }
-        function add(i) {
-            var count = $('#count' + i).text();
-            $('#count' + i).text(++count);
-            $('#minus' + i).attr('disabled',false);
-        }
-        function minus(i) {
-            var count = $('#count' + i).text();
-            $('#count' + i).text(--count);
-            if(count<=1){
-                $('#minus' + i).attr('disabled',true); //防止减到1以下
-            }
-        }
-        function addToCart(id,i) {
-            $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
-                iid:id,
-                count:$('#count' + i).text()
-            },function(result) {
-                console.log(result);
-                result = JSON.parse(result);
-                console.log(result);
-                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-                //TODO 后期记得修改一下snackbar的显示时间，修改为短一点
-            });
-        }
+        //最好放在cdn上
+        <{include file="MHS_Item.js" }>
+        //TODO 后期记得修改一下snackbar的显示时间，修改为短一点
     </script>
     <{if count($cart_items) == 0}>
     <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
