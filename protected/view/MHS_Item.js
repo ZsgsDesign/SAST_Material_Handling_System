@@ -5,6 +5,7 @@ function add(i) {
     var count = $('#count' + i).text();
     $('#count' + i).text(++count);
     $('#minus' + i).attr('disabled',false);
+    // TODO 判断库存
 }
 function minus(i) {
     var count = $('#count' + i).text();
@@ -50,7 +51,7 @@ function addToCart(id,i) {
         count:$('#count' + i).text()
     },(result) => showResult(result));
 }
-function removeItem(id,name) {
+function removeItem(id) {
     $.post("<{$MHS_DOMAIN}>/ajax/RemoveItem",{
         iid:id
     },(result) => showResult(result));
