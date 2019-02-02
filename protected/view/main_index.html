@@ -74,9 +74,9 @@
                     <div class="card-body">
                         <h5 class="card-title mhs-item-text"><{$r['name']}></h5>
                         <{if !IsMyItem($r['iid'])}>
-                        <button id="minus<{$seq}>" type="button" class="btn btn-sm btn-primary mhs-button-count" disabled="disabled" onclick="minus(<{$seq}>);"><strong>-</strong></button>
+                        <button id="minus<{$seq}>" type="button" class="btn btn-sm btn-primary mhs-button-count" disabled="disabled" onclick="minus(<{$seq}>,<{$r['count']}>);"><strong>-</strong></button>
                         <button id="count<{$seq}>" type="button" class="btn btn-sm btn-primary mhs-button-count">1</button>
-                        <button type="button" class="btn btn-sm btn-primary mhs-button-count" onclick="add(<{$seq}>);"><strong>+</strong></button>
+                        <button id="add<{$seq}>" type="button" class="btn btn-sm btn-primary mhs-button-count" onclick="add(<{$seq}>,<{$r['count']}>);"><strong>+</strong></button>
                         <button class="btn btn-primary mhs-button" onclick="">立即借</button>
                         <button class="btn btn-primary mhs-button" onclick="addToCart(<{$r['iid']}>,<{$seq}>);"><i class="MDI cart"></i></button>
                         <{else}>
