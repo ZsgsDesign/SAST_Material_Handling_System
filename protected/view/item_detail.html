@@ -26,6 +26,9 @@
 
 <div class="container mundb-standard-container"> 
     <h3 class="mhs-title mb-5 mt-5">物品详情</h3>
+    <{if $item_info["scode"] == -1}>
+    <h5 class="mhs-title mb-5 mt-5 text-danger">抱歉，该物品已下架。</h5>
+    <{/if}>
     <card class="mhs-card">
         <div class="row">
             <div class="col-md-3 col-sm-12 col-12">
@@ -47,10 +50,12 @@
                             <td>无限制</td>
                             <{/if}>
                         </tr>
+                        <{if $item_info["scode"] != -1}>
                         <tr>
                             <th scope="row">当前库存</th>
                             <td><{$item_info["count"]}></td>
                         </tr>
+                        <{/if}>
                         <tr>
                             <th scope="row">信用分限制</th>
                             <td>大于 <{$item_info["credit_limit"]}></td>
@@ -67,6 +72,7 @@
                 </table>
             </div>
 
+            <{if $item_info["scode"] != -1}>
             <div class="col">
                 <{if !$isMyItem}>
                 <div class="btn-group">
@@ -92,6 +98,7 @@
                 <{/if}>
                 <button class="btn btn-primary" onclick=""><i class="MDI share"></i>分享</button>
             </div>
+            <{/if}>
         </div>
     </card>
     <card class="mhs-card text-left" id="desc">
