@@ -1,7 +1,7 @@
 card {
     display: block;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-    border-radius: 4px;
+    border-radius: 20px;
     transition: .2s ease-out .0s;
     color: #7a8e97;
     background: #fff;
@@ -40,12 +40,11 @@ badge{
 }
 /* 这是展示物品的通用card 样式 */
 card.item-card {
-    border-radius: 20px;
     overflow: hidden;
 }
 card.item-card > div{
+    padding: 0;
     text-align: center;
-    padding:0;
 }
 a.card-link{
     padding:0;
@@ -67,3 +66,16 @@ a.card-link{
     margin: 0.1rem;
 }
 /* ======= */
+/* 这是订单、购物车用的card 样式*/
+card.order-card {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+card.order-card > div {
+    padding: 0;
+}
+.mhs-item-img-order {
+    max-width: 10rem;
+    max-height: 10rem;
+    object-fit: cover;
+}
