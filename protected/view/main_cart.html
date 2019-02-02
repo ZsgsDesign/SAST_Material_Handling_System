@@ -28,6 +28,20 @@
         <button type="button" class="btn btn-primary ">全不选</button>
         <button type="button" class="btn btn-warning ">删除所选</button>
     </div>
+    <script>
+        function addToCart_delete(id) {
+            $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
+                iid:id,
+                count:-1,
+            },function(result) {
+                console.log(result);
+                result = JSON.parse(result);
+                console.log(result);
+                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
+            });
+            location.reload();
+        }
+    </script>
     <{foreach $cart_items as $item}>
     <card class="mhs-card">
         <div class="row">
@@ -40,7 +54,6 @@
                 </div>        
                 <div class="col-md-2 col-sm-11 col-11">
                         <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
-                        <!--TODO物品图片我还没实现，不过物品的iid已经可以获取得到了，传送门 => 64行注释-->>
                 </div>
                 <div class="col-md-9 col-sm-12 col-12">
                         <h4 class="text-left"><a href="item/detail"><{$item['name']}></a></h4>
@@ -61,7 +74,7 @@
                             $('#minus').attr('disabled',false);
                             ">+</button>        
                         </div>
-                        <button type="button" class="btn btn-primary ">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
+                        <button type="button" class="btn btn-primary " onclick="addToCart_delete(<{$item['item_id']}>)">删除</button><!--此处的js代码若需要cid 使用<{$item['cid']}>即可 若需要 iid 使用 <{$item['item_id']}>-->
                 </div>
         </div>
     </card>
