@@ -1,18 +1,23 @@
 /*
 * 这里放置一些通用的物品操作代码
 */
-function add(i) {
+function add(i,max=9999) {
     var count = $('#count' + i).text();
     $('#count' + i).text(++count);
     $('#minus' + i).attr('disabled',false);
-    // TODO 判断库存
+    if(count>=max){
+        $('#add' + i).attr('disabled',true);
+    }
 }
-function minus(i) {
+function minus(i,max=9999) {
     var count = $('#count' + i).text();
     if(count>1)
         $('#count' + i).text(--count);
     if(count<=1){
         $('#minus' + i).attr('disabled',true); //防止减到1以下
+    }
+    if(count<max){
+        $('#add' + i).attr('disabled',false);
     }
 }
 function showResult(result) {
