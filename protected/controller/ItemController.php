@@ -54,7 +54,8 @@ class ItemController extends BaseController
     {
         $this->url="item/new";
         $this->title="发布物品";
-        $this->item_info = array(
+        $this->iid=-1;
+        $this->item_info = array( //这里设置默认的内容
             "name" => "",
             "limit_time" => 1,//借用时限
             "count" => 1,
@@ -77,6 +78,10 @@ class ItemController extends BaseController
 
         if(empty($item_res)) //确保物品存在
             $this->jump("{$this->MHS_DOMAIN}/item/new");
+        //TODO 测试一下这些还原有没有问题
+        $desc = str_replace("/", "\\" ,$item_res["dec"]);
+        $desc = str_replace("\\n","\n",$desc);
+        $desc = str_replace('\"','"',$desc);
 
         $this->item_info = array(
             "name" => $item_res["name"],
@@ -84,8 +89,9 @@ class ItemController extends BaseController
             "count" => $item_res["count"],
             "credit_limit" => $item_res["credit_limit"], //信用分限制
             "location" => $item_res["location"], //物品地点
-            "desc" => $item_res["dec"] //物品描述
+            "desc" => $desc //物品描述
         );
+        //dump($this->item_info);
         $this->display("item_new.html"); //共用前端
 
     }

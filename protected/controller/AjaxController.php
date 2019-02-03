@@ -6,11 +6,12 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        if (!(arg("name"))) {
+        else if (!(arg("name"))) {
             ERR::Catcher(100001); //提示名称为空
         }
         else{
             $item=new Model("item");
+            $old_iid=arg("iid");
             $name=arg("name");
             $timeLimit=arg("timeLimit");
             $location=arg("location");
@@ -21,6 +22,16 @@ class AjaxController extends BaseController
             $desc = str_replace("\n","\\n",$desc); //解决换行问题
             $desc = str_replace('"','\"',$desc);  // 双引号bug修复
 
+            if($old_iid != -1) {  //编辑物品模式
+                if(!IsMyItem($old_iid)) {
+                    ERR::Catcher(2008); //防止修改他人物品
+                    return;
+                }
+                else{
+                    $item->update(array("iid = :iid", ":iid" => $old_iid),array('scode' => '-1'));
+                    //旧物品下架处理（存档机制） ，这里是为了防止他人查历史订单时 ，查到新的物品
+                }
+            }
 
             $iid=$item->create(
                 array(
@@ -35,15 +46,15 @@ class AjaxController extends BaseController
                     "credit_limit" => $creditRequired,
                 )
             );
-
-            $result = UploadPic($iid);
+            //TODO 编辑物品后还要更新物品图片
+            $result = UploadPic($iid); //最后处理图片
             if($result != 200){
                 ERR::Catcher($result); //上传图片失败
-                $item->delete(array("iid=:id",":id"=>$iid));
+                $item->delete(array("iid=:id",":id"=>$iid)); //TODO 这个删除好像有问题
             }
             else
             {
-                SUCCESS::Catcher("发布成功！",array(
+                SUCCESS::Catcher($old_iid == -1 ? "发布成功！" : "编辑成功！" ,array(
                     'itemid'=>$iid, //传回物品id
                 ));
             }

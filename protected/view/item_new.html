@@ -48,7 +48,7 @@
         <div class="card-body row">
             <div class="col-md-3 col-sm-12 col-12 text-center" >
                 <div class="bg-light mb-4">
-                    <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="https://static.1cf.co/img/avatar/default.png">
+                    <img class="mhs-img-detail rounded float-middle broder" id="pic_preview" src="<{$MHS_DOMAIN}>/pic/<{$iid}>">
                 </div>
                 <div class="p-5 text-center responsive-text">
                     <label class="text-primary">
@@ -66,36 +66,36 @@
                 <div class="form-group">
                     <label for="time_limit" class="bmd-label-floating">借用时限</label>
                     <select class="form-control" id="time_limit">
-                        <option>1 天</option>
-                        <option>3 天</option>
-                        <option>7 天</option>
-                        <option>15天</option>
-                        <option>30天</option>
-                        <option>无限制</option>
+                        <option <{if $item_info['limit_time'] == 1}> selected <{/if}> >1 天</option>
+                        <option <{if $item_info['limit_time'] == 3}> selected <{/if}> >3 天</option>
+                        <option <{if $item_info['limit_time'] == 7}> selected <{/if}> >7 天</option>
+                        <option <{if $item_info['limit_time'] == 15}> selected <{/if}> >15天</option>
+                        <option <{if $item_info['limit_time'] == 20}> selected <{/if}> >30天</option>
+                        <option <{if $item_info['limit_time'] == 0}> selected <{/if}> >无限制</option>
                     </select>
                     <span class="bmd-help">该物品在"确认借用"后要求在这一时限内归还。</span>
                 </div>
                 <div class="form-group">
                     <label for="credit_required" class="bmd-label-floating">最低信用</label>
                     <select class="form-control" id="credit_required">
-                        <option>无</option>
-                        <option>信用良好</option>
-                        <option>信用优秀</option>
-                        <option>信用极佳</option>
+                        <option <{if $item_info['credit_limit'] == 0  }> selected <{/if}> >无</option>
+                        <option <{if $item_info['credit_limit'] == 80 }> selected <{/if}> >信用良好</option>
+                        <option <{if $item_info['credit_limit'] == 100}> selected <{/if}> >信用优秀</option>
+                        <option <{if $item_info['credit_limit'] == 120}> selected <{/if}> >信用极佳</option>
                     </select>
                     <span class="bmd-help">信用分低于该等级的用户将不能借用该物品。</span>
                 </div>
                 <div class="form-group">
                     <label for="location" class="bmd-label-floating">物品位置</label>
-                    <input type="text"  id="location" class="form-control">
+                    <input type="text"  id="location" class="form-control" value="<{$item_info['location']}>">
                 </div>
                 <div class="form-group">
                     <label for="number" class="bmd-label-floating">物品数量</label>
-                    <input type="number" id="number" class="form-control" value="1">
+                    <input type="number" id="number" class="form-control" value="<{$item_info['count']}>">
                 </div>
                 <div class="form-group">
                     <label for="desc" class="bmd-label-floating">物品介绍</label>
-                    <textarea class="form-control" id="desc" rows="10"></textarea>
+                    <textarea class="form-control" id="desc" rows="10"><{$item_info['desc']}></textarea>
                 </div>
             </div>
         </div>
@@ -106,7 +106,7 @@
 </div>
 
 <!-- https://github.com/fengyuanchen/compressorjs/ -->
-<script src="https://cdn.jsdelivr.net/npm/compressorjs@1.0.5/dist/compressor.common.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/compressorjs@1.0.5/dist/compressor.min.js"></script>
 
 <link rel="stylesheet" href="http://inacho.github.io/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css">
 <!-- TODO 这个markdown editor 之后还要优化 -->
@@ -164,6 +164,7 @@
         else if (options == 3)
             options = 120;
 
+        formData.set('iid',"<{$iid}>"); //用于编辑物品
         formData.set('name',$("#item_name").val());
         formData.set('timeLimit',isNaN(timelimit_) ? 0 : timelimit_);
         formData.set('location',$("#location").val());

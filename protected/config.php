@@ -12,6 +12,7 @@ $config = array(
         'account/<a>'                                        => 'account/<a>',
         'account/'                                           => 'account/index',
         'item/detail/<iid>'                                  => 'item/detail',
+        'item/edit/<iid>'                                    => 'item/edit',
         'item/<a>'                                           => 'item/<a>',
         'order/<a>'                                          => 'order/<a>',
         'user/<uid>'                                         => 'user/index',

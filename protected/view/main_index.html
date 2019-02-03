@@ -80,7 +80,7 @@
                         <button class="btn btn-primary mhs-button" onclick="">立即借</button>
                         <button class="btn btn-primary mhs-button" onclick="addToCart(<{$r['iid']}>,<{$seq}>);"><i class="MDI cart"></i></button>
                         <{else}>
-                        <button type="button" class="btn btn-primary mhs-button">编辑</button>
+                        <button type="button" class="btn btn-primary mhs-button" onclick="location.href='<{$MHS_DOMAIN}>/item/edit/<{$r['iid']}>'">编辑</button>
                         <button type="button" class="btn btn-warning mhs-button" onclick="
                         showDialog('您确定要下架「<{$r['name']}>」？<br>此操作不可恢复','下架物品','removeItem(<{$r['iid']}>)');"><i class="MDI close-box"></i>下架</button>
                         <{/if}>
