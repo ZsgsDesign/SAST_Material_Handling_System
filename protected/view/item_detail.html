@@ -76,18 +76,10 @@
             <div class="col">
                 <{if !$isMyItem}>
                 <div class="btn-group">
-                            <button id="minus" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="
-                            var count1 = $('#count').text();
-                            $('#count').text(--count1);
-                            if(count1==1)
-                                $('#minus').attr('disabled',true); //防止减到1以下
+                            <button id="minus0" type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled" onclick="minus(0,<{$item_info['count']}>);
                             ">-</button>        
-                            <button id="count" type="button" class="btn btn-sm btn-outline-secondary">1</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="
-                            var count1 = $('#count').text();               
-                            $('#count').text(++count1);
-                            $('#minus').attr('disabled',false);
-                            ">+</button>
+                            <button id="count0" type="button" class="btn btn-sm btn-outline-secondary">1</button>
+                            <button id="add0" type="button" class="btn btn-sm btn-outline-secondary" onclick="add(0,<{$item_info['count']}>);">+</button>
                 </div>
                 <button type="button" class="btn btn-primary">立即借用</button>
                 <button class="btn btn-primary" onclick=""><i class="MDI cart"></i>加入购物车</button>
@@ -141,4 +133,8 @@
         $('#desc').html(marked("<{$item_info['desc']}>"));
     });
 
+</script>
+<script>
+    //最好放在cdn上
+    <{include file="MHS_Item.js" }>
 </script>
