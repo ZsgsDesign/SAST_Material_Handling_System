@@ -6,20 +6,18 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        else if(true){
-            if (!(arg("name"))) {
+        else if (!(arg("name"))) {
             ERR::Catcher(100001);
             }
-            if (!(arg("location"))) {
+        else if (!(arg("location"))) {
                 ERR::Catcher(100004);
             }
-            if (!(arg("desc"))) {
+        else if (!(arg("desc"))) {
                 ERR::Catcher(100005);
             }
-            if (!(arg("number"))) {
+        else if (!(arg("number"))) {
                 ERR::Catcher(100006);
             }
-        }
         else{
             $item=new Model("item");
             $old_iid=arg("iid");
