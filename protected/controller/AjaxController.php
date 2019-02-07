@@ -6,8 +6,19 @@ class AjaxController extends BaseController
         if (!($this->islogin)) {
             ERR::Catcher(2001);
         }
-        else if (!(arg("name"))) {
-            ERR::Catcher(100001); //提示名称为空
+        else if(true){
+            if (!(arg("name"))) {
+            ERR::Catcher(100001);
+            }
+            if (!(arg("location"))) {
+                ERR::Catcher(100004);
+            }
+            if (!(arg("desc"))) {
+                ERR::Catcher(100005);
+            }
+            if (!(arg("number"))) {
+                ERR::Catcher(100006);
+            }
         }
         else{
             $item=new Model("item");
