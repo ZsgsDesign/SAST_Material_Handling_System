@@ -59,7 +59,7 @@ class MainController extends BaseController
             $page=max(1,$page);
             $items->pager($page,8,6,count($items_res));
             if(!empty($items->page)){
-                $items_res=array_slice($items_res,($page-1)*8,8,true);
+                $items_res=array_slice($items_res,($page-1)*8,8,false);
             }
         }
         else{
