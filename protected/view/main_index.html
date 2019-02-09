@@ -38,6 +38,7 @@
             <li class="nav-item">
                 <a class="nav-link <{if $args['sort']==='default' || empty($args['sort'])}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=default<{if !empty($args['keyword'])}>&page=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">默认排序</a>
                 <!--TODO感觉如果上一行那边如果用上三目表达式，应该会更优雅，下同（留下了不学无术的泪水-->
+                <!--TODO又不是不能用，上面那条咕咕咕了-->
             </li>
             <li class="nav-item">
                 <a class="nav-link <{if $args['sort'] === 'bycount'}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=bycount<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">最多借用</a>
@@ -86,7 +87,7 @@
                         <!-- 分享砍了 -->
                         <div class="row">
                             <div class="col-6">
-                                <small><a href="<{$MHS_DOMAIN}>/user/<{$r['owner']}>"><{$r['publisher_real_name']}></a></small>
+                                <small><a href="<{$MHS_DOMAIN}>/user/<{$r['owner']}>"><{$r['real_name']}></a></small>
                             </div>
                             <div class="col-6">
                                 <small><{$r['order_count']}> 笔借用</small>

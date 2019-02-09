@@ -24,18 +24,20 @@ class MainController extends BaseController
         $conditions[0]=" name like :keyword ";
         switch($filter){
             case 'borrowable':
-                $conditions[0]=$conditions[0].'AND scode = :scode ';
+                $conditions[0]=" $conditions[0] AND scode = :scode AND credit_limit <= :userCredit ";
                 $conditions[':scode']='1';
-                $filter='AND scode = 1';
+                $conditions[':userCredit']=$this->userinfo['credit'];
+                $filter=" AND scode = ".$conditions[':scode']." AND credit_limit <= ".$conditions[':userCredit']." ";
                 break;
             case 'soldout':
-                $conditions[0]=$conditions[0].'AND scode = :scode ';
+                $conditions[0]=" $conditions[0] AND scode = :scode ";
                 $conditions[':scode']='0'; // 0是无货 ， -1 是 下架
-                $filter='AND scode = 0';
+                $filter='AND scode = '.$conditions[':scode'].' ';
                 break;
             case 'credit':
-                $conditions[0]=$conditions[0].' AND credit_limit > :userCredit ';
+                $conditions[0]=" $conditions[0] AND credit_limit > :userCredit ";
                 $conditions[':userCredit']=$this->userinfo['credit'];
+                $filter=" AND credit_limit > ".$conditions[':userCredit'];
             case 'mine':
                 $conditions[0]=$conditions[0].'AND owner = :owner ';
                 $conditions[':owner']=$this->userinfo['uid'];
@@ -43,7 +45,7 @@ class MainController extends BaseController
                 break;
             default:
                 $conditions[0]=$conditions[0].'AND scode > 0';
-                $filter='AND scode > 0';
+                $filter=' AND scode > 0 ';
         }
 
         $items = new Model("item");
@@ -53,11 +55,11 @@ class MainController extends BaseController
         }
         else if($sort==="bycredit"){
             $keyword="'%".$keyword."%'";
-            $items_res=$items->query("select item.*,users.credit from item join users on item.owner=users.uid where item.name like $keyword $filter ORDER BY users.credit DESC;");
+            $items_res=$items->query("select item.*,users.credit,users.real_name from item join users on item.owner=users.uid where item.name like $keyword $filter ORDER BY users.credit DESC;");
             $page=max(1,$page);
             $items->pager($page,8,6,count($items_res));
             if(!empty($items->page)){
-                $items_res=array_slice($items_res,($page-1)*6,6,true);
+                $items_res=array_slice($items_res,($page-1)*8,8,true);
             }
         }
         else{
@@ -65,11 +67,11 @@ class MainController extends BaseController
             $this->args['sort']='default';
         }
 
-        $user=new Model("users"); //显示发布者
-        for($i = 0;$i < count($items_res);$i++) {
-            $user_res=$user->find(array("uid=:uid",":uid" => $items_res[$i]["owner"]));
-            $items_res[$i]['publisher_real_name'] = $user_res['real_name'];
-        }
+        // $user=new Model("users"); //显示发布者
+        // for($i = 0;$i < count($items_res);$i++) {
+        //     $user_res=$user->find(array("uid=:uid",":uid" => $items_res[$i]["owner"]));
+        //     $items_res[$i]['publisher_real_name'] = $user_res['real_name'];
+        // }
 
         $this->pager=$items->page;
         $this->items_info=$items_res;
