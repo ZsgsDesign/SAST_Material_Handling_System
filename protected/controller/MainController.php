@@ -55,7 +55,7 @@ class MainController extends BaseController
         }
         else if($sort==="bycredit"){
             $keyword="'%".$keyword."%'";
-            $items_res=$items->query("select item.*,users.credit,users.real_name from item join users on item.owner=users.uid where item.name like $keyword $filter ORDER BY users.credit DESC;");
+            $items_res=$items->query("select item.*,users.credit from item join users on item.owner=users.uid where item.name like $keyword $filter ORDER BY users.credit DESC;");
             $page=max(1,$page);
             $items->pager($page,8,6,count($items_res));
             if(!empty($items->page)){
@@ -67,11 +67,11 @@ class MainController extends BaseController
             $this->args['sort']='default';
         }
 
-        // $user=new Model("users"); //显示发布者
-        // for($i = 0;$i < count($items_res);$i++) {
-        //     $user_res=$user->find(array("uid=:uid",":uid" => $items_res[$i]["owner"]));
-        //     $items_res[$i]['publisher_real_name'] = $user_res['real_name'];
-        // }
+        $user=new Model("users"); //显示发布者
+        for($i = 0;$i < count($items_res);$i++) {
+            $user_res=$user->find(array("uid=:uid",":uid" => $items_res[$i]["owner"]));
+            $items_res[$i]['publisher_real_name'] = $user_res['real_name'];
+        }
 
         $this->pager=$items->page;
         $this->items_info=$items_res;
