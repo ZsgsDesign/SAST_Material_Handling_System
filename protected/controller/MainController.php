@@ -24,20 +24,20 @@ class MainController extends BaseController
         $conditions[0]=" name like :keyword ";
         switch($filter){
             case 'borrowable':
-                $conditions[0]=$conditions[0].'AND scode = :scode';
+                $conditions[0]=$conditions[0].'AND scode = :scode ';
                 $conditions[':scode']='1';
                 $filter='AND scode = 1';
                 break;
             case 'soldout':
-                $conditions[0]=$conditions[0].'AND scode = :scode';
+                $conditions[0]=$conditions[0].'AND scode = :scode ';
                 $conditions[':scode']='0'; // 0是无货 ， -1 是 下架
                 $filter='AND scode = 0';
                 break;
-            // case 'credit':
-            //     $conditions[0]
-            //TODO 貌似又是个跨表查询,等后期再实现吧
+            case 'credit':
+                $conditions[0]=$conditions[0].' AND credit_limit > :userCredit ';
+                $conditions[':userCredit']=$this->userinfo['credit'];
             case 'mine':
-                $conditions[0]=$conditions[0].'AND owner = :owner';
+                $conditions[0]=$conditions[0].'AND owner = :owner ';
                 $conditions[':owner']=$this->userinfo['uid'];
                 $filter='AND owner = '.$this->userinfo['uid'];
                 break;
