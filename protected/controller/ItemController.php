@@ -21,6 +21,7 @@ class ItemController extends BaseController
         }
         else{
             $this->item_info = array(
+                "iid" => $item_res["iid"],
                 "name" => $item_res["name"],
                 "scode" => $item_res["scode"],
                 "owner" => $item_res["owner"],
