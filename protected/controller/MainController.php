@@ -7,7 +7,7 @@ class MainController extends BaseController
         $this->title="首页";
         
         $sort=strtolower(@arg("sort"));
-        $keyword=strtolower(@arg("keyword"));
+        $this->keyword = $keyword=strtolower(@arg("keyword"));
         $page=@arg("page");
         $filter=strtolower(@arg('filter'));
         $this->args=[
