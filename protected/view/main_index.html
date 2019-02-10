@@ -23,37 +23,38 @@
         <div class="input-group text-center">
                 <input id="keyword" type="text" class="form-control" placeholder="搜索物品..." aria-describedby="basic-addon1">
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>'">搜索</button>
+                    <button type="button" class="btn btn-raised btn-success" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>'">搜索</button>
                     <button type="button" class="btn btn-raised btn-info" aria-label="Left Align" onclick="window.location.href='<{$MHS_DOMAIN}>/item/new'">发布物品</button>
                 </div>
         </div>
         <script>
             document.querySelector("#keyword").addEventListener('keyup',function(e){
                 if(e.keyCode===13){
-                    window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>';
+                    window.location.href='<{$MHS_DOMAIN}>/?keyword='+$('#keyword').val()+'<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>';
                 }
             });
         </script>
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link <{if $args['sort']==='default' || empty($args['sort'])}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=default<{if !empty($args['keyword'])}>&page=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">默认排序</a>
+                <a class="nav-link <{if $args['sort']==='default' || empty($args['sort'])}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=default<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">默认排序</a>
                 <!--TODO感觉如果上一行那边如果用上三目表达式，应该会更优雅，下同（留下了不学无术的泪水-->
+                <!--TODO又不是不能用，上面那条咕咕咕了-->
             </li>
             <li class="nav-item">
-                <a class="nav-link <{if $args['sort'] === 'bycount'}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=bycount<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">最多借用</a>
+                <a class="nav-link <{if $args['sort'] === 'bycount'}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=bycount<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">最多借用</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <{if $args['sort'] === 'bycredit'}> active <{/if}> " href="<{$MHS_DOMAIN}>/index/?sort=bycredit<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">信用优先</a>
+                <a class="nav-link <{if $args['sort'] === 'bycredit'}> active <{/if}> " href="<{$MHS_DOMAIN}>/index/?sort=bycredit<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">信用优先</a>
             </li>
             <li class="nav-item dropdown ml-auto">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选</a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=borrowable<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">仅看可借用</a>
+                      <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=borrowable<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">仅看可借用</a>
                         <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=soldout<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">显示无货</a>
-                      <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=credit<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">显示高于当前信用</a>
+                      <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=soldout<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">显示无货</a>
+                      <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=credit<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">显示高于当前信用</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=mine<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}><{if !empty($args['page'])}>&page=<{$args['page']}><{/if}><{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">我发布的</a>
+                        <a class="dropdown-item" href="<{$MHS_DOMAIN}>/index/?filter=mine<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['sort'])}>&sort=<{$args['sort']}><{/if}>">我发布的</a>
                     </div>
                   </li>
         </ul>

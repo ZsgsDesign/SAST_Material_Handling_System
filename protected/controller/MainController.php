@@ -24,26 +24,28 @@ class MainController extends BaseController
         $conditions[0]=" name like :keyword ";
         switch($filter){
             case 'borrowable':
-                $conditions[0]=$conditions[0].'AND scode = :scode';
+                $conditions[0]=" $conditions[0] AND scode = :scode AND credit_limit <= :userCredit ";
                 $conditions[':scode']='1';
-                $filter='AND scode = 1';
+                $conditions[':userCredit']=$this->userinfo['credit'];
+                $filter=" AND scode = ".$conditions[':scode']." AND credit_limit <= ".$conditions[':userCredit']." ";
                 break;
             case 'soldout':
-                $conditions[0]=$conditions[0].'AND scode = :scode';
+                $conditions[0]=" $conditions[0] AND scode = :scode ";
                 $conditions[':scode']='0'; // 0是无货 ， -1 是 下架
-                $filter='AND scode = 0';
+                $filter='AND scode = '.$conditions[':scode'].' ';
                 break;
-            // case 'credit':
-            //     $conditions[0]
-            //TODO 貌似又是个跨表查询,等后期再实现吧
+            case 'credit':
+                $conditions[0]=" $conditions[0] AND credit_limit > :userCredit ";
+                $conditions[':userCredit']=$this->userinfo['credit'];
+                $filter=" AND credit_limit > ".$conditions[':userCredit'];
             case 'mine':
-                $conditions[0]=$conditions[0].'AND owner = :owner';
+                $conditions[0]=$conditions[0].'AND owner = :owner ';
                 $conditions[':owner']=$this->userinfo['uid'];
                 $filter='AND owner = '.$this->userinfo['uid'];
                 break;
             default:
                 $conditions[0]=$conditions[0].'AND scode > 0';
-                $filter='AND scode > 0';
+                $filter=' AND scode > 0 ';
         }
 
         $items = new Model("item");
@@ -57,7 +59,7 @@ class MainController extends BaseController
             $page=max(1,$page);
             $items->pager($page,8,6,count($items_res));
             if(!empty($items->page)){
-                $items_res=array_slice($items_res,($page-1)*6,6,true);
+                $items_res=array_slice($items_res,($page-1)*8,8,false);
             }
         }
         else{
