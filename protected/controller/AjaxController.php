@@ -103,6 +103,50 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionRestoreItem(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        $iid=arg("iid");
+        if (empty($iid)) {
+            ERR::Catcher(1003);
+        }
+        $item=new Model("item");
+        $item_res=$item->find(array(
+            "iid = :iid",
+            ":iid" => $iid,
+        ));
+        if(!$item_res)
+            ERR::Catcher(100002); //没有该物品
+        else{
+            if(!IsMyItem($iid)) { //防止上架他人物品
+                ERR::Catcher(2003);
+            }
+            else if($item_res['scode'] >= 0)
+                ERR::Catcher(100007); //已经上架了
+            else if($item_res['count'] == 0){
+                $item->update(array(
+                    "iid = :iid",
+                    ":iid" => $iid,
+                ),
+                array(
+                        'scode' => '0'
+                ));
+                SUCCESS::Catcher("上架成功！");
+            }
+            else{
+                $item->update(array(
+                    "iid = :iid",
+                    ":iid" => $iid,
+                ),
+                array(
+                        'scode' => '1'
+                ));
+                SUCCESS::Catcher("上架成功！");
+            }
+        }
+    }
+
     public function actionAddToCart(){
         $iid=arg('iid');
         $count=arg('count');
