@@ -64,3 +64,11 @@ function removeItem(id) {
         window.location.reload();
     },1000); // 跳转前等待
 }
+function restoreItem(id) {
+    $.post("<{$MHS_DOMAIN}>/ajax/RestoreItem",{
+        iid:id
+    },(result) => showResult(result));
+    setTimeout(function(){
+        window.location.reload();
+    },1000); // 跳转前等待
+}
