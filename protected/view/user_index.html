@@ -180,11 +180,11 @@
                                     </div>
                                         <h5 class="card-title mhs-item-text mundb-text-truncate-1"><{$r['name']}></h5>
                                         <{if $r['scode'] == -1}>
-                                        <button type="button" class="btn btn-primary mhs-button">编辑</button>
+                                        <button type="button" class="btn btn-primary mhs-button" onclick="location.href='<{$MHS_DOMAIN}>/item/edit/<{$r['iid']}>'">编辑</button>
                                         <button type="button" class="btn btn-success mhs-button" onclick="
                                         showDialog('您确定要上架「<{$r['name']}>」吗？','上架物品','restoreItem(<{$r['iid']}>)');"><i class="MDI check"></i>上架</button>
                                         <{else if $isMe}>
-                                        <button type="button" class="btn btn-primary mhs-button">编辑</button>
+                                        <button type="button" class="btn btn-primary mhs-button" onclick="location.href='<{$MHS_DOMAIN}>/item/edit/<{$r['iid']}>'">编辑</button>
                                         <button type="button" class="btn btn-warning mhs-button" onclick="
                                                 showDialog('您确定要下架「<{$r['name']}>」吗？','下架物品','removeItem(<{$r['iid']}>)');"><i class="MDI close-box"></i>下架</button>
                                         <{/if}>
