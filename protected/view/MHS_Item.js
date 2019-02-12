@@ -5,7 +5,7 @@ function add(i,max=9999) {
     var count = $('#count' + i).text();
     $('#count' + i).text(++count);
     $('#minus' + i).attr('disabled',false);
-    if(count>=max){
+    if(count>=max||max===1){
         $('#add' + i).attr('disabled',true);
     }
 }
