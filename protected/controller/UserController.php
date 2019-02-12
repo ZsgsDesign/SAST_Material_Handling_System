@@ -23,6 +23,8 @@ class UserController extends BaseController
         $good_count=$user->query("SELECT SUM(gcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
         $mid_count=$user->query("SELECT SUM(mcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
         $bad_count=$user->query("SELECT SUM(bcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
+        $br_count;//TODO
+        $pb_count;//TODO
         $this->wtf_info = array(
            "good_count" => $good_count[0]["SUM(gcount)"],
            "mid_count" => $mid_count[0]["SUM(mcount)"],
