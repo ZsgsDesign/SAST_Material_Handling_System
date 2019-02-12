@@ -19,6 +19,16 @@ class UserController extends BaseController
         $this->url="usercenter";
         $this->title="个人中心";
 
+        $user=new Model("users");
+        $good_count=$user->query("SELECT SUM(gcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
+        $mid_count=$user->query("SELECT SUM(mcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
+        $bad_count=$user->query("SELECT SUM(bcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
+        $this->wtf_info = array(
+           "good_count" => $good_count[0]["SUM(gcount)"],
+           "mid_count" => $mid_count[0]["SUM(mcount)"],
+           "bad_count" => $bad_count[0]["SUM(bcount)"],
+        );
+
         $item = new model('item');
         $this->items_info = $item->findAll(array("owner=:uid",":uid" => $uid),'create_time DESC');
         //dump($this->items_info);
