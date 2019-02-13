@@ -50,6 +50,7 @@ class MainController extends BaseController
 
         $items = new Model("item");
         //TODO 2   关于是否展示已出借完的物品，后期再讨论讨论吧
+        //建议不展示，因为筛选中有显示无货功能
         if($sort==="bycount"){
             $items_res=$items->findAll($conditions,'order_count DESC',"*",array($page,8,6));
         }
@@ -84,7 +85,7 @@ class MainController extends BaseController
         $cart=new Model("cart");
         $item=new Model("item");
         $users=new Model("users");
-        $cart_res=$cart->query("SELECT a.*,users.real_name FROM(select cart.*,item.`name`,item.`owner`,item.count as item_count FROM cart JOIN item on cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE `user`=".$this->userinfo['uid'].";");
+        $cart_res=$cart->query("SELECT a.*,users.real_name FROM(select cart.*,item.`name`,item.`owner`,item.scode,item.count as item_count FROM cart JOIN item on cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE `user`=".$this->userinfo['uid'].";");
         $this->cart_items=$cart_res;
     }
 
