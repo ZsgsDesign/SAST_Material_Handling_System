@@ -214,4 +214,27 @@ class AjaxController extends BaseController
             }
         }
     }
+    public function actionCreateOrder(){
+        //约定order的scode 1 为等待取用， 2为等待归还 ， 3为待评价  ， 4为订单完成
+        $order=new Model('order');
+        $item_id=arg('item_id');
+        $count=arg('count');
+        if(!empty($item_id)&&!empty($count)){
+            $oid=$order->create(
+                array(
+                    'scode' => 1,
+                    'item_id' => $item_id,
+                    'create_time' =>date("Y-m-d H:i:s",time()),
+                    'renter_id' => $this->userinfo['uid'],
+                    'count' => $count,
+                )
+            );
+            SUCCESS::Catcher("添加成功！",array(
+                'oid' => $oid,
+            ));
+        }
+    }
+    public function actionReviewOrder(){
+        
+    }
 }
