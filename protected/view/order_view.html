@@ -91,11 +91,11 @@
     <card class="mhs-card">
         <div class="row">
             <div class="col-md-3 col-sm-12 col-12">
-                <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                <img class="mhs-img-detail rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$order['iid']}>?size=400">
             </div>
             <div class="col-md-9 col-sm-12 col-12">
-                <h4 class="text-left">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</h4>
-                <p class="text-left">文字描述：超视网膜显示屏现以两种尺寸为你演绎广阔的精彩，其中一款更是 iPhone 史上最大的显示屏。此外，更有识别速度进一步提升的面容 ID、iPhone 迄今最智能最强大的芯片，以及支持景深控制的突破性双镜头系统。iPhone XS 云集了 iPhone 无数深得人心的亮点，并展现得淋漓尽致。</p>
+                <h4 class="text-left"><{$order['name']}></h4>
+                <p class="text-left"><{$order['dec']}></p>
             </div>
         </div>
     </card>
@@ -104,23 +104,23 @@
             <tbody>
             <tr>
                 <th scope="row">订单编号</th>
-                <td>1000000</td>
+                <td><{$order['oid']}></td>
             </tr>
             <tr>
                 <th scope="row"><i class="MDI clock"></i>创建时间</th>
-                <td>2019/1/10 12:00</td>
+                <td><{$order['create_time']}></td>
             </tr>
             <tr>
                 <th scope="row">出借人</th>
-                <td>ABC</td>
+                <td><{$order['real_name']}></td>
             </tr>
             <tr>
                 <th scope="row">借用时限</th>
-                <td>3天</td>
+                <td><{$order['limit_time']}>天</td>
             </tr>
             <tr>
                 <th scope="row">物品地点</th>
-                <td><strong>大活</strong></td>
+                <td><strong><{$order['location']}></strong></td>
             </tr>
             </tbody>
         </table>
