@@ -167,6 +167,7 @@
                 <div class="card-body">
                     <div class="row">
                         <{foreach $items_info as $seq => $r}>
+                            <{if $isMe}>
                             <div class="col-lg-3 col-md-4 col-6">
                                 <card class="item-card text-center mb-3">
                                     <div>
@@ -177,13 +178,23 @@
                                         <button type="button" class="btn btn-primary mhs-button" onclick="location.href='<{$MHS_DOMAIN}>/item/edit/<{$r['iid']}>'">编辑</button>
                                         <button type="button" class="btn btn-success mhs-button" onclick="
                                         showDialog('您确定要上架「<{$r['name']}>」吗？','上架物品','restoreItem(<{$r['iid']}>)');"><i class="MDI check"></i>上架</button>
-                                        <{else if $isMe}>
+                                        <{else}>
                                         <button type="button" class="btn btn-primary mhs-button" onclick="location.href='<{$MHS_DOMAIN}>/item/edit/<{$r['iid']}>'">编辑</button>
                                         <button type="button" class="btn btn-warning mhs-button" onclick="
                                                 showDialog('您确定要下架「<{$r['name']}>」吗？','下架物品','removeItem(<{$r['iid']}>)');"><i class="MDI close-box"></i>下架</button>
                                         <{/if}>
                                 </card>
                             </div>
+                            <{else}>
+                            <div class="col-lg-3 col-md-4 col-6">
+                                <card class="item-card text-center mb-3">
+                                    <div>
+                                    <a class="card-link" href="<{$MHS_DOMAIN}>/item/detail/<{$r['iid']}>"><img class="card-img-top mhs-item-img" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>?size=400"></a>
+                                    </div>
+                                        <h5 class="card-title mhs-item-text mundb-text-truncate-1"><{$r['name']}></h5>
+                                </card>
+                            </div>
+                            <{/if}>
                         <{/foreach}>
                     </div>
                 </div>
