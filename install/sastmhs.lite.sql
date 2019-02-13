@@ -72,6 +72,8 @@ CREATE TABLE `order`  (
   `renter_id` int(11) UNSIGNED NULL DEFAULT NULL COMMENT '借用人id',
   `owner_review` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '出借人评价',
   `renter_review` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '借用人评价',
+  `count` bigint(20) NULL COMMENT '借用的数量',
+
   PRIMARY KEY (`oid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
