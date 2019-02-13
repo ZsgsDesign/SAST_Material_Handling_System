@@ -24,33 +24,22 @@
 
 <div class="container mundb-standard-container"> 
 <h3 class="mhs-title mb-5 mt-5">创建订单</h3>
+<{foreach $order_item as $seq => $r}>
 <card class="mhs-card">
     <div class="row">      
             <div class="col-md-3 col-sm-12 col-12">
-                    <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
+                    <img class="mhs-img-detail rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$r['item_id']}>?size=400">
             </div>
             <div class="col-md-9 col-sm-12 col-12">
-                    <h4 class="text-left"><a href="../item/detail">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</a></h4>
-                    <p class="text-left">出借方：一个用户</p>
-                    <p class="text-left">位置：大活</p>
-                    <p class="text-left">数量：10</p>
+                    <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$r['item_id']}>"><{$r['name']}></a></h4>
+                    <p class="text-left">出借方：<{$r['real_name']}></p>
+                    <p class="text-left">位置：<{$r['location']}></p>
+                    <p class="text-left">数量：<{$r['count']}></p>
             </div>
     </div>
 </card>
-<card class="mhs-card">
-    <div class="row">      
-            <div class="col-md-3 col-sm-12 col-12">
-                    <img class="mhs-img-detail rounded float-middle" src="https://img14.360buyimg.com/n0/jfs/t1/4460/2/3458/153299/5b997bf0Ed101778b/2361563781a99acb.jpg">
-            </div>
-            <div class="col-md-9 col-sm-12 col-12">
-                    <h4 class="text-left"><a href="../item/detail">Apple iPhone XS Max (A2104) 64GB 金色 移动联通电信4G手机 双卡双待</a></h4>
-                    <p class="text-left">出借方：一个用户</p>
-                    <p class="text-left">位置：大活</p>
-                    <p class="text-left">数量：10</p>
-            </div>
-    </div>
-</card>
-<h5>总计：2 件物品，共 20 个。</h5>
+<{/foreach}>
+<h5>总计：<{count($order_item)}> 件物品，共 <{$total_count}> 个。</h5>
 <div class="text-right">
     <button type="button" class="btn btn-outline-primary ">下单</button>
 </div>
