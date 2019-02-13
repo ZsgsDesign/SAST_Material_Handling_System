@@ -214,4 +214,114 @@ class AjaxController extends BaseController
             }
         }
     }
+    public function actionCreateOrder(){
+        //约定order的scode 1 为等待取用， 2为等待归还 ， 3为已借用待评价  ， 4为订单完成  , 5 订单意外取消
+        $order=new Model('order');
+        $item_id=arg('item_id');
+        $count=arg('count');
+        if(!empty($item_id)&&!empty($count)){
+            $oid=$order->create(
+                array(
+                    'scode' => 1,
+                    'item_id' => $item_id,
+                    // 'create_time' =>date("Y-m-d H:i:s",time()),
+                    'renter_id' => $this->userinfo['uid'],
+                    'count' => $count,
+                )
+            );
+            SUCCESS::Catcher("添加成功！",array(
+                'oid' => $oid,
+            ));
+        }
+        else{
+            ERR::Catcher(1003);
+        }
+    }
+    public function actionOperateOrder(){
+        $order=new Model('order');
+        $oid=arg('oid');
+        $operation=arg('operation');//可能的操作有      确认取用     取消订单       归还
+        if($operation==='confirm'){
+            $order->update(
+                array(
+                    "oid = :oid AND renter_id = :renter_id",
+                    ':oid' => $oid,
+                    ":renter_id" => $this->userinfo['uid'],
+                ),
+                array(
+                    "scode" => 2,
+                    "create_time" => date("Y-m-d H:i:s",time()),
+                )
+            );
+            SUCCESS::Catcher("取用成功！");
+        }
+        else if($operation==='cancel'){
+            $order->update(
+                array(
+                    "oid = :oid AND renter_id = :renter_id",
+                    ':oid' => $oid,
+                    ":renter_id" => $this->userinfo['uid'],
+                ),
+                array(
+                    "scode" => 5,//scode 5 为订单意外取消
+                )
+            );
+            SUCCESS::Catcher("取消成功！");
+        }
+        else if($operation==='return'){
+            $order->update(
+                array(
+                    "oid = :oid AND renter_id = :renter_id",
+                    ':oid' => $oid,
+                    ":renter_id" => $this->userinfo['uid'],
+                ),
+                array(
+                    "scode" => 3,//scode 5 为订单意外取消
+                )
+            );
+        }
+        else{
+            ERR::Catcher(1003);
+        }
+    }
+    public function actionReviewOrder(){
+        $order=new Model('order');
+        $type=arg('type');// 判断这是来自renter 或者是 owner 的评价 它的可能的值为 owner或者renter
+        $oid=arg('oid');
+        $review=arg('review');// 评价的内容
+        if(!empty($type)&&!empty($uid)&&!empty($review)){
+            if($type==='renter'){
+                $order->update(
+                    array(
+                        "oid = :oid AND renter_id = :renter_id",
+                        ':oid' => $oid,
+                        ':renter_id' => $this->userinfo['uid'],
+                    ),
+                    array(
+                        'renter_review' => $review,
+                    )
+                );
+            }
+            else if($type==='owner'){
+                $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid ;"))[0]['owner'];
+                if($owner_id===$this->userinfo['uid']){
+                    $order->update(
+                        array(
+                            "oid = :oid",
+                            ":oid" => $oid,
+                        ),
+                        array(
+                            "owner_review" => $review,
+                        )
+                    );
+                }
+                else{
+                    ERR::Catcher(1004);//当前登录的用户的id与该订单的owner_id不一致
+                }
+            }
+            else{
+                ERR::Catcher(1003);//参数不全
+            }
+        }
+    }
 }
