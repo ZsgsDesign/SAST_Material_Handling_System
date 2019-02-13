@@ -42,5 +42,6 @@ class UserController extends BaseController
         $order=new Model('`order`');
         $order_res=$order->query("SELECT a.*,users.real_name,users.uid FROM (SELECT `order`.*,item.`name`,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id) as a JOIN users ON users.uid=a.`owner` WHERE a.renter_id = ".$this->userinfo['uid']);
         $this->orders=$order_res;
+        dump($this->orders);
     }
 }
