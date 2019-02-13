@@ -20,15 +20,15 @@ class UserController extends BaseController
         $this->title="个人中心";
 
         $user=new Model("users");
-        $good_count=$user->query("SELECT SUM(gcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
-        $mid_count=$user->query("SELECT SUM(mcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
-        $bad_count=$user->query("SELECT SUM(bcount) FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid']));
-        $br_count=count($user->query("SELECT * FROM `order` WHERE renter_id=:uid", array(":uid"=>$this->userinfo['uid'])));
-        $pb_count=count($user->query("SELECT * FROM item WHERE owner=:uid", array(":uid"=>$this->userinfo['uid'])));
+        $good_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=1 OR item.owner=:uid AND `order`.renter_review=1", array(":uid"=>$uid)));
+        $mid_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=0 OR item.owner=:uid AND `order`.renter_review=0", array(":uid"=>$uid)));
+        $bad_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=-1 OR item.owner=:uid AND `order`.renter_review=-1", array(":uid"=>$uid)));
+        $br_count=count($user->query("SELECT * FROM `order` WHERE renter_id=:uid", array(":uid"=>$uid)));
+        $pb_count=count($user->query("SELECT * FROM item WHERE owner=:uid", array(":uid"=>$uid)));
         $this->wtf_info = array(
-           "good_count" => $good_count[0]["SUM(gcount)"],
-           "mid_count" => $mid_count[0]["SUM(mcount)"],
-           "bad_count" => $bad_count[0]["SUM(bcount)"],
+           "good_count" => $good_count,
+           "mid_count" => $mid_count,
+           "bad_count" => $bad_count,
            "br_count" => $br_count,
            "pb_count" => $pb_count,
         );
