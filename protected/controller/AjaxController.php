@@ -224,7 +224,7 @@ class AjaxController extends BaseController
                 array(
                     'scode' => 1,
                     'item_id' => $item_id,
-                    // 'create_time' =>date("Y-m-d H:i:s",time()),
+                    'create_time' =>date("Y-m-d H:i:s",time()),
                     'renter_id' => $this->userinfo['uid'],
                     'count' => $count,
                 )
@@ -250,7 +250,7 @@ class AjaxController extends BaseController
                 ),
                 array(
                     "scode" => 2,
-                    "create_time" => date("Y-m-d H:i:s",time()),
+                    // "create_time" => date("Y-m-d H:i:s",time()),
                 )
             );
             SUCCESS::Catcher("取用成功！");
