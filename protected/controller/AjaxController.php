@@ -229,7 +229,8 @@ class AjaxController extends BaseController
                     'count' => intval($count),
                 )
             );
-            SUCCESS::Catcher("添加成功！",array(
+            // $name=($order->query("SELECT `order`.*,item.iid,item.name FROM `order` JOIN item ON `order`.item_id = item.iid"))[0]['name'];//TODO 我是想着要不要返回物品的名字，然后提示XXX物品下单成功
+            SUCCESS::Catcher("下单成功",array(
                 'oid' => $oid,
             ));
         }
