@@ -215,7 +215,7 @@ class AjaxController extends BaseController
         }
     }
     public function actionCreateOrder(){
-        //约定order的scode 1 为等待取用， 2为成功取用等待归还 ， 3为已借用待评价  ， 4为订单完成  , 5 订单意外取消， 6超时未归还
+        //约定order的scode 1 为等待取用， 2为成功取用等待归还 ， 3为已归还待评价(即二人至少有一人未评价)  ， 4为订单完成  , 5 订单意外取消， 6超时未归还
         $order=new Model('`order`');
         $iid=arg('iid');
         $count=arg('count');
@@ -251,7 +251,7 @@ class AjaxController extends BaseController
                 ),
                 array(
                     "scode" => 2,
-                    // "create_time" => date("Y-m-d H:i:s",time()),
+                    "rent_time" => date("Y-m-d H:i:s",time()),
                 )
             );
             SUCCESS::Catcher("取用成功！");
@@ -270,16 +270,21 @@ class AjaxController extends BaseController
             SUCCESS::Catcher("取消成功！");
         }
         else if($operation==='return'){
-            $order->update(
-                array(
-                    "oid = :oid AND renter_id = :renter_id",
-                    ':oid' => $oid,
-                    ":renter_id" => $this->userinfo['uid'],
-                ),
-                array(
-                    "scode" => 3,//scode 5 为订单意外取消
-                )
-            );
+            $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid ;"))[0]['owner'];
+            if($owner_id===$this->userinfo['uid']){
+                $order->update(
+                    array(
+                        "oid = :oid",
+                        ':oid' => $oid,
+                    ),
+                    array(
+                        "scode" => 3,//scode 5 为订单意外取消
+                    )
+                );
+            }
+            else{
+                ERR::Catcher(1004);
+            }
         }
         else{
             ERR::Catcher(1003);
