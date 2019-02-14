@@ -115,11 +115,11 @@
     </div>
     <{else if $order['scode'] == 3}>
         <{if $order['renter_id'] == $userinfo['uid']}>
-            <{if empty($order['renter_review'])}>
+            <{if !strlen($order['renter_review'])}>
                 <div class="jumbotron alert-info">
                     <h1><strong>订单等待您的评价</strong></h1>
                     <p class="lead">该物品已归还</p>
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#comment">我要评价</button>
+                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Review">我要评价</button>
                 </div>
             <{else}>
                 <div class="jumbotron alert-info">
@@ -128,11 +128,11 @@
                 </div>
             <{/if}>
         <{else}>
-            <{if empty($order['owner_review'])}>
+            <{if !strlen($order['owner_review'])}>
                 <div class="jumbotron alert-info">
                     <h1><strong>订单等待您的评价</strong></h1>
                     <p class="lead">该物品已归还</p>
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#comment">我要评价</button>
+                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Review">我要评价</button>
                 </div>
             <{else}>
                 <div class="jumbotron alert-info">
@@ -143,6 +143,7 @@
         <{/if}>
     <{/if}>
     <card class="mhs-card">
+        <!--timeline待order表增加return_time字段后再增加一个成功归还-->
         <{if $order['scode'] > 1}>
         <timeline date="<{$order['rent_time']}>">
             <h3>等待归还</h3>
@@ -217,6 +218,13 @@
         });
         window.location.reload();
     }
+    function review(comment){
+        let oid=document.querySelector('#oid').innerText;
+        $.post("<{$MHS_DOMAIN}>/ajax/ReviewOrder",{oid:oid,review:comment},function(data,status){
+            console.log(data,status);
+        });
+        window.location.reload();
+    }
 </script>
 
 <div class="modal fade" id="Confirm" tabindex="-1" role="dialog" aria-labelledby="Confirm" aria-hidden="true">
@@ -252,18 +260,35 @@
     </div>
 </div>
 <div class="modal fade" id="Return" tabindex="-1" role="dialog" aria-labelledby="Return" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">确认归还</h5>
-                </div>
-                <div class="modal-body">
-                    <p>您确定物品已归还了吗？</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="_return()">确定</button>
-                </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">确认归还</h5>
+            </div>
+            <div class="modal-body">
+                <p>您确定物品已归还了吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="_return()">确定</button>
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="Review" tabindex="-1" role="dialog" aria-labelledby="Review" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">我要评价</h5>
+            </div>
+            <div class="modal-body">
+                <p>您想给这次借用怎样的评价呢?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="review('-1')">差评</button>
+                <button type="button" class="btn btn-primary" onclick="review('0')">中评</button>
+                <button type="button" class="btn btn-primary" onclick="review('1')">好评</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -291,43 +291,42 @@ class AjaxController extends BaseController
         }
     }
     public function actionReviewOrder(){
+        //TODO 可以考虑使用对象序列化 让renter_review 和owner_review 字段 再存放评价的文字内容
         $order=new Model('`order`');
-        $type=arg('type');// 判断这是来自renter 或者是 owner 的评价 它的可能的值为 owner或者renter
         $oid=arg('oid');
         $review=arg('review');// 评价的内容
-        if(!empty($type)&&!empty($uid)&&!empty($review)){
-            if($type==='renter'){
+        if(!empty($oid)&&!empty($review)){
+            $order_res=($order->query("SELECT `order`.oid,`order`.item_id,`order`.renter_id,`item`.iid,`item`.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid where `order`.oid = ".$oid))[0];
+            if($this->userinfo['uid'] === $order_res['renter_id']){
                 $order->update(
                     array(
-                        "oid = :oid AND renter_id = :renter_id",
-                        ':oid' => $oid,
-                        ':renter_id' => $this->userinfo['uid'],
+                        "oid = :oid",
+                        ":oid" => $oid,
                     ),
                     array(
-                        'renter_review' => $review,
+                        "renter_review" => $review,
                     )
                 );
+                SUCCESS::Catcher("评价成功！");
             }
-            else if($type==='owner'){
-                $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid ;"))[0]['owner'];
-                if($owner_id===$this->userinfo['uid']){
-                    $order->update(
-                        array(
-                            "oid = :oid",
-                            ":oid" => $oid,
-                        ),
-                        array(
-                            "owner_review" => $review,
-                        )
-                    );
-                }
-                else{
-                    ERR::Catcher(1004);//当前登录的用户的id与该订单的owner_id不一致
-                }
+            else if($this->userinfo['uid'] === $order_res['owner']){
+                $order->update(
+                    array(
+                        "oid = :oid",
+                        ":oid" => $oid,
+                    ),
+                    array(
+                        "owner_review" => $review,
+                    )
+                );
+                SUCCESS::Catcher("评价成功！");
             }
             else{
-                ERR::Catcher(1003);//参数不全
+                ERR::Catcher(1004);
             }
+        }
+        else{
+            ERR::Catcher(1003);//参数不全
         }
     }
 }
