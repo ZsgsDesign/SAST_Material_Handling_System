@@ -75,7 +75,7 @@
         <h1><strong>等待取用</strong></h1>
         <p class="lead">请到指定地点或与出借方联系以取得物品，取得后点击"确认取用"后开始计算归还时间。</p>
         <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Confirm">确认取用</button>
-        <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Confirm">取消订单</button>
+        <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Cancel">取消订单</button>
     </div>
     <card class="mhs-card">
         <timeline date="2019/1/25 13:00">
@@ -104,7 +104,7 @@
             <tbody>
             <tr>
                 <th scope="row">订单编号</th>
-                <td><{$order['oid']}></td>
+                <td id="oid"><{$order['oid']}></td>
             </tr>
             <tr>
                 <th scope="row"><i class="MDI clock"></i>创建时间</th>
@@ -127,6 +127,22 @@
     </card>
 </div>
 
+<script>
+    function confirm(){
+        let oid=document.querySelector('#oid').innerText;
+        $.post("<{$MHS_DOMAIN}>/ajax/OperateOrder",{oid:oid,operation:'confirm'},function(data,status){
+            console.log(data,status);
+        });
+        window.location.reload();
+    }
+    function cancel(){
+        let oid=document.querySelector('#oid').innerText;
+        $.post("<{$MHS_DOMAIN}>/ajax/OperateOrder",{oid:oid,operation:'cancel'},function(data,status){
+            console.log(data,status);
+        });
+        window.location.reload();
+    }
+</script>
 
 <div class="modal fade" id="Confirm" tabindex="-1" role="dialog" aria-labelledby="Confirm" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -139,7 +155,23 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-primary" onclick="confirm()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Cancel" tabindex="-1" role="dialog" aria-labelledby="Cancel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">确认取用</h5>
+            </div>
+            <div class="modal-body">
+                <p>您确定取消该订单吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="cancel()">确定</button>
             </div>
         </div>
     </div>

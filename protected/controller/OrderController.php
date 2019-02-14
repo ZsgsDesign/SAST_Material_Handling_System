@@ -9,9 +9,14 @@ class OrderController extends BaseController
         $this->title="查看订单";
         $oid=arg('oid');
         $order=new Model('order');
-        $order_res=$order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where a.renter_id= ".$this->userinfo['uid']." AND a.oid=".$oid);
-        // dump($order_res);
-        $this->order=$order_res[0];
+        if(empty($oid)){
+            return $this->jump("{$this->MHS_DOMAIN}/");//TODO 可以考虑修改为个人中心的订单页面
+        }
+        else{
+            $order_res=$order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where a.renter_id= ".$this->userinfo['uid']." AND a.oid=".$oid);
+            // dump($order_res);
+            $this->order=$order_res[0];
+        }
     }
 
     public function actionCreate()
