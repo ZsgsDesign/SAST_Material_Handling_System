@@ -215,7 +215,7 @@ class AjaxController extends BaseController
         }
     }
     public function actionCreateOrder(){
-        //约定order的scode 1 为等待取用， 2为等待归还 ， 3为已借用待评价  ， 4为订单完成  , 5 订单意外取消
+        //约定order的scode 1 为等待取用， 2为等待归还 ， 3为已借用待评价  ， 4为订单完成  , 5 订单意外取消， 6超时未归还
         $order=new Model('`order`');
         $iid=arg('iid');
         $count=arg('count');
