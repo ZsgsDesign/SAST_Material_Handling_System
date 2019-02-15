@@ -144,6 +144,28 @@
     <{/if}>
     <card class="mhs-card">
         <!--timeline待order表增加return_time字段后再增加一个成功归还-->
+        <{if $order['scode'] == 6}>
+        <timeline date="<{$order['due_time']}>">
+            <h3>物品超时未归还</h3>
+            <p>请在<{$order['due_time']}>前发起归还。</p>
+        </timeline>
+        <{else if $order['scode'] == 5}>
+        <timeline date="<{$order['return_time']}>">
+            <h3>该订单已被取消</h3>
+            <p>订单已取消，感谢您的使用</p>
+        </timeline>
+        <{else if $order['scode'] == 4}>
+        <timeline date="<{date('Y-m-d H:i:s',strtotime('now'))}>">
+            <h3>该订单已完成</h3>
+            <p>物品已于<{$order['return_time']}>归还。</p>
+        </timeline>
+        <{/if}>
+        <{if $order['scode'] == 3 || $order['scode'] == 4}>
+        <timeline date="<{$order['return_time']}>">
+            <h3>物品已归还</h3>
+            <p>该订单等待您的评价</p>
+        </timeline>
+        <{/if}>
         <{if $order['scode'] > 1}>
         <timeline date="<{$order['rent_time']}>">
             <h3>等待归还</h3>

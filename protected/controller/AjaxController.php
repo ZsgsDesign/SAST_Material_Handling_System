@@ -217,6 +217,7 @@ class AjaxController extends BaseController
     public function actionCreateOrder(){
         //约定order的scode 1 为等待取用， 2为成功取用等待归还 ， 3为已归还待评价(即二人至少有一人未评价)  ， 4为订单完成  , 5 订单意外取消， 6超时未归还
         $order=new Model('`order`');
+        $cart=new Model('cart');
         $iid=arg('iid');
         $count=arg('count');
         if(!empty($iid)&&!empty($count)){
@@ -229,6 +230,11 @@ class AjaxController extends BaseController
                     'count' => intval($count),
                 )
             );
+            $cart->delete(array(
+                "user = :user AND item_id = :item",
+                ":user" => $this->userinfo['uid'],
+                ":item" => $iid
+            ));
             // $name=($order->query("SELECT `order`.*,item.iid,item.name FROM `order` JOIN item ON `order`.item_id = item.iid"))[0]['name'];//TODO 我是想着要不要返回物品的名字，然后提示XXX物品下单成功
             SUCCESS::Catcher("下单成功",array(
                 'oid' => $oid,
@@ -265,6 +271,7 @@ class AjaxController extends BaseController
                 ),
                 array(
                     "scode" => 5,//scode 5 为订单意外取消
+                    "return_time" => date("Y-m-d H:i:s",time()),
                 )
             );
             SUCCESS::Catcher("取消成功！");
@@ -276,6 +283,7 @@ class AjaxController extends BaseController
                     array(
                         "oid = :oid",
                         ':oid' => $oid,
+                        'return_time' => date("Y-m-d H:i:s",time()),
                     ),
                     array(
                         "scode" => 3,//scode 5 为订单意外取消
