@@ -184,7 +184,7 @@
                                         <h4 class="text-left"><a href="order/view/?oid=<{$r['oid']}>"><{$r['name']}></a></h4>
                                         <p class="text-left">订单号：<{$r['oid']}></p>
                                         <p class="text-left">创建时间：<{$r['create_time']}></p>
-                                        <p class="text-left">借用人：TODO</p>
+                                        <p class="text-left">借用人：<{$r['renter_real_name']}></p>
                                         <{if $r['scode'] == 1}>
                                         <p class="text-left text-info">等待对方取用</p>
                                         <{else if $r['scode'] == 2}>
