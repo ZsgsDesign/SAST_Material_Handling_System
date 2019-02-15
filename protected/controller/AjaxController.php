@@ -277,18 +277,19 @@ class AjaxController extends BaseController
             SUCCESS::Catcher("取消成功！");
         }
         else if($operation==='return'){
-            $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid ;"))[0]['owner'];
+            $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid WHERE `order`.oid = ".$oid))[0]['owner'];
             if($owner_id===$this->userinfo['uid']){
                 $order->update(
                     array(
                         "oid = :oid",
                         ':oid' => $oid,
-                        'return_time' => date("Y-m-d H:i:s",time()),
                     ),
                     array(
                         "scode" => 3,//scode 5 为订单意外取消
+                        'return_time' => date("Y-m-d H:i:s",time()),
                     )
                 );
+                SUCCESS::Catcher("归还成功！");
             }
             else{
                 ERR::Catcher(1004);
