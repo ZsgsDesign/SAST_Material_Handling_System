@@ -240,8 +240,8 @@
         let oid=document.querySelector('#oid').innerText;
         $.post("<{$MHS_DOMAIN}>/ajax/OperateOrder",{oid:oid,operation:'return'},function(data,status){
             console.log(data,status);
+            window.location.reload();
         });
-        window.location.reload();
     }
     function review(comment){
         let oid=document.querySelector('#oid').innerText;
