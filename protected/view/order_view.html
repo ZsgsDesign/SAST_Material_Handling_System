@@ -115,7 +115,7 @@
     <{else if $order['scode'] == 4}>
     <div class="jumbotron alert-success">
         <h1><strong>订单已完成</strong></h1>
-        <p class="lead">该订单已完成</p>
+        <p class="lead">该订单已完成，感谢您的使用。</p>
     </div>
     <{else if $order['scode'] == 3}>
         <{if $order['renter_id'] == $userinfo['uid']}>
@@ -150,35 +150,43 @@
         <!--timeline待order表增加return_time字段后再增加一个成功归还-->
         <{if $order['scode'] == 6}>
         <timeline date="<{$order['due_time']}>">
-            <h3>物品超时未归还</h3>
-            <p>请在<{$order['due_time']}>前发起归还。</p>
+            <h3>超时未归还</h3>
+            <p>请尽快归还物品，并提醒出借人「确认归还」。</p>
         </timeline>
         <{else if $order['scode'] == 5}>
         <timeline date="<{$order['return_time']}>">
-            <h3>该订单已被取消</h3>
-            <p>订单已取消，感谢您的使用</p>
+            <h3>已取消</h3>
+            <p>订单已被取消，感谢您的使用。</p>
         </timeline>
         <{else if $order['scode'] == 4}>
         <timeline date="<{date('Y-m-d H:i:s',strtotime('now'))}>">
-            <h3>该订单已完成</h3>
-            <p>物品已于<{$order['return_time']}>归还。</p>
+            <h3>已完成</h3>
+            <p>物品已于「<{$order['return_time']}>」归还，感谢您的使用。</p>
         </timeline>
         <{/if}>
         <{if $order['scode'] == 3 || $order['scode'] == 4}>
         <timeline date="<{$order['return_time']}>">
-            <h3>物品已归还</h3>
-            <p>该订单等待您的评价</p>
+            <h3>已归还</h3>
+            <p>订单正在等待双方完成互评。</p>
         </timeline>
         <{/if}>
         <{if $order['scode'] > 1 && $order['scode'] != 5}>
         <timeline date="<{$order['rent_time']}>">
             <h3>等待归还</h3>
-            <p>请在<{$order['due_time']}>前发起归还。</p>
+            <{if $order['renter_id'] == $userinfo['uid'] }>
+            <p>已确认取得物品，请在 「<{$order['due_time']}>」 前归还物品，并提醒出借人「确认归还」。</p>
+            <{else}>
+            <p>对方已确认取得物品，最迟在 「<{$order['due_time']}>」 前归还。</p>
+            <{/if}>
         </timeline>
         <{/if}>
         <timeline date="<{$order['create_time']}>">
             <h3>等待取用</h3>
-            <p>请到指定地点或与出借方联系以取得物品。</p>
+            <{if $order['renter_id'] == $userinfo['uid'] }>
+            <p>订单已生成，请到指定地点或与出借方联系以取得物品，取得后点击「确认取用」后开始计算归还时间。</p>
+            <{else}>
+            <p>订单已生成，等待对方取得物品并在「确认取用」后开始计算归还时间。</p>
+            <{/if}>
         </timeline>
     </card>
 
