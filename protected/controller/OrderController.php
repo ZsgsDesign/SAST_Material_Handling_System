@@ -10,11 +10,11 @@ class OrderController extends BaseController
         $oid=arg('oid');
         $order=new Model('`order`');
         if(empty($oid)){
-            return $this->jump("{$this->MHS_DOMAIN}/");//TODO 可以考虑修改为个人中心的订单页面
+            return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
         }
         else{
             $order_res=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where ( a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ) AND a.oid=".$oid))[0];
-            if(strlen($order_res['owner_review'])&&strlen($order_res['renter_review'])&&$order_res['scode'] === '3'){
+            if($order_res['scode'] === '3'&&strlen($order_res['owner_review'])&&strlen($order_res['renter_review'])){
                 $order->update(
                     array(
                         "oid = :oid",

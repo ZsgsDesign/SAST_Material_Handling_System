@@ -43,7 +43,7 @@
 <script>
     let submit=function(){
         NodeList.prototype.map=Array.prototype.map;
-        document.querySelectorAll('.item').map(function(val,index){
+        document.querySelectorAll('.item').map(function(val,index,arr){
             let iid=val.getAttribute('iid');
             let count=val.getAttribute('count');
             $.post('<{$MHS_DOMAIN}>/ajax/CreateOrder',{
@@ -51,9 +51,17 @@
                 count:count
             },function(data,status){
                 console.log(data,status);
+                if(index+1 === arr.length){
+                    if(arr.length === 1){
+                        data=JSON.parse(data);
+                        window.location.href="<{$MHS_DOMAIN}>/order/view?oid="+data.data.oid;
+                    }
+                    else{
+                        window.location.href="<{$MHS_DOMAIN}>/user?tab=order";
+                    }
+                }
             })
         });
-        //TODO 此处需要跳转
         //TODO 以及需要在下单成功后删除购物车中对应的物品
     }
 </script>
