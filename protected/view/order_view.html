@@ -115,7 +115,7 @@
     <{else if $order['scode'] == 4}>
     <div class="jumbotron alert-success">
         <h1><strong>订单已完成</strong></h1>
-        <p class="lead">该订单已完成</p>
+        <p class="lead">该订单已完成，感谢您的使用。</p>
     </div>
     <{else if $order['scode'] == 3}>
         <{if $order['renter_id'] == $userinfo['uid']}>
@@ -151,17 +151,17 @@
         <{if $order['scode'] == 6}>
         <timeline date="<{$order['due_time']}>">
             <h3>物品超时未归还</h3>
-            <p>请在<{$order['due_time']}>前发起归还。</p>
+            <p>请尽快归还物品，并提醒出借人「确认归还」。</p>
         </timeline>
         <{else if $order['scode'] == 5}>
         <timeline date="<{$order['return_time']}>">
             <h3>该订单已被取消</h3>
-            <p>订单已取消，感谢您的使用</p>
+            <p>订单已被取消，感谢您的使用。</p>
         </timeline>
         <{else if $order['scode'] == 4}>
         <timeline date="<{date('Y-m-d H:i:s',strtotime('now'))}>">
             <h3>该订单已完成</h3>
-            <p>物品已于<{$order['return_time']}>归还。</p>
+            <p>物品已于<{$order['return_time']}>归还，感谢您的使用。</p>
         </timeline>
         <{/if}>
         <{if $order['scode'] == 3 || $order['scode'] == 4}>
