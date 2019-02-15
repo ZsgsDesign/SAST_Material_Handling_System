@@ -87,29 +87,29 @@
         <{/if}>
     <{else if $order['scode'] == 2}>
         <{if $order['renter_id'] == $userinfo['uid']}>
-        <div class="jumbotron alert-info">
+        <div class="jumbotron alert-primary">
             <h1><strong>等待归还</strong></h1>
             <p class="lead">请在2019/1/28 13:00 前发起归还，并提醒出借人确认归还</p>
         </div>
         <{else}>
-        <div class="jumbotron alert-info">
+        <div class="jumbotron alert-primary">
             <h1><strong>等待归还</strong></h1>
             <p class="lead">物品将于2019/1/28 13:00 前归还，请在借用人归还后点击"确认归还"</p>
             <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Return">确认归还</button>
         </div>
         <{/if}>
     <{else if $order['scode'] == 5}>
-    <div class="jumbotron alert-info">
-        <h1><strong>订单已取消</strong></h1><!--TODO 看能不能把这个div的背景色改为红色-->
+    <div class="jumbotron alert-warning">
+        <h1><strong>订单已取消</strong></h1>
         <p class="lead">该订单已被取消</p>
     </div>
     <{else if $order['scode'] == 6}>
-    <div class="jumbotron alert-info">
-        <h1><strong>订单已超时</strong></h1><!--TODO 看能不能把这个div的背景色改为红色-->
+    <div class="jumbotron alert-danger">
+        <h1><strong>订单已超时</strong></h1>
         <p class="lead">该订单已超时</p>
     </div>
     <{else if $order['scode'] == 4}>
-    <div class="jumbotron alert-info">
+    <div class="jumbotron alert-success">
         <h1><strong>订单已完成</strong></h1>
         <p class="lead">该订单已完成</p>
     </div>
