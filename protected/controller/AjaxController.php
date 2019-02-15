@@ -218,30 +218,46 @@ class AjaxController extends BaseController
         //约定order的scode 1 为等待取用， 2为成功取用等待归还 ， 3为已归还待评价(即二人至少有一人未评价)  ， 4为订单完成  , 5 订单意外取消， 6超时未归还
         $order=new Model('`order`');
         $cart=new Model('cart');
+        $item=new Model('item');
         $iid=arg('iid');
         $count=arg('count');
         if(!empty($iid)&&!empty($count)){
-            $oid=$order->create(
-                array(
-                    'scode' => 1,
-                    'item_id' => intval($iid),
-                    'create_time' =>date("Y-m-d H:i:s",time()),
-                    'renter_id' => $this->userinfo['uid'],
-                    'count' => intval($count),
-                )
-            );
-            $cart->delete(array(
-                "user = :user AND item_id = :item",
-                ":user" => $this->userinfo['uid'],
-                ":item" => $iid
-            ));
-            // $name=($order->query("SELECT `order`.*,item.iid,item.name FROM `order` JOIN item ON `order`.item_id = item.iid"))[0]['name'];//TODO 我是想着要不要返回物品的名字，然后提示XXX物品下单成功
-            SUCCESS::Catcher("下单成功",array(
-                'oid' => $oid,
-            ));
+            $current_count=intval($item->query("SELECT item.count FROM item WHERE item.iid = ".$iid." ;")[0]['count']);
+            if(intval($count) > 0&&($current_count >= intval($count))){
+                $oid=$order->create(
+                    array(
+                        'scode' => 1,
+                        'item_id' => intval($iid),
+                        'create_time' =>date("Y-m-d H:i:s",time()),
+                        'renter_id' => $this->userinfo['uid'],
+                        'count' => intval($count),
+                    )
+                );
+                $cart->delete(array(
+                    "user = :user AND item_id = :item",
+                    ":user" => $this->userinfo['uid'],
+                    ":item" => $iid,
+                ));
+                $item->update(
+                    array(
+                        "iid = :iid",
+                        ":iid" => $iid
+                    ),
+                    array(
+                        "count" => $current_count - intval($count)
+                    )
+                );
+                // $name=($order->query("SELECT `order`.*,item.iid,item.name FROM `order` JOIN item ON `order`.item_id = item.iid"))[0]['name'];//TODO 我是想着要不要返回物品的名字，然后提示XXX物品下单成功
+                SUCCESS::Catcher("下单成功",array(
+                    'oid' => $oid,
+                ));
+            }
+            else{
+                ERR::Catcher(1004);//参数错误
+            }
         }
         else{
-            ERR::Catcher(1003);
+            ERR::Catcher(1003);//参数不全
         }
     }
     public function actionOperateOrder(){
