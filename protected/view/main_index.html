@@ -34,8 +34,8 @@
         <ul class="nav nav-pills">
             <li class="nav-item">
                 <a class="nav-link <{if $args['sort']==='default' || empty($args['sort'])}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=default<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">默认排序</a>
-                <!--TODO感觉如果上一行那边如果用上三目表达式，应该会更优雅，下同（留下了不学无术的泪水-->
-                <!--TODO又不是不能用，上面那条咕咕咕了-->
+                <!--TODO 感觉如果上一行那边如果用上三目表达式，应该会更优雅，下同（留下了不学无术的泪水-->
+                <!--TODO 又不是不能用，上面那条咕咕咕了-->
             </li>
             <li class="nav-item">
                 <a class="nav-link <{if $args['sort'] === 'bycount'}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=bycount<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">最多借用</a>
