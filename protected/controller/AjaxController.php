@@ -323,13 +323,15 @@ class AjaxController extends BaseController
                     );
                     $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
                     $new_count=intval($res['count']) + intval($res['add_count']);
+                    $new_scode = $res['scode'] == 0 ? 1 : $res['scode'];  //更新物品状态码（没有库存的情况下）
                     $item->update(
                         array(
                             "iid = :iid",
                             ":iid" => $res['iid']
                         ),
                         array(
-                            "count" => $new_count
+                            "count" => $new_count,
+                            "scode" => $new_scode
                         )
                     );
                     SUCCESS::Catcher("取消成功！");
@@ -354,13 +356,15 @@ class AjaxController extends BaseController
                 );
                 $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
                 $new_count=intval($res['count']) + intval($res['add_count']);
+                $new_scode = $res['scode'] == 0 ? 1 : $res['scode'];  //更新物品状态码（没有库存的情况下）
                 $item->update(
                     array(
                         "iid = :iid",
                         ":iid" => $res['iid']
                     ),
                     array(
-                        "count" => $new_count
+                        "count" => $new_count,
+                        "scode" => $new_scode
                     )
                 );
                 SUCCESS::Catcher("归还成功！");
