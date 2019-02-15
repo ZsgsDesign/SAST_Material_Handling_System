@@ -79,26 +79,26 @@
         <{if $order['renter_id'] == $userinfo['uid']}>
         <div class="jumbotron alert-info">
             <h1><strong>等待取用</strong></h1>
-            <p class="lead">请到指定地点或与出借方联系以取得物品，取得后点击"确认取用"后开始计算归还时间。</p>
+            <p class="lead">请到指定地点或与出借方联系以取得物品，取得后点击「确认取用」后开始计算归还时间。</p>
             <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Confirm">确认取用</button>
             <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Cancel">取消订单</button>
         </div>
         <{else}>
         <div class="jumbotron alert-info">
             <h1><strong>等待取用</strong></h1>
-            <p class="lead">请到指定地点或与借用方联系以出借物品，并提醒点击"确认取用"后开始计算归还时间。</p>
+            <p class="lead">在借用方取得物品并「确认取用」后开始计算归还时间。</p>
         </div>
         <{/if}>
     <{else if $order['scode'] == 2}>
         <{if $order['renter_id'] == $userinfo['uid']}>
         <div class="jumbotron alert-primary">
             <h1><strong>等待归还</strong></h1>
-            <p class="lead">请在2019/1/28 13:00 前发起归还，并提醒出借人确认归还</p>
+            <p class="lead">请在 「<{$order['due_time']}>」前归还物品，并提醒出借人「确认归还」。</p>
         </div>
         <{else}>
         <div class="jumbotron alert-primary">
             <h1><strong>等待归还</strong></h1>
-            <p class="lead">物品将于2019/1/28 13:00 前归还，请在借用人归还后点击"确认归还"</p>
+            <p class="lead">物品将在 「<{$order['due_time']}>」 前归还，请在借用人归还后点击「确认归还」。</p>
             <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Return">确认归还</button>
         </div>
         <{/if}>
@@ -190,7 +190,6 @@
             <div class="col-10 responsive">
                 <div>
                     <h3><{$order['name']}></h3>
-                    <p><{$order['dec']}></p>
                 </div>
             </div>
         </div>
