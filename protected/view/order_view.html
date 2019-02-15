@@ -212,8 +212,13 @@
                 <td><{$order['create_time']}></td>
             </tr>
             <tr>
+                <{if $order['renter_id'] == $userinfo['uid']}>
                 <th scope="row">出借人</th>
                 <td><{$order['real_name']}></td>
+                <{else}>
+                <th scope="row">借用人</th>
+                <td><{$order['renter_real_name']}></td>
+                <{/if}>
             </tr>
             <tr>
                 <th scope="row">借用时限</th>
