@@ -38,14 +38,17 @@ class ItemController extends BaseController
                 "desc" => $item_res["dec"] //物品描述
             );
             $user_res=$user->find(array("uid=:uid",":uid" => $item_res["owner"]));
-            $item_count=count($item->findAll(array("owner=:owner",":owner" => $item_res["owner"],)));
+            $item_count=count($item->findAll(array(
+                "owner=:owner AND scode > -1", //只显示未下架的物品
+                ":owner" => $item_res["owner"]
+                )));
             $order_count=count($order->query("SELECT `order`.*,item.`owner` FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `owner`=".$user_res['uid']));
             $this->publisher_info = array(
                 "publisher" => $user_res["real_name"],
                 "publisher_credit" => $user_res["credit"], //出借者信用
                 "publisher_order_count" => $order_count, //总出借笔数
                 "publisher_item_count" => $item_count, //发布物品数
-            );//TODO 上面两处空缺需要一些sql方面的高级操作，后续再补
+            );
             
         }
         $this->title=$this->item_info["name"]." - 物品详情";
