@@ -65,6 +65,16 @@ class UserController extends BaseController
                         "scode" => 6,
                     )
                 );
+                $curren_creidt=$users->find(array("uid = :uid",":uid" => $order_res['renter_id']))['credit'];
+                $users->update(
+                    array(
+                        "uid = :uid",
+                        ":uid" => $order_res['renter_id'],
+                    ),
+                    array(
+                        "credit" => intval($curren_creidt)-10 
+                    )
+                );
                 
                 $order_res=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where oid = ".$order_res['oid']));
                 $order_reses[$key]['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
