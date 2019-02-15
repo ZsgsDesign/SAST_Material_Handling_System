@@ -1,13 +1,11 @@
 <style>
     <{include file="MHS.css" }>
-
     avatar{
         display: block;
         position: relative;
         text-align: center;
         height: 8rem;
     }
-
     avatar > img{
         display: block;
         width:8rem;
@@ -21,14 +19,6 @@
         position: absolute;
         margin: auto;
     }
-
-
-    hr.atsast-line{
-        width: auto;
-        margin-left:1rem;
-        margin-right: 1rem;
-    }
-
     .tab .card-header{
         padding:0;
         border-radius: 4px;
@@ -36,22 +26,18 @@
     .tab .card-header > ul{
         margin:0;
     }
-
     .tab .card-header > ul .nav-link{
         padding:1rem;
     }
-
     @media all and (min-width:768px){
         .tab .card-header > ul .nav-link{
             font-size: medium;
         }
     }
-
     .tab .card-header .nav-tabs .nav-link.active {
         color: #D32F2F;
         border-color: #FF5252;
     }
-
     #userTab{
         position:relative;
     }
@@ -59,7 +45,6 @@
         max-width:15rem;
         max-height:15rem;
     }
-
 </style>
 
 <div class="container mundb-standard-container"> 
@@ -139,6 +124,58 @@
                             </div>
                         </div>
                         </card>
+                        <{if $isMe}>
+                        <card>
+                            <div class="row text-center">
+                                <div class="col-12">
+                                    <h5 class="mt-3 text-primary">我的借用</h5>
+                                </div>
+                                <div class="col-4">
+                                    <statistic>
+                                        <h1>99</h1>
+                                        <p>待取用</p>
+                                    </statistic>
+                                </div>
+                                <div class="col-4">
+                                    <statistic>
+                                        <h1>99</h1>
+                                        <p>待归还</p>
+                                    </statistic>
+                                </div>
+                                <div class="col-4">
+                                    <statistic>
+                                        <h1>99</h1>
+                                        <p>待评价</p>
+                                    </statistic>
+                                </div>
+                            </div>
+                        </card>
+                        <card>
+                            <div class="row text-center">
+                                <div class="col-12">
+                                    <h5 class="mt-3 text-primary">我的出借</h5>
+                                </div>
+                                <div class="col-4">
+                                    <statistic>
+                                        <h1>99</h1>
+                                        <p>待对方取用</p>
+                                    </statistic>
+                                </div>
+                                <div class="col-4">
+                                    <statistic>
+                                        <h1>99</h1>
+                                        <p>待归还/确认</p>
+                                    </statistic>
+                                </div>
+                                <div class="col-4">
+                                    <statistic>
+                                        <h1>99</h1>
+                                        <p>待评价</p>
+                                    </statistic>
+                                </div>
+                            </div>
+                        </card>
+                        <{/if}>
                     </div>
             </div>
             <{if $isMe}>
