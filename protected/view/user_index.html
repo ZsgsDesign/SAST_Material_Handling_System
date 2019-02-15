@@ -162,20 +162,14 @@
                                         <button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#Cancel<{$key}>">取消订单</button>
                                         <{else if $r['scode'] == 2}>
                                         <p class="text-left text-info">等待归还</p>
-                                        <button type="button" class="btn btn-raised btn-success">确认归还</button>
                                         <{else if $r['scode'] == 3}>
                                         <p class="text-left text-info">等待评价</p>
-                                        <button type="button" class="btn btn-raised btn-success">好评</button>
-                                        <button type="button" class="btn btn-raised btn-secondary">中评</button>
-                                        <button type="button" class="btn btn-raised btn-warning">差评</button>
                                         <{else if $r['scode'] == 4}>
                                         <p class="text-left text-success">订单完成</p>
-                                        <p class="text-left text-warning">TODO：显示双方评价</p>
                                         <{else if $r['scode'] == 5}>
                                         <p class="text-left text-secondary">订单取消</p>
                                         <{else if $r['scode'] == 6}>
                                         <p class="text-left text-warning">您已超时未归还</p>
-                                        <p class="text-left text-warning">TODO：解决方案</p>
                                         <{/if}>
                                     </div>
                                 </div>
@@ -194,23 +188,17 @@
                                         <p class="text-left">创建时间：<{$r['create_time']}></p>
                                         <p class="text-left">借用人：TODO</p>
                                         <{if $r['scode'] == 1}>
-                                        <p class="text-left text-info">等待取用</p>
+                                        <p class="text-left text-info">等待对方取用</p>
                                         <{else if $r['scode'] == 2}>
-                                        <p class="text-left text-info">等待归还</p>
-                                        <button type="button" class="btn btn-raised btn-success">确认归还</button>
+                                        <p class="text-left text-info">等待对方归还</p>
                                         <{else if $r['scode'] == 3}>
                                         <p class="text-left text-info">等待评价</p>
-                                        <button type="button" class="btn btn-raised btn-success">好评</button>
-                                        <button type="button" class="btn btn-raised btn-secondary">中评</button>
-                                        <button type="button" class="btn btn-raised btn-warning">差评</button>
                                         <{else if $r['scode'] == 4}>
                                         <p class="text-left text-success">订单完成</p>
-                                        <p class="text-left text-warning">TODO：显示双方评价</p>
                                         <{else if $r['scode'] == 5}>
                                         <p class="text-left text-secondary">订单取消</p>
                                         <{else if $r['scode'] == 6}>
-                                        <p class="text-left text-warning">您已超时未归还</p>
-                                        <p class="text-left text-warning">TODO：解决方案</p>
+                                        <p class="text-left text-warning">对方超时未归还</p>
                                         <{/if}>
                                     </div>
                                 </div>
