@@ -147,8 +147,7 @@
         <{if $order['scode'] > 1}>
         <timeline date="<{$order['rent_time']}>">
             <h3>等待归还</h3>
-            <p>请在2019/1/28 13:00 前发起归还。</p>
-            <!--TODO修改上一行代码的时间-->
+            <p>请在<{$order['due_time']}>前发起归还。</p>
         </timeline>
         <{/if}>
         <timeline date="<{$order['create_time']}>">

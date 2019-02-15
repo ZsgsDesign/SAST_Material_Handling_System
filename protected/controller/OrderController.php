@@ -26,7 +26,21 @@ class OrderController extends BaseController
                 );
                 $order_res=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where ( a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ) AND a.oid=".$oid))[0];
             }
-            // var_dump($order_res);
+            $order_res['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
+            if($order_res['scode'] === '2'&&(strtotime('now') > strtotime($order_res['due_time']))){
+                $order->update(
+                    array(
+                        "oid = :oid",
+                        ":oid" => $oid,
+                    ),
+                    array(
+                        "scode" => 6,
+                    )
+                );
+                
+                $order_res=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where ( a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ) AND a.oid=".$oid))[0];
+                $order_res['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
+            }
             $this->order=$order_res;
         }
     }
