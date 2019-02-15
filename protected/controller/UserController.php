@@ -40,36 +40,8 @@ class UserController extends BaseController
 
 
         $order=new Model('`order`');
-        $order_reses=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid'].""));
-        foreach($order_reses as $key => $order_res){
-            if($order_res['scode'] === '3'&&strlen($order_res['owner_review'])&&strlen($order_res['renter_review'])){
-                $order->update(
-                    array(
-                        "oid = :oid",
-                        ":oid" => $order_res['oid'],
-                    ),
-                    array(
-                        "scode" => 4,
-                    )
-                );
-                $order_res=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where oid = ".$order_res['oid']));
-            }
-            $order_reses[$key]['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
-            if($order_res['scode'] === '2'&&(strtotime('now') > strtotime($order_reses[$key]['due_time']))){
-                $order->update(
-                    array(
-                        "oid = :oid",
-                        ":oid" => $order_res['oid'],
-                    ),
-                    array(
-                        "scode" => 6,
-                    )
-                );
-                
-                $order_res=($order->query("SELECT a.*,users.real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` where oid = ".$order_res['oid']));
-                $order_reses[$key]['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
-            }
-        }
-        $this->orders=$order_reses;
+        $order_res=$order->query("SELECT a.*,users.real_name,users.uid FROM (SELECT `order`.*,item.`name`,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id) as a JOIN users ON users.uid=a.`owner` WHERE a.renter_id = ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ORDER BY a.oid DESC");
+        $this->orders=$order_res;
+        dump($this->orders);
     }
 }
