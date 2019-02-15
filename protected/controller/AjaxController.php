@@ -307,14 +307,15 @@ class AjaxController extends BaseController
                 ERR::Catcher(1004);
         }
         else if($operation==='cancel'){ //取消订单，TODO 这里双方都可以在确认取用前取消订单
-            if($order_res['renter_id'] == $this->userinfo['uid'] || $owner_id == $this->userinfo['uid']){
-                if($order_res['scode'] != 1) //只有在待确认的情况下才能取消订单
+            if($order_res['renter_id'] === $this->userinfo['uid'] || $owner_id === $this->userinfo['uid']){
+                if($order_res['scode'] != 1){
                     ERR::Catcher(2008);
+                } //只有在待确认的情况下才能取消订单
                 else{
                     $order->update(
                         array(
-                            "oid = :oid AND renter_id = :renter_id",
-                            ':oid' => $oid
+                            "oid = :oid",
+                            ':oid' => $oid,
                         ),
                         array(
                             "scode" => 5,//scode 5 为订单意外取消
@@ -335,8 +336,9 @@ class AjaxController extends BaseController
                     SUCCESS::Catcher("取消成功！");
                 }
             }
-            else
+            else{
                 ERR::Catcher(1004);
+            }
         }
         else if($operation==='return'){
             if($order_res['scode'] != 2) //只有在待归还的情况下才能进行确认归还

@@ -158,8 +158,8 @@
                                         <p class="text-left">出借人：<{$r['real_name']}></p>
                                         <{if $r['scode'] == 1}>
                                         <p class="text-left text-info">等待取用</p>
-                                        <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#Confirm">确认取用</button>
-                                        <button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#Cancel">取消订单</button>
+                                        <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#Confirm<{$key}>">确认取用</button>
+                                        <button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#Cancel<{$key}>">取消订单</button>
                                         <{else if $r['scode'] == 2}>
                                         <p class="text-left text-info">等待归还</p>
                                         <button type="button" class="btn btn-raised btn-success">确认归还</button>
@@ -217,6 +217,73 @@
                             </card>
                     </div>
                     <{/if}>
+
+                    <div class="modal fade" id="Confirm<{$key}>" tabindex="-1" role="dialog" aria-labelledby="Confirm" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">确认取用</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>您确定取得物品了吗？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" onclick="confirm(<{$r['oid']}>)">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="Cancel<{$key}>" tabindex="-1" role="dialog" aria-labelledby="Cancel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">确认取消</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>您确定取消该订单吗？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" onclick="cancel(<{$r['oid']}>)">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="Return<{$key}>" tabindex="-1" role="dialog" aria-labelledby="Return" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">确认归还</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>您确定物品已归还了吗？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" onclick="_return(<{$r['oid']}>)">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="Review<{$key}>" tabindex="-1" role="dialog" aria-labelledby="Review" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">我要评价</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>您想给这次借用怎样的评价呢?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="review('-1',<{$r['oid']}>)">差评</button>
+                                    <button type="button" class="btn btn-primary" onclick="review('0',<{$r['oid']}>)">中评</button>
+                                    <button type="button" class="btn btn-primary" onclick="review('1',<{$r['oid']}>)">好评</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <{/foreach}>
             </div>
             <{/if}>
@@ -277,29 +344,25 @@
 </script>
 
 <script>
-        function confirm(){
-            let oid=document.querySelector('#oid').innerText;
+        function confirm(oid){
             $.post("<{$MHS_DOMAIN}>/ajax/OperateOrder",{oid:oid,operation:'confirm'},function(data,status){
                 console.log(data,status);
             });
             window.location.reload();
         }
-        function cancel(){
-            let oid=document.querySelector('#oid').innerText;
+        function cancel(oid){
             $.post("<{$MHS_DOMAIN}>/ajax/OperateOrder",{oid:oid,operation:'cancel'},function(data,status){
                 console.log(data,status);
             });
             window.location.reload();
         }
-        function _return(){
-            let oid=document.querySelector('#oid').innerText;
+        function _return(oid){
             $.post("<{$MHS_DOMAIN}>/ajax/OperateOrder",{oid:oid,operation:'return'},function(data,status){
                 console.log(data,status);
                 window.location.reload();
             });
         }
-        function review(comment){
-            let oid=document.querySelector('#oid').innerText;
+        function review(comment,oid){
             $.post("<{$MHS_DOMAIN}>/ajax/ReviewOrder",{oid:oid,review:comment},function(data,status){
                 console.log(data,status);
             });
@@ -307,68 +370,3 @@
         }
     </script>
     
-    <div class="modal fade" id="Confirm" tabindex="-1" role="dialog" aria-labelledby="Confirm" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">确认取用</h5>
-                </div>
-                <div class="modal-body">
-                    <p>您确定取得物品了吗？</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="confirm()">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="Cancel" tabindex="-1" role="dialog" aria-labelledby="Cancel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">确认取消</h5>
-                </div>
-                <div class="modal-body">
-                    <p>您确定取消该订单吗？</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="cancel()">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="Return" tabindex="-1" role="dialog" aria-labelledby="Return" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">确认归还</h5>
-                </div>
-                <div class="modal-body">
-                    <p>您确定物品已归还了吗？</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="_return()">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="Review" tabindex="-1" role="dialog" aria-labelledby="Review" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">我要评价</h5>
-                </div>
-                <div class="modal-body">
-                    <p>您想给这次借用怎样的评价呢?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="review('-1')">差评</button>
-                    <button type="button" class="btn btn-primary" onclick="review('0')">中评</button>
-                    <button type="button" class="btn btn-primary" onclick="review('1')">好评</button>
-                </div>
-            </div>
-        </div>
-    </div>
