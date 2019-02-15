@@ -1,23 +1,9 @@
 <style>
-    card {
-    display: block;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-    border-radius: 4px;
-    transition: .2s ease-out .0s;
-    color: #7a8e97;
-    background: #fff;
-    padding: 1rem;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    margin-bottom: 2rem;
-    }
-    .mhs-item-img {
-        max-width:15rem;
-        max-height:15rem;
-    }
+    <{include file="MHS.css" }>
+
     card.mhs-card > div{
         text-align: center;
-        padding: 0.5rem;
+        padding: 1rem;
     }
     statistic{
         display: block;
@@ -25,9 +11,9 @@
 </style>
 
 <div class="container mundb-standard-container"> 
-    <h3 class="mhs-title mb-5 mt-5">物品详情</h3>
+    <h3 class="mhs-title mb-5">物品详情</h3>
     <{if $item_info["scode"] == -1}>
-    <h5 class="mhs-title mb-5 mt-5 text-danger">抱歉，该物品已下架。</h5>
+    <h5 class="mhs-title text-danger mb-3">抱歉，该物品已下架。</h5>
     <{/if}>
     <card class="mhs-card">
         <div class="row">
@@ -44,13 +30,13 @@
                         </tr>
                         <tr>
                             <th scope="row">借用时限</th>
-                            <{if $item_info["limit_time"] !=0 }>
+                            <{if $item_info["limit_time"] != 0 }>
                             <td><{$item_info["limit_time"]}>天</td>
                             <{else}>
                             <td>无限制</td>
                             <{/if}>
                         </tr>
-                        <{if $item_info["scode"] != -1}>
+                        <{if $item_info["scode"] > -1}>
                         <tr>
                             <th scope="row">当前库存</th>
                             <td><{$item_info["count"]}></td>
@@ -83,8 +69,7 @@
                     </tbody>
                 </table>
             </div>
-
-            <{if $item_info["scode"] != -1}>
+            <{if $item_info["scode"] > -1}>
             <div class="col">
                 <{if !$isMyItem}>
                 <div class="btn-group">
@@ -103,11 +88,22 @@
                 <{/if}>
                 <button class="btn btn-primary" onclick=""><i class="MDI share"></i>分享</button>
             </div>
+            <{else if $item_info["scode"] == -1}>
+            <div class="col">
+                <button type="button" class="btn btn-success mhs-button" onclick="
+                 showDialog('您确定要上架「<{$item_info['name']}>」吗？','上架物品','restoreItem(<{$item_info['iid']}>)');"><i class="MDI check"></i>上架</button>
+            </div>
             <{/if}>
         </div>
     </card>
-    <card class="mhs-card text-left" id="desc">
-
+    <card class="mhs-card">
+        <div class="text-left">
+            <{if strlen($item_info['desc']) == 0 }>
+            <h5 class="text-primary text-center">暂无物品简介</h5>
+            <{/if}>
+            <article class="markdown-body" id="desc">
+            </article>
+        </div>
     </card>
     <card class="mhs-card">
             <div class="row">
@@ -139,6 +135,7 @@
     </card>
 </div>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" integrity="sha256-HbgiGHMLxHZ3kkAiixyvnaaZFNjNWLYKD/QG6PWaQPc=" crossorigin="anonymous" />
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
@@ -148,6 +145,5 @@
 
 </script>
 <script>
-    //最好放在cdn上
     <{include file="MHS_Item.js" }>
 </script>
