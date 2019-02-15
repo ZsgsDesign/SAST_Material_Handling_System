@@ -54,7 +54,16 @@ function addToCart(id,i) {
     $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
         iid:id,
         count:$('#count' + i).text()
-    },(result) => showResult(result));
+    },(result) => showResult(result));//箭头函数可能会出现兼容性问题
+}
+function borrowImmediately(id,i){
+    $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
+        iid:id,
+        count:$('#count' + i).text()
+    },(result) => {
+        // showResult(result);
+        window.location.href="<{$MHS_DOMAIN}>/order/create/?item[]="+id;
+    });
 }
 function removeItem(id) {
     $.post("<{$MHS_DOMAIN}>/ajax/RemoveItem",{
