@@ -148,6 +148,10 @@ class AjaxController extends BaseController
     }
 
     public function actionAddToCart(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+            return;
+        }
         $iid=arg('iid');
         $count=arg('count');
         $uid=$this->userinfo['uid'];
@@ -215,45 +219,55 @@ class AjaxController extends BaseController
         }
     }
     public function actionCreateOrder(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+            return;
+        }
         //约定order的scode 1 为等待取用， 2为成功取用等待归还 ， 3为已归还待评价(即二人至少有一人未评价)  ， 4为订单完成  , 5 订单意外取消， 6超时未归还
         $order=new Model('`order`');
         $cart=new Model('cart');
         $item=new Model('item');
         $iid=arg('iid');
         $count=arg('count');
-        if(!empty($iid)&&!empty($count)){
-            $current_count=intval($item->query("SELECT item.count FROM item WHERE item.iid = ".$iid." ;")[0]['count']);
-            if(intval($count) > 0&&($current_count >= intval($count))){
-                $oid=$order->create(
-                    array(
-                        'scode' => 1,
-                        'item_id' => intval($iid),
-                        'create_time' =>date("Y-m-d H:i:s",time()),
-                        'renter_id' => $this->userinfo['uid'],
-                        'count' => intval($count),
-                    )
-                );
-                $cart->delete(array(
-                    "user = :user AND item_id = :item",
-                    ":user" => $this->userinfo['uid'],
-                    ":item" => $iid,
-                ));
-                $item->update(
-                    array(
-                        "iid = :iid",
-                        ":iid" => $iid
-                    ),
-                    array(
-                        "count" => $current_count - intval($count)
-                    )
-                );
-                // $name=($order->query("SELECT `order`.*,item.iid,item.name FROM `order` JOIN item ON `order`.item_id = item.iid"))[0]['name'];//TODO 我是想着要不要返回物品的名字，然后提示XXX物品下单成功
-                SUCCESS::Catcher("下单成功",array(
-                    'oid' => $oid,
-                ));
-            }
-            else{
-                ERR::Catcher(1004);//参数错误
+        if(!empty($iid) && !empty($count)){
+            if(IsMyItem($iid))
+                ERR::Catcher(1004);// 防止自己给自己的物品下单
+            else {
+                $current_count=intval($item->query("SELECT item.count FROM item WHERE item.iid = ".$iid." ;")[0]['count']);
+                if(intval($count) > 0 && ($current_count >= intval($count)) ){
+                    $oid=$order->create(
+                        array(
+                            'scode' => 1,
+                            'item_id' => intval($iid),
+                            'create_time' =>date("Y-m-d H:i:s",time()),
+                            'renter_id' => $this->userinfo['uid'],
+                            'count' => intval($count),
+                        )
+                    );
+                    $cart->delete(array(
+                        "user = :user AND item_id = :item",
+                        ":user" => $this->userinfo['uid'],
+                        ":item" => $iid,
+                    ));
+                    $scode = $current_count - intval($count) == 0 ? 0 : 1 ;  //更新库存信息
+                    $item->update(
+                        array(
+                            "iid = :iid",
+                            ":iid" => $iid
+                        ),
+                        array(
+                            "scode" => $scode,
+                            "count" => $current_count - intval($count)
+                        )
+                    );
+                    // $name=($order->query("SELECT `order`.*,item.iid,item.name FROM `order` JOIN item ON `order`.item_id = item.iid"))[0]['name'];//TODO 我是想着要不要返回物品的名字，然后提示XXX物品下单成功
+                    SUCCESS::Catcher("下单成功",array(
+                        'oid' => $oid,
+                    ));
+                }
+                else{
+                    ERR::Catcher(1004);//参数错误
+                }
             }
         }
         else{
@@ -261,12 +275,23 @@ class AjaxController extends BaseController
         }
     }
     public function actionOperateOrder(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+            return;
+        }
         $order=new Model('`order`');
         $item=new Model('item');
         $oid=arg('oid');
         $operation=arg('operation');//可能的操作有      确认取用     取消订单       归还
-        if($operation==='confirm'){
-            $order->update(
+        $order_res = $order->find(array(
+            'oid=:id',
+            'id' => $oid
+        ));
+        $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid WHERE `order`.oid = ".$oid))[0]['owner'];
+        if($operation==='confirm'){ //确认取用
+            if($order_res['scode'] != 1) //只有在待确认的情况下才能确认取用
+                ERR::Catcher(2008); //请不要皮这个系统
+            else if($order->update(
                 array(
                     "oid = :oid AND renter_id = :renter_id",
                     ':oid' => $oid,
@@ -276,37 +301,47 @@ class AjaxController extends BaseController
                     "scode" => 2,
                     "rent_time" => date("Y-m-d H:i:s",time()),
                 )
-            );
-            SUCCESS::Catcher("取用成功！");
+            ) > 0) //判断影响行数以防止他人进行确认
+                SUCCESS::Catcher("取用成功！");
+            else
+                ERR::Catcher(1004);
         }
-        else if($operation==='cancel'){
-            $order->update(
-                array(
-                    "oid = :oid AND renter_id = :renter_id",
-                    ':oid' => $oid,
-                    ":renter_id" => $this->userinfo['uid'],
-                ),
-                array(
-                    "scode" => 5,//scode 5 为订单意外取消
-                    "return_time" => date("Y-m-d H:i:s",time()),
-                )
-            );
-            $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
-            $new_count=intval($res['count']) + intval($res['add_count']);
-            $item->update(
-                array(
-                    "iid = :iid",
-                    ":iid" => $res['iid']
-                ),
-                array(
-                    "count" => $new_count
-                )
-            );
-            SUCCESS::Catcher("取消成功！");
+        else if($operation==='cancel'){ //取消订单，TODO 这里双方都可以在确认取用前取消订单
+            if($order_res['renter_id'] == $this->userinfo['uid'] || $owner_id == $this->userinfo['uid']){
+                if($order_res['scode'] != 1) //只有在待确认的情况下才能取消订单
+                    ERR::Catcher(2008);
+                else{
+                    $order->update(
+                        array(
+                            "oid = :oid AND renter_id = :renter_id",
+                            ':oid' => $oid
+                        ),
+                        array(
+                            "scode" => 5,//scode 5 为订单意外取消
+                            "return_time" => date("Y-m-d H:i:s",time()),
+                        )
+                    );
+                    $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
+                    $new_count=intval($res['count']) + intval($res['add_count']);
+                    $item->update(
+                        array(
+                            "iid = :iid",
+                            ":iid" => $res['iid']
+                        ),
+                        array(
+                            "count" => $new_count
+                        )
+                    );
+                    SUCCESS::Catcher("取消成功！");
+                }
+            }
+            else
+                ERR::Catcher(1004);
         }
         else if($operation==='return'){
-            $owner_id=($order->query("SELECT `order`.oid,`order`.item_id,`item`.iid,`item`.`owner` FROM `order` JOIN `item` ON `order`.item_id = `item`.iid WHERE `order`.oid = ".$oid))[0]['owner'];
-            if($owner_id===$this->userinfo['uid']){
+            if($order_res['scode'] != 2) //只有在待归还的情况下才能进行确认归还
+                ERR::Catcher(2008);
+            else if($owner_id===$this->userinfo['uid']){
                 $order->update(
                     array(
                         "oid = :oid",
@@ -339,6 +374,10 @@ class AjaxController extends BaseController
         }
     }
     public function actionReviewOrder(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+            return;
+        }
         //TODO 可以考虑使用对象序列化 让renter_review 和owner_review 字段 再存放评价的文字内容
         $order=new Model('`order`');
         $oid=arg('oid');
