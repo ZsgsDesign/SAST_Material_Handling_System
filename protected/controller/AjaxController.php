@@ -262,6 +262,7 @@ class AjaxController extends BaseController
     }
     public function actionOperateOrder(){
         $order=new Model('`order`');
+        $item=new Model('item');
         $oid=arg('oid');
         $operation=arg('operation');//可能的操作有      确认取用     取消订单       归还
         if($operation==='confirm'){
@@ -290,6 +291,17 @@ class AjaxController extends BaseController
                     "return_time" => date("Y-m-d H:i:s",time()),
                 )
             );
+            $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
+            $new_count=intval($res['count']) + intval($res['add_count']);
+            $item->update(
+                array(
+                    "iid = :iid",
+                    ":iid" => $res['iid']
+                ),
+                array(
+                    "count" => $new_count
+                )
+            );
             SUCCESS::Catcher("取消成功！");
         }
         else if($operation==='return'){
@@ -303,6 +315,17 @@ class AjaxController extends BaseController
                     array(
                         "scode" => 3,//scode 5 为订单意外取消
                         'return_time' => date("Y-m-d H:i:s",time()),
+                    )
+                );
+                $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
+                $new_count=intval($res['count']) + intval($res['add_count']);
+                $item->update(
+                    array(
+                        "iid = :iid",
+                        ":iid" => $res['iid']
+                    ),
+                    array(
+                        "count" => $new_count
                     )
                 );
                 SUCCESS::Catcher("归还成功！");
