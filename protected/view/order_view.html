@@ -1,4 +1,5 @@
 <style>
+    <{include file="MHS.css" }>
     timeline {
         display: block;
         padding: 3em 2em 2em;
@@ -6,11 +7,9 @@
         color: rgba(0, 0, 0, 0.7);
         border-left: 0.1rem solid rgba(0, 0, 0, 0.3);
     }
-
     timeline p {
         font-size: 1rem;
     }
-
     timeline::before {
         content: attr(date);
         position: absolute;
@@ -23,7 +22,6 @@
         font-size: .785rem;
         line-height: 1rem;
     }
-
     timeline::after {
         width: 1rem;
         height: 1rem;
@@ -36,8 +34,6 @@
         border: 0.1rem solid rgba(0, 0, 0, 0.3);
         background: white;
     }
-
-
     timeline:last-child {
         border-image-source: linear-gradient(rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0));
         border-image-slice: 1 0 0 100%;
@@ -45,27 +41,35 @@
         border-image-repeat: stretch;
         border-image-width: 0.1rem;
     }
-
-    card {
-        display: block;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-        border-radius: 4px;
-        transition: .2s ease-out .0s;
-        color: #7a8e97;
-        background: #fff;
+    .time-line-card {
         padding: 1rem;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        margin-bottom: 2rem;
     }
-    .mhs-img-detail {
-        width:15rem;
-        height:15rem;
-    }
-
     card.mhs-card > div{
-        text-align: center;
         padding: 1rem;
+    }
+    @media all and (max-width:1200px) and (min-width:992px){
+        .responsive>div{
+            min-width: 700px;
+            float: right;
+        }
+    }
+    @media all and (max-width:992px) and (min-width:768px){
+        .responsive>div{
+            width: 500px;
+            float: right;
+        }
+    }
+    @media all and (max-width:767px) and (min-width:540px){
+        .responsive>div{
+            width: 300px;
+            float: right;
+        }
+    }
+    @media all and (max-width:540px){
+        .responsive>div{
+            width: 150px;
+            float: right;
+        }
     }
 </style>
 
@@ -142,7 +146,7 @@
             <{/if}>
         <{/if}>
     <{/if}>
-    <card class="mhs-card">
+    <card class="time-line-card">
         <!--timeline待order表增加return_time字段后再增加一个成功归还-->
         <{if $order['scode'] == 6}>
         <timeline date="<{$order['due_time']}>">
@@ -178,18 +182,18 @@
         </timeline>
     </card>
 
-    <card class="mhs-card">
+    <card class="order-card">
         <div class="row">
-            <div class="col-md-3 col-sm-12 col-12">
-                <img class="mhs-img-detail rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$order['iid']}>?size=400">
+            <div class="col-2">
+                <img class="mhs-item-img-order rounded float-left" src="<{$MHS_DOMAIN}>/pic/<{$order['iid']}>?size=400">
             </div>
-            <div class="col-md-9 col-sm-12 col-12">
-                <h4 class="text-left"><{$order['name']}></h4>
-                <p class="text-left"><{$order['dec']}></p>
+            <div class="col-10 responsive">
+                <div>
+                    <h3><{$order['name']}></h3>
+                    <p><{$order['dec']}></p>
+                </div>
             </div>
         </div>
-    </card>
-    <card class="mhs-card">
         <table class="table table-borderless table-hover">
             <tbody>
             <tr>
