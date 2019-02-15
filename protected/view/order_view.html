@@ -166,7 +166,7 @@
             <p>该订单等待您的评价</p>
         </timeline>
         <{/if}>
-        <{if $order['scode'] > 1}>
+        <{if $order['scode'] > 1 && $order['scode'] != 5}>
         <timeline date="<{$order['rent_time']}>">
             <h3>等待归还</h3>
             <p>请在<{$order['due_time']}>前发起归还。</p>
