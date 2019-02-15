@@ -9,6 +9,7 @@ class OrderController extends BaseController
         $this->title="查看订单";
         $oid=arg('oid');
         $order=new Model('`order`');
+        $users=new Model('`user`');
         if(empty($oid)){
             return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
         }
@@ -28,6 +29,16 @@ class OrderController extends BaseController
             }
             $order_res['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
             if($order_res['scode'] === '2'&&(strtotime('now') > strtotime($order_res['due_time']))){
+                $curren_creidt=$users->find(array("uid = :uid",":uid" => $order_res['renter_id']))['credit'];
+                $users->update(
+                    array(
+                        "uid = :uid",
+                        ":uid" => $order_res['renter_id'],
+                    ),
+                    array(
+                        "credit" => intval($curren_creidt)-10 
+                    )
+                );
                 $order->update(
                     array(
                         "oid = :oid",

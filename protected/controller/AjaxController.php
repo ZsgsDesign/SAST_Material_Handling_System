@@ -281,6 +281,7 @@ class AjaxController extends BaseController
         }
         $order=new Model('`order`');
         $item=new Model('item');
+        $users=new Model('users');
         $oid=arg('oid');
         $operation=arg('operation');//可能的操作有      确认取用     取消订单       归还
         $order_res = $order->find(array(
@@ -322,9 +323,9 @@ class AjaxController extends BaseController
                             "return_time" => date("Y-m-d H:i:s",time()),
                         )
                     );
-                    $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
+                    $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count,item.scode FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
                     $new_count=intval($res['count']) + intval($res['add_count']);
-                    $new_scode = $res['scode'] == 0 ? 1 : $res['scode'];  //更新物品状态码（没有库存的情况下）
+                    $new_scode = (intval($res['scode']) == 0 ? 1 : intval($res['scode']));  //更新物品状态码（没有库存的情况下）
                     $item->update(
                         array(
                             "iid = :iid",
@@ -333,6 +334,16 @@ class AjaxController extends BaseController
                         array(
                             "count" => $new_count,
                             "scode" => $new_scode
+                        )
+                    );
+                    $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
+                    $users->update(
+                        array(
+                            "uid = :uid",
+                            ":uid" => $this->userinfo['uid'],
+                        ),
+                        array(
+                            "credit" => intval($curren_creidt)-5 
                         )
                     );
                     SUCCESS::Catcher("取消成功！");
@@ -369,6 +380,16 @@ class AjaxController extends BaseController
                         "scode" => $new_scode
                     )
                 );
+                $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
+                $users->update(
+                    array(
+                        "uid = :uid",
+                        ":uid" => $this->userinfo['uid'],
+                    ),
+                    array(
+                        "credit" => intval($curren_creidt)+5 
+                    )
+                );
                 SUCCESS::Catcher("归还成功！");
             }
             else{
@@ -386,6 +407,7 @@ class AjaxController extends BaseController
         }
         //TODO 可以考虑使用对象序列化 让renter_review 和owner_review 字段 再存放评价的文字内容
         $order=new Model('`order`');
+        $users=new Model('users');
         $oid=arg('oid');
         $review=arg('review');// 评价的内容
         if(!empty($oid)&&!empty($review)){
@@ -400,6 +422,16 @@ class AjaxController extends BaseController
                         "renter_review" => $review,
                     )
                 );
+                $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
+                $users->update(
+                    array(
+                        "uid = :uid",
+                        ":uid" => $this->userinfo['uid'],
+                    ),
+                    array(
+                        "credit" => intval($curren_creidt)+5 
+                    )
+                );
                 SUCCESS::Catcher("评价成功！");
             }
             else if($this->userinfo['uid'] === $order_res['owner']){
@@ -410,6 +442,16 @@ class AjaxController extends BaseController
                     ),
                     array(
                         "owner_review" => $review,
+                    )
+                );
+                $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
+                $users->update(
+                    array(
+                        "uid = :uid",
+                        ":uid" => $this->userinfo['uid'],
+                    ),
+                    array(
+                        "credit" => intval($curren_creidt)+5 
                     )
                 );
                 SUCCESS::Catcher("评价成功！");
