@@ -313,10 +313,14 @@ class AjaxController extends BaseController
                     "scode" => 2,
                     "rent_time" => date("Y-m-d H:i:s",time()),
                 )
-            ) > 0) //判断影响行数以防止他人进行确认
-                SUCCESS::Catcher("取用成功！");
-            else
+            ) > 0){
+                 //判断影响行数以防止他人进行确认
+                 alterCredit($owner_id,5);
+                 SUCCESS::Catcher("取用成功！");
+            }
+            else{
                 ERR::Catcher(1004);
+            }
         }
         else if($operation==='cancel'){ //取消订单，TODO 这里双方都可以在确认取用前取消订单
             if($order_res['renter_id'] === $this->userinfo['uid'] || $owner_id === $this->userinfo['uid']){
@@ -334,7 +338,7 @@ class AjaxController extends BaseController
                             "return_time" => date("Y-m-d H:i:s",time()),
                         )
                     );
-                    $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count,item.scode FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
+                    $res=$order->query("SELECT `order`.oid,`order`.create_time,`order`.item_id,`order`.count AS add_count,item.iid,item.count,item.scode FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
                     $new_count=intval($res['count']) + intval($res['add_count']);
                     $new_scode = (intval($res['scode']) == 0 ? 1 : intval($res['scode']));  //更新物品状态码（没有库存的情况下）
                     $item->update(
@@ -347,16 +351,9 @@ class AjaxController extends BaseController
                             "scode" => $new_scode
                         )
                     );
-                    $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
-                    $users->update(
-                        array(
-                            "uid = :uid",
-                            ":uid" => $this->userinfo['uid'],
-                        ),
-                        array(
-                            "credit" => intval($curren_creidt)-5 
-                        )
-                    );
+                    if(strtotime('now') - strtotime($res['create_time']) > 3600){
+                        alterCredit($this->userinfo['uid'],-5);
+                    }
                     SUCCESS::Catcher("取消成功！");
                 }
             }
@@ -365,7 +362,7 @@ class AjaxController extends BaseController
             }
         }
         else if($operation==='return'){
-            if($order_res['scode'] != 2) //只有在待归还的情况下才能进行确认归还
+            if($order_res['scode'] != 2&& $order_res['scode'] != 6) //只有在待归还或超时的情况下才能进行确认归还
                 ERR::Catcher(2008);
             else if($owner_id===$this->userinfo['uid']){
                 $order->update(
@@ -378,7 +375,7 @@ class AjaxController extends BaseController
                         'return_time' => date("Y-m-d H:i:s",time()),
                     )
                 );
-                $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.count AS add_count,item.iid,item.count FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
+                $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.renter_id,`order`.count AS add_count,item.iid,item.count,item.scode FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
                 $new_count=intval($res['count']) + intval($res['add_count']);
                 $new_scode = $res['scode'] == 0 ? 1 : $res['scode'];  //更新物品状态码（没有库存的情况下）
                 $item->update(
@@ -391,16 +388,7 @@ class AjaxController extends BaseController
                         "scode" => $new_scode
                     )
                 );
-                $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
-                $users->update(
-                    array(
-                        "uid = :uid",
-                        ":uid" => $this->userinfo['uid'],
-                    ),
-                    array(
-                        "credit" => intval($curren_creidt)+5 
-                    )
-                );
+                alterCredit($res['renter_id'],$order_res['scode'] === '2'?5:2);
                 SUCCESS::Catcher("归还成功！");
             }
             else{
@@ -433,16 +421,7 @@ class AjaxController extends BaseController
                         "renter_review" => $review,
                     )
                 );
-                $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
-                $users->update(
-                    array(
-                        "uid = :uid",
-                        ":uid" => $this->userinfo['uid'],
-                    ),
-                    array(
-                        "credit" => intval($curren_creidt)+5 
-                    )
-                );
+                alterCredit($this->userinfo['uid'],5);
                 SUCCESS::Catcher("评价成功！");
             }
             else if($this->userinfo['uid'] === $order_res['owner']){
@@ -455,16 +434,7 @@ class AjaxController extends BaseController
                         "owner_review" => $review,
                     )
                 );
-                $curren_creidt=$users->find(array("uid = :uid",":uid" => $this->userinfo['uid']))['credit'];
-                $users->update(
-                    array(
-                        "uid = :uid",
-                        ":uid" => $this->userinfo['uid'],
-                    ),
-                    array(
-                        "credit" => intval($curren_creidt)+5 
-                    )
-                );
+                alterCredit($this->userinfo['uid'],5);
                 SUCCESS::Catcher("评价成功！");
             }
             else{

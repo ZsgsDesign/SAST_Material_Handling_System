@@ -10,6 +10,26 @@
  * 根据`order`表的信息更新 scode
  * 并且修改给用户的credit
  */
+
+function alterCredit($uid,$num=0){
+    if(!empty($uid)){
+        $users=new Model('users');
+        $curren_creidt=$users->find(array("uid = :uid",":uid" => $uid))['credit'];
+        $users->update(
+            array(
+                "uid = :uid",
+                ":uid" => $uid,
+            ),
+            array(
+                "credit" => intval($curren_creidt) + $num 
+            )
+        );
+        return intval($curren_creidt) + $num;
+    }
+    else{
+        return false;
+    }
+}
 function updateScode($uid){
     if(!empty($uid)){
         $order=new Model('`order`');
@@ -51,7 +71,7 @@ function updateScode($uid){
                         "scode" => 6,
                     )
                 );
-                
+                alterCredit($r['renter_id'],-15);
             }//若当前时间超过到期时间，则更新scode 并且修改users.credit
         }
     }

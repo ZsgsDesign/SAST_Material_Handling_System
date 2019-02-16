@@ -76,6 +76,7 @@ class MainController extends BaseController
 
         $this->pager=$items->page;
         $this->items_info=$items_res;
+        
     }
 
     public function actionCart()

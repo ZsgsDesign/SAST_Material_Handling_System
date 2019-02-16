@@ -181,6 +181,7 @@
             <{if $isMe}>
             <div class="tab-pane fade <{ if $current_tab=='order' }>show active<{/if}>" id="order" role="tabpanel" aria-labelledby="order-tab">
                 <div class="card-body">
+                    <{if !empty($orders)}>
                     <table class="table col-12 table-hover table">
                         <thead>
                         <tr class="row">
@@ -258,6 +259,9 @@
                         <{/foreach}>
                         </tbody>
                     </table>
+                    <{else}>
+                    TODO 空空如也
+                    <{/if}>
                 </div>
             </div>
             <{/if}>
