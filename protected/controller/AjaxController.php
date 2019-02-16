@@ -55,18 +55,29 @@ class AjaxController extends BaseController
                     "credit_limit" => $creditRequired,
                 )
             );
-            //TODO 编辑物品后还要更新物品图片
-            $result = UploadPic($iid); //最后处理图片
-            if($result != 200){
-                ERR::Catcher($result); //上传图片失败
-                $item->delete(array("iid=:id",":id"=>$iid)); //TODO 这个删除好像有问题
+
+            $fileTypes = array('jpg', 'jpeg', 'png'); //支持的图片格式
+            $picMaxSize = 1024 * 1024; //图片限制大小
+            $targetPath = CONFIG::GET("MHS_PIC_SERVICE_ROOT");
+
+            if (!empty($_FILES)) {
+                $ext = pathinfo($_FILES['pic']['name'])['extension'];
+                if($_FILES['pic']['type'] == "" || !in_array($ext,$fileTypes)) // 确认文件类型
+                    ERR::Catcher(200001);
+                else if($_FILES['pic']['size'] > $picMaxSize) //大小过大
+                    ERR::Catcher(200002);
+                else {
+                    if(file_exists($targetPath.$iid))
+                        unlink($targetPath.$iid);//已存在则删除
+                    move_uploaded_file($_FILES['pic']['tmp_name'],$targetPath.$iid);
+                }
             }
-            else
-            {
-                SUCCESS::Catcher($old_iid == -1 ? "发布成功！" : "编辑成功！" ,array(
-                    'itemid'=>$iid, //传回物品id
-                ));
+            else if($old_iid != -1) {  //编辑物品模式
+                copy($targetPath.$old_iid,$targetPath.$iid);
             }
+            SUCCESS::Catcher($old_iid == -1 ? "发布成功！" : "编辑成功！" ,array(
+                'itemid'=>$iid, //传回物品id
+            ));
         }
     }
 

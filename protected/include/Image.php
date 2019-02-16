@@ -6,35 +6,6 @@
  * Time: 14:28
  */
 
-function UploadPic($iid)
-{
-    $fileTypes = array('jpg', 'jpeg', 'png'); //支持的图片格式
-    $picMaxSize = 1024 * 1024; //图片限制大小
-    $targetPath = CONFIG::GET("MHS_PIC_SERVICE_ROOT");
-
-    if (!empty($_FILES)) {
-        if($_FILES['pic']['type'] != "") // 确认文件类型
-
-            $ext = pathinfo($_FILES['pic']['name'])['extension'];
-        if (!in_array($ext,$fileTypes))
-            return 200001;
-
-        if($_FILES['pic']['size'] > $picMaxSize) //大小过大
-            return 200002;
-
-        if(!IsMyItem($iid))
-            return 200003; // 权限认证，不能修改他人的物品图片
-        else {
-            // TODO 已存在则删除
-            move_uploaded_file($_FILES['pic']['tmp_name'],$targetPath.$iid);
-            return 200; //成功
-        }
-
-    }
-    //没有图片，无需上传
-    return 200; //成功
-}
-
 //来自https://blog.csdn.net/maoxinwen1/article/details/79202442
 
 /**
