@@ -410,7 +410,7 @@ class AjaxController extends BaseController
         $users=new Model('users');
         $oid=arg('oid');
         $review=arg('review');// 评价的内容
-        if(!empty($oid)&&!empty($review)){
+        if(!empty($oid)&&(!empty($review)||$review === '0')){
             $order_res=($order->query("SELECT `order`.oid,`order`.item_id,`order`.renter_id,`item`.iid,`item`.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid where `order`.oid = ".$oid))[0];
             if($this->userinfo['uid'] === $order_res['renter_id']){
                 $order->update(

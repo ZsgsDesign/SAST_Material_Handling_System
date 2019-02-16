@@ -37,7 +37,9 @@ class BaseController extends Controller
         require(APP_DIR.'/protected/include/functions.php');
         require(APP_DIR.'/protected/include/Item.php');
         require(APP_DIR.'/protected/include/Image.php');
+        require(APP_DIR.'/protected/include/orderScode.php');
 
+        
 
         $this->islogin=is_login();
         $this->url="";
@@ -67,6 +69,7 @@ class BaseController extends Controller
         } else {
             $this->greeting="深夜了";
         }
+        updateScode($this->userinfo['uid']);
     }
 
     public function tips($msg, $url)
