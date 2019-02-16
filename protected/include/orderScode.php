@@ -46,6 +46,8 @@ function updateScode($uid){
                     ),
                     array(
                         "scode" => 4,
+                        "owner_checked" => 4,
+                        "renter_checked" => 4
                     )
                 );
             }//若双方都已评论则订单完成
@@ -69,6 +71,8 @@ function updateScode($uid){
                     ),
                     array(
                         "scode" => 6,
+                        "owner_checked" => 6,
+                        "renter_checked" => 6,
                     )
                 );
                 alterCredit($r['renter_id'],-15);

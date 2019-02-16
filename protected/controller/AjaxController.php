@@ -253,6 +253,7 @@ class AjaxController extends BaseController
                             'create_time' =>date("Y-m-d H:i:s",time()),
                             'renter_id' => $this->userinfo['uid'],
                             'count' => intval($count),
+                            'owner_checked' => 1
                         )
                     );
                     $cart->delete(array(
@@ -312,6 +313,7 @@ class AjaxController extends BaseController
                 array(
                     "scode" => 2,
                     "rent_time" => date("Y-m-d H:i:s",time()),
+                    "owner_checked" => 2
                 )
             ) > 0){
                  //判断影响行数以防止他人进行确认
@@ -336,6 +338,8 @@ class AjaxController extends BaseController
                         array(
                             "scode" => 5,//scode 5 为订单意外取消
                             "return_time" => date("Y-m-d H:i:s",time()),
+                            "owner_checked" => 5,
+                            "renter_checked" => 5
                         )
                     );
                     $res=$order->query("SELECT `order`.oid,`order`.create_time,`order`.item_id,`order`.count AS add_count,item.iid,item.count,item.scode FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
@@ -372,7 +376,8 @@ class AjaxController extends BaseController
                     ),
                     array(
                         "scode" => 3,//scode 5 为订单意外取消
-                        'return_time' => date("Y-m-d H:i:s",time()),
+                        "return_time" => date("Y-m-d H:i:s",time()),
+                        "renter_checked" => 3
                     )
                 );
                 $res=$order->query("SELECT `order`.oid,`order`.item_id,`order`.renter_id,`order`.count AS add_count,item.iid,item.count,item.scode FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE oid = ".$oid)[0];
@@ -444,5 +449,10 @@ class AjaxController extends BaseController
         else{
             ERR::Catcher(1003);//参数不全
         }
+    }
+    public function clearChecked(){
+        $type=arg("type");//可能的值有A和B，
+        $order=new Model('`order`');
+        //TODO
     }
 }

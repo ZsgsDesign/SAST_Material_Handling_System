@@ -17,18 +17,22 @@
 <div class="container mundb-standard-container">
     <h5 class="mhs-title mb-5 mt-5"><i class="MDI gift"></i> SAST 物品借还系统</h5>
     <{if $islogin}>
+    <{if $count_typeA !== 0}>
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
-        <strong>TODO 你有1笔新的订单 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
+        <strong>TODO 你有<{$count_typeA}>笔订单更新了状态 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <{/if}>
+    <{if $count_typeB !== 0}>
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>TODO 你的订单已逾期 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
+        <strong>TODO 你有<{$count_typeB}>笔订单已逾期 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <{/if}>
         <div class="input-group text-center">
                 <input id="keyword" type="text" class="form-control" placeholder="搜索物品..." aria-describedby="basic-addon1" value="<{$keyword}>">
                 <div class="input-group-btn">
