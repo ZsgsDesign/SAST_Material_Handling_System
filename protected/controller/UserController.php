@@ -35,13 +35,24 @@ class UserController extends BaseController
 
         $item = new model('item');
         $this->items_info = $item->findAll(array("owner=:uid",":uid" => $uid),'create_time DESC');
-        //dump($this->items_info);
-
-
 
         $order=new Model('`order`');
         $order_res=$order->query("SELECT a.*,users.real_name,users.uid,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.`name`,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id) as a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id WHERE a.renter_id = ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ORDER BY a.oid DESC");
         $this->orders=$order_res;
-        //dump($this->orders);
+        $order_rent_res=$order->query("SELECT `order`.oid,`order`.scode,`order`.renter_id FROM `order` WHERE renter_id = ".$this->userinfo['uid']);
+        $order_rent_res_scode=array_count_values(array_column($order_rent_res,'scode'));
+        $this->rent_count=[
+            "scode1" => empty(@$order_rent_res_scode['1'])?0:$order_rent_res_scode['1'],
+            "scode2" => empty(@$order_rent_res_scode['2'])?0:$order_rent_res_scode['2'],
+            "scode3" => empty(@$order_rent_res_scode['3'])?0:$order_rent_res_scode['3']
+        ];
+
+        $order_owner_res=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id WHERE item.`owner` = ".$this->userinfo['uid']);
+        $order_owner_res_scode=array_count_values(array_column($order_owner_res,'scode'));
+        $this->owner_count=[
+            "scode1" => empty(@$order_owner_res_scode['1'])?0:$order_owner_res_scode['1'],
+            "scode2" => empty(@$order_owner_res_scode['2'])?0:$order_owner_res_scode['2'],
+            "scode3" => empty(@$order_owner_res_scode['3'])?0:$order_owner_res_scode['3']
+        ];
     }
 }
