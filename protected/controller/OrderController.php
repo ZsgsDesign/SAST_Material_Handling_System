@@ -14,9 +14,37 @@ class OrderController extends BaseController
             return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
         }
         else{
-            $order_res=($order->query("SELECT a.*,users.real_name,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id where ( a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ) AND a.oid=".$oid))[0];
-            $order_res['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
-            $this->order=$order_res;
+            $order_res=$order->query("SELECT a.*,users.real_name,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id where ( a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ) AND a.oid=".$oid);
+            if(count($order_res)){
+                $order_res=$order_res[0];
+                $order_res['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
+                $this->order=$order_res;
+                if($this->userinfo['uid'] == $order_res['owner']){
+                    $order->update(
+                        array(
+                            "oid = :oid",
+                            ":oid" => $oid
+                        ),
+                        array(
+                            "owner_checked" => NULL
+                        )
+                    );
+                }
+                else if($this->userinfo['uid'] == $order_res['renter_id']){
+                    $order->update(
+                        array(
+                            "oid = :oid",
+                            ":oid" => $oid
+                        ),
+                        array(
+                            "renter_checked" => NULL
+                        )
+                    );
+                }
+            }
+            else{
+                return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
+            }
         }
     }
 
