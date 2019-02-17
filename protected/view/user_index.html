@@ -194,9 +194,9 @@
                         </thead>
                         <tbody>
                         <{foreach $orders as $key => $r}>
-                        <{if in_arrary($r['oid'],$typeA)}>
+                        <{if in_array($r['oid'],$typeA)}>
                         <tr class="row alert-success">
-                            <{else if in_arrary($r['oid'],$typeB)}>
+                            <{else if in_array($r['oid'],$typeB)}>
                         <tr class="row alert-warning">
                             <{else}>
                         <tr class="row">
