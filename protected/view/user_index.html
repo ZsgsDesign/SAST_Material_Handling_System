@@ -260,13 +260,23 @@
                         </tbody>
                     </table>
                     <{else}>
-                    TODO 空空如也
+                    <div class="text-center">
+                        <p class="text-primary mt-5 mb-3">这里空空如也，快去借吧～</p>
+                        <button type="button" class="btn btn-raised btn-info" onclick="location.href='<{$MHS_DOMAIN}>/'">返回首页</button>
+                    </div>
                     <{/if}>
                 </div>
             </div>
             <{/if}>
             <div class="tab-pane fade <{ if $current_tab=='item' }>show active<{/if}>" id="item" role="tabpanel" aria-labelledby="item-tab">
                 <div class="card-body">
+                    <{if count($items_info) == 0}>
+                    <div class="text-center">
+                        <p class="text-primary mt-5 mb-3">这里空空如也，快去发布物品吧～</p>
+                        <button type="button" class="btn btn-raised btn-primary" onclick="location.href='<{$MHS_DOMAIN}>/item/new'">发布物品</button>
+                        <button type="button" class="btn btn-raised btn-info" onclick="location.href='<{$MHS_DOMAIN}>/'">返回首页</button>
+                    </div>
+                    <{else}>
                     <div class="row">
                         <{foreach $items_info as $seq => $r}>
                             <{if $isMe}>
@@ -304,6 +314,7 @@
                             <{/if}>
                         <{/foreach}>
                     </div>
+                    <{/if}>
                 </div>
             </div>
             <div class="tab-pane fade <{ if $current_tab=='review' }>show active<{/if}>" id="review" role="tabpanel" aria-labelledby="review-tab">
