@@ -78,3 +78,11 @@ CREATE TABLE `order`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE `sastmhs`.`order`
+ADD COLUMN `count` bigint(20) NULL COMMENT '借用的数量' AFTER `renter_review`;
+ADD COLUMN `rent_time` datetime NULL COMMENT '借用人取用的时间' AFTER `count`;
+ADD COLUMN `return_time` datetime NULL COMMENT '物品实际归还的时间或订单被取消的时间' AFTER `rent_time`;
+ADD COLUMN `renter_checked` tinyint(20) NULL DEFAULT NULL COMMENT '用于记录借用人是否已知晓当前订单状态' AFTER `return_time`,
+ADD COLUMN `owner_checked` tinyint(20) NULL COMMENT '用于记录出借人是否已知晓当前订单状态' AFTER `renter_checked`;
+
