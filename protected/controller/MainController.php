@@ -79,13 +79,16 @@ class MainController extends BaseController
         if($this->islogin){
             $order=new Model('`order`');
             $order_res_ownerchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE item.`owner` = ".$this->userinfo['uid']),'owner_checked');
-            $order_res_ownerchecked_count=empty(@$order_res_ownerchecked)?[]:array_count_values($order_res_ownerchecked);
+            $order_res_ownerchecked_count=empty(@$order_res_ownerchecked)?[]:array_count_values(@$order_res_ownerchecked);
+            dump($order_res_ownerchecked);
             $order_res_renterchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE `order`.renter_id = ".$this->userinfo['uid']),'renter_checked');
-            $order_res_renterchecked_count=empty(@$order_res_renterchecked)?[]:array_count_values($order_res_renterchecked);
+            $order_res_renterchecked_count=empty(@$order_res_renterchecked)?[]:array_count_values(@$order_res_renterchecked);
             $checked_count_typeA=0+@$order_res_ownerchecked_count['1']+@$order_res_ownerchecked_count['2']+@$order_res_ownerchecked_count['3']+@$order_res_ownerchecked_count['5']+@$order_res_renterchecked_count['1']+@$order_res_renterchecked_count['2']+@$order_res_renterchecked_count['3']+@$order_res_renterchecked_count['5'];
             $checked_count_typeB=0+@$order_res_ownerchecked_count['6']+@$order_res_renterchecked_count['6'];
             $this->count_typeA=$checked_count_typeA;
             $this->count_typeB=$checked_count_typeB;
+            dump($checked_count_typeA);
+            dump($checked_count_typeB);
         }
     }
 
