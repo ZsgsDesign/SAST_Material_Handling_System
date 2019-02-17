@@ -11,7 +11,7 @@ class OrderController extends BaseController
         $order=new Model('`order`');
         $users=new Model('`user`');
         if(empty($oid)){
-            return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
+            return $this->jump("{$this->MHS_DOMAIN}/orders");
         }
         else{
             $order_res=$order->query("SELECT a.*,users.real_name,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.iid,item.`name`,item.`owner`,item.location,item.`dec`,item.limit_time FROM `order` JOIN item ON `order`.item_id = item.iid) AS a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id where ( a.renter_id= ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ) AND a.oid=".$oid);
@@ -43,7 +43,7 @@ class OrderController extends BaseController
                 }
             }
             else{
-                return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
+                return $this->jump("{$this->MHS_DOMAIN}/orders");
             }
         }
     }
