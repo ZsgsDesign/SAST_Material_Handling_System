@@ -100,7 +100,39 @@ class MainController extends BaseController
         $this->cart_items=$cart_res;
     }
 
+    public function actionOrders(){
+        $this->url="orders";
+        $this->title="我的订单";
 
+        $order=new Model('`order`');
+        $order_res=$order->query("SELECT a.*,users.real_name,users.uid,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.`name`,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id) as a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id WHERE a.renter_id = ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ORDER BY a.oid DESC");
+        $this->orders=$order_res;
+
+
+        $typeA=array();
+        $typeB=array();
+        $owner_res=$order->query("SELECT `order`.oid,`order`.owner_checked,`order`.item_id,item.`owner`,item.iid FROM `order` JOIN item ON item.iid = `order`.item_id WHERE item.`owner` = ".$this->userinfo['uid']);
+        $renter_res=$order->query("SELECT `order`.oid,`order`.renter_id,`order`.renter_checked FROM `order` WHERE `order`.renter_id = ".$this->userinfo['uid']);
+        foreach($owner_res as $seq => $value){
+            if($value['owner_checked'] == 1||$value['owner_checked'] == 2||$value['owner_checked'] == 3||$value['owner_checked'] == 5){
+                array_push($typeA,$value['oid']);
+            }
+            else if($value['owner_checked'] == 6){
+                array_push($typeB,$value['oid']);
+            }
+        };
+        foreach($renter_res as $seq => $value){
+            if($value['renter_checked'] == 1||$value['renter_checked'] == 2||$value['renter_checked'] == 3||$value['renter_checked'] == 5){
+                array_push($typeA,$value['oid']);
+            }
+            else if($value['renter_checked'] == 6){
+                array_push($typeB,$value['oid']);
+            }
+        };
+        $this->typeA=$typeA;
+        $this->typeB=$typeB;
+        $this->info_count=count($typeA)+count($typeB);
+    }
 
     public function actionMhs()
     {

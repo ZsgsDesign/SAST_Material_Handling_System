@@ -12,6 +12,9 @@
   
       <ul class="navbar-nav mundb-nav-right">
         <{if $islogin }>
+          <li class="nav-item <{if $title=='我的订单' }> active <{/if}>">
+              <a class="nav-link" href="<{$MHS_DOMAIN}>/orders">我的订单</a>
+          </li>
           <li class="nav-item <{if $title=='个人中心' }> active <{/if}>">
             <a class="nav-link" href="<{$MHS_DOMAIN}>/user">个人中心</a>
           </li>
