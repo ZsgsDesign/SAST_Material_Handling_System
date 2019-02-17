@@ -105,10 +105,7 @@ class MainController extends BaseController
         $this->title="我的订单";
 
         $order=new Model('`order`');
-        $order_res=$order->query("SELECT a.*,users.real_name,users.uid,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.`name`,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id) as a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id WHERE a.renter_id = ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ORDER BY a.oid DESC");
-        $this->orders=$order_res;
-
-
+        
         $typeA=array();
         $typeB=array();
         $owner_res=$order->query("SELECT `order`.oid,`order`.owner_checked,`order`.item_id,item.`owner`,item.iid FROM `order` JOIN item ON item.iid = `order`.item_id WHERE item.`owner` = ".$this->userinfo['uid']);
@@ -131,6 +128,26 @@ class MainController extends BaseController
         };
         $this->typeA=$typeA;
         $this->typeB=$typeB;
+
+        $order_res=$order->query("SELECT a.*,users.real_name,users.uid,renter.real_name AS renter_real_name FROM (SELECT `order`.*,item.`name`,item.iid,item.`owner` FROM `order` JOIN item ON item.iid = `order`.item_id) as a JOIN users ON users.uid=a.`owner` JOIN users as renter ON renter.uid=a.renter_id WHERE a.renter_id = ".$this->userinfo['uid']." OR a.`owner` = ".$this->userinfo['uid']." ORDER BY a.oid DESC");
+        foreach($order_res as $seq => $value){
+            if(in_array($value['oid'],$typeB)){
+                $temp=$value;
+                array_splice($order_res,$seq,1);
+                array_unshift($order_res,$temp);
+            }
+        }
+        foreach($order_res as $seq => $value){
+            if(in_array($value['oid'],$typeA)){
+                $temp=$value;
+                array_splice($order_res,$seq,1);
+                array_unshift($order_res,$temp);
+            }
+        }
+        $this->orders=$order_res;
+
+
+        
         $this->info_count=count($typeA)+count($typeB);
     }
 
