@@ -450,9 +450,59 @@ class AjaxController extends BaseController
             ERR::Catcher(1003);//参数不全
         }
     }
-    public function clearChecked(){
+    public function actionClearChecked(){
         $type=arg("type");//可能的值有A和B，
         $order=new Model('`order`');
-        //TODO
+        if($type === 'A'){
+            $order->update(
+                array(
+                    "renter_id = :renter_id AND ( renter_checked = 1 OR renter_checked = 2 OR renter_checked = 3 OR renter_checked = 5 ) ",
+                    ":renter_id" => $this->userinfo['uid']
+                ),
+                array(
+                    "renter_checked" => NULL
+                )
+            );
+            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item.iid,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 1 OR `order`.owner_checked = 2 OR `order`.owner_checked = 3 OR `order`.owner_checked = 5)"),'oid');
+            foreach($target_oid as $seq => $oid){
+                $order->update(
+                    array(
+                        "oid = :oid",
+                        ":oid" => $oid
+                    ),
+                    array(
+                        "owner_checked" => NULL
+                    )
+                );
+            };
+            SUCCESS::Catcher("清空成功");
+        }
+        else if($type === 'B'){
+            $order->update(
+                array(
+                    "renter_id = :renter_id AND ( renter_checked = 6 )",
+                    ":renter_id" => $this->userinfo['uid']
+                ),
+                array(
+                    "renter_checked" => NULL
+                )
+            );
+            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item_iid,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 6)"),'oid');
+            foreach($target_oid as $seq => $oid){
+                $order->update(
+                    array(
+                        "oid = :oid",
+                        ":oid" => $oid
+                    ),
+                    array(
+                        "owner_checked" => NULL
+                    )
+                );
+            };
+            SUCCESS::Catcher("清空成功");
+        }
+        else{
+            ERR::Catcher(1004);//参数非法
+        }
     }
 }
