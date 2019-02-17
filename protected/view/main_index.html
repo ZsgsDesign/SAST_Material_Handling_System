@@ -19,7 +19,7 @@
     <{if $islogin}>
     <{if $count_typeA !== 0}>
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
-        <strong>TODO 你有<{$count_typeA}>笔订单更新了状态 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
+        <strong>你有<{$count_typeA}>笔订单更新了状态 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -27,7 +27,7 @@
     <{/if}>
     <{if $count_typeB !== 0}>
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>TODO 你有<{$count_typeB}>笔订单已逾期 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
+        <strong>你有<{$count_typeB}>笔订单已逾期 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -50,8 +50,6 @@
         <ul class="nav nav-pills">
             <li class="nav-item">
                 <a class="nav-link <{if $args['sort']==='default' || empty($args['sort'])}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=default<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">默认排序</a>
-                <!--TODO 感觉如果上一行那边如果用上三目表达式，应该会更优雅，下同（留下了不学无术的泪水-->
-                <!--TODO 又不是不能用，上面那条咕咕咕了-->
             </li>
             <li class="nav-item">
                 <a class="nav-link <{if $args['sort'] === 'bycount'}> active <{/if}>" href="<{$MHS_DOMAIN}>/index/?sort=bycount<{if !empty($args['keyword'])}>&keyword=<{$args['keyword']}><{/if}>&page=1<{if !empty($args['filter'])}>&filter=<{$args['filter']}><{/if}>">最多借用</a>
