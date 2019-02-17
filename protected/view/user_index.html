@@ -194,7 +194,13 @@
                         </thead>
                         <tbody>
                         <{foreach $orders as $key => $r}>
+                        <{if in_arrary($r['oid'],$typeA)}>
+                        <tr class="row alert-success">
+                            <{else if in_arrary($r['oid'],$typeB)}>
+                        <tr class="row alert-warning">
+                            <{else}>
                         <tr class="row">
+                            <{/if}>
                             <td class="col-lg-4 col-md-4 col-6" scope="row">
                                 <{if $r['renter_id'] == $userinfo['uid']}>
                                 <span class="badge badge-light">借用</span>
