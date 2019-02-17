@@ -69,6 +69,17 @@
                     </tbody>
                 </table>
             </div>
+            <script>
+                function borrowImmediately(id,i){
+                    $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
+                        iid:id,
+                        count:$('#count' + i).text()
+                    },(result) => {
+                        // showResult(result);
+                        window.location.href="<{$MHS_DOMAIN}>/order/create/?item[]="+id;
+                    });
+                }
+            </script>
             <{if $item_info["scode"] > -1}>
             <div class="col">
                 <{if !$isMyItem}>
@@ -78,7 +89,7 @@
                             <button id="count0" type="button" class="btn btn-sm btn-outline-secondary">1</button>
                             <button id="add0" type="button"<{if $item_info['count'] == 1}> disabled="disabled" <{/if}> class="btn btn-sm btn-outline-secondary" onclick="add(0,<{$item_info['count']}>);">+</button>
                 </div>
-                <button type="button" class="btn btn-primary">立即借用</button>
+                <button type="button" class="btn btn-primary" onclick="borrowImmediately(<{$item_info['iid']}>,0)">立即借用</button>
                 <button class="btn btn-primary" onclick="addToCart(<{$item_info['iid']}>,0);"><i class="MDI cart"></i>加入购物车</button>
                 <{else}>
                 <p>这是您发布的物品。</p>
