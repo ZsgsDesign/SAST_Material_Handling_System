@@ -253,7 +253,7 @@
                                     <{/if}>
                                 </div>
                             </td>
-                            <td class="col-lg-4 col-md-5 col-6"><a href="order/view/?oid=<{$r['oid']}>"><{$r['name']}></a></td>
+                            <td class="col-lg-4 col-md-5 col-6"><a href="<{$MHS_DOMAIN}>/order/view/?oid=<{$r['oid']}>"><{$r['name']}></a></td>
                             <td class="col-lg-1 d-none d-lg-block"><{$r['count']}></td>
                             <td class="col-lg-1 d-none d-lg-block"><{if $r['renter_id'] == $userinfo['uid']}>
                                 <{$r['real_name']}>
