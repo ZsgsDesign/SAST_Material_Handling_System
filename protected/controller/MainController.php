@@ -86,8 +86,6 @@ class MainController extends BaseController
             $checked_count_typeB=0+@$order_res_ownerchecked_count['6']+@$order_res_renterchecked_count['6'];
             $this->count_typeA=$checked_count_typeA;
             $this->count_typeB=$checked_count_typeB;
-            dump($checked_count_typeA);
-            dump($checked_count_typeB);
         }
     }
 
