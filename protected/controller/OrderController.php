@@ -19,6 +19,28 @@ class OrderController extends BaseController
                 $order_res=$order_res[0];
                 $order_res['due_time']=date("Y-m-d H:i:s",strtotime("+".$order_res['limit_time']." day",strtotime(@$order_res['rent_time'])));
                 $this->order=$order_res;
+                if($this->userinfo['uid'] == $order_res['owner']){
+                    $order->update(
+                        array(
+                            "oid = :oid",
+                            ":oid" => $oid
+                        ),
+                        array(
+                            "owner_checked" => NULL
+                        )
+                    );
+                }
+                else if($this->userinfo['uid'] == $order_res['renter_id']){
+                    $order->update(
+                        array(
+                            "oid = :oid",
+                            ":oid" => $oid
+                        ),
+                        array(
+                            "renter_checked" => NULL
+                        )
+                    );
+                }
             }
             else{
                 return $this->jump("{$this->MHS_DOMAIN}/user?tab=order");
