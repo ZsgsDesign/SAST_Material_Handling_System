@@ -20,7 +20,8 @@
     <{if $count_typeA !== 0}>
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
         <strong>你有<{$count_typeA}>笔订单更新了状态 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="
+            $.post('<{$MHS_DOMAIN}>/ajax/clearchecked',{type:'A'})">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -28,7 +29,8 @@
     <{if $count_typeB !== 0}>
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>你有<{$count_typeB}>笔订单已逾期 </strong><a href="user/?tab=order" class="alert-link">点击这里查看</a>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="
+            $.post('<{$MHS_DOMAIN}>/ajax/clearchecked',{type:'B'})">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
