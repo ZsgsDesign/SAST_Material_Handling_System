@@ -463,7 +463,7 @@ class AjaxController extends BaseController
                     "renter_checked" => NULL
                 )
             );
-            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item.iid,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 1 OR `order`.owner_checked = 2 OR `order`.owner_checked = 3 OR `order`.owner_checked = 5)"),'oid');
+            $target_oid=@array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item.iid,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 1 OR `order`.owner_checked = 2 OR `order`.owner_checked = 3 OR `order`.owner_checked = 5)"),'oid');
             foreach($target_oid as $seq => $oid){
                 $order->update(
                     array(
@@ -487,7 +487,7 @@ class AjaxController extends BaseController
                     "renter_checked" => NULL
                 )
             );
-            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item_iid,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 6)"),'oid');
+            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item_id,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 6)"),'oid');
             foreach($target_oid as $seq => $oid){
                 $order->update(
                     array(
