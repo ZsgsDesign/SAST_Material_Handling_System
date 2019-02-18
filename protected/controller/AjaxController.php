@@ -73,7 +73,8 @@ class AjaxController extends BaseController
                 }
             }
             else if($old_iid != -1) {  //编辑物品模式
-                copy($targetPath.$old_iid,$targetPath.$iid);
+                if(file_exists($targetPath.$iid))
+                    copy($targetPath.$old_iid,$targetPath.$iid);
             }
             SUCCESS::Catcher($old_iid == -1 ? "发布成功！" : "编辑成功！" ,array(
                 'itemid'=>$iid, //传回物品id
