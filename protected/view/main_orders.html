@@ -2,7 +2,7 @@
     <h2 class="mhs-title mb-3 mt-5">我的订单</h2>
     <{if $info_count > 0}>
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-        你有<{$info_count}>条新信息  <a href=?read_all" class="alert-link">全部标记为已读</a>
+        你有<{$info_count}>条新信息  <a href="JavaScript:$.post('<{$MHS_DOMAIN}>/ajax/clearchecked',{type:'A',function(){$.post('<{$MHS_DOMAIN}>/ajax/clearchecked',{type:'B'},function(){location.reload()})}})" class="alert-link">全部标记为已读</a>
     </div>
     <{/if}>
     <{if !empty($orders)}>
