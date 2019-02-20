@@ -1,29 +1,17 @@
 <style>
     <{include file="MHS.css" }>
-    @media all and (max-width:1200px) and (min-width:992px){
-        .responsive>div{
-            min-width: 650px;
-            float: right;
+    @media (max-width: 400px) {
+        .mhs-item-img-order{
+            max-width: 5rem !important;
+            max-height: 5rem !important;
         }
     }
-    @media all and (max-width:992px) and (min-width:768px){
-        .responsive>div{
-            width: 450px;
-            float: right;
+    @media (max-width: 576px) and (min-width: 401px) {
+        .mhs-item-img-order{
+            max-width: 7rem !important;
+            max-height: 7rem !important;
         }
-    }
-    @media all and (max-width:767px) and (min-width:540px){
-        .responsive>div{
-            width: 280px;
-            float: right;
-        }
-    }
-    @media all and (max-width:540px){
-        .responsive>div{
-            width: 150px;
-            float: right;
-        }
-    }
+    }<!-- TODO 手机视图还需优化 -->
 </style>
 <div class="container mundb-standard-container"> 
     <h2 class="mhs-title mb-5 mt-5">购物车</h2>
@@ -68,13 +56,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 text-center">
+            <div class="col-xl-2 col-md-3 col-sm-4 col-3">
                     <img class="mhs-item-img-order rounded float-left" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
             </div>
-            <div class="col-9 responsive">
+            <div class="col-xl-9 col-md-8 col-sm-7 col-7">
                 <div>
-                    <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h4>
-                    <p class="text-left">出借方：<a href="<{$MHS_DOMAIN}>/user/<{$item['owner']}>"><{$item['real_name']}></a></p>
+                    <h5 class="text-left mundb-text-truncate-1"><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h5>
+                    <p class="text-left mundb-text-truncate-1">出借方：<a href="<{$MHS_DOMAIN}>/user/<{$item['owner']}>"><{$item['real_name']}></a></p>
                     <{if $item['scode'] == 1}>
                     <div class="btn-group">
                         <button id="minus<{$i}>" type="button" class="btn btn-sm btn-primary mhs-button-count" <{if $item['count'] < 2 }> disabled="disabled" <{/if}> onclick="minus(<{$i}>,<{$item['item_count']}>);addToCart(<{$item['item_id']}>,<{$i}>)">-</button>
