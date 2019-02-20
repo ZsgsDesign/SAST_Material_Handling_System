@@ -415,7 +415,7 @@ class AjaxController extends BaseController
         $users=new Model('users');
         $oid=arg('oid');
         $review=arg('review');// 评价的内容
-        $content=arg('content');//评价的文字内容
+        $content=empty(arg('content'))?NULL:arg('content');//评价的文字内容 允许用户的文字评价为空
         if(!empty($oid)&&(!empty($review)||$review === '0')){
             $order_res=($order->query("SELECT `order`.oid,`order`.item_id,`order`.renter_id,`item`.iid,`item`.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid where `order`.oid = ".$oid))[0];
             if($this->userinfo['uid'] === $order_res['renter_id']){
@@ -426,6 +426,7 @@ class AjaxController extends BaseController
                     ),
                     array(
                         "renter_review" => $review,
+                        "renter_review_content" =>$content
                     )
                 );
                 alterCredit($this->userinfo['uid'],5);
@@ -439,6 +440,7 @@ class AjaxController extends BaseController
                     ),
                     array(
                         "owner_review" => $review,
+                        "owner_review_content" => $content
                     )
                 );
                 alterCredit($this->userinfo['uid'],5);
