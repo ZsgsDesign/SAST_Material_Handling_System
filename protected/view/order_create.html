@@ -13,10 +13,10 @@
 <{foreach $order_item as $seq => $r}>
 <card class="mhs-card">
     <div class="row item" iid="<{$r['item_id']}>" count="<{$r['count']}>">      
-            <div class="col-md-3 col-sm-4 col-6">
+            <div class="col-xl-2 col-md-3 col-sm-4 col-5">
                     <img class="mhs-item-img-order rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$r['item_id']}>?size=400">
             </div>
-            <div class="col-md-9 col-sm-8 col-6">
+            <div class="col-xl-10 col-md-9 col-sm-8 col-7">
                     <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$r['item_id']}>"><{$r['name']}></a></h4>
                     <p class="text-left">出借方：<{$r['real_name']}></p>
                     <p class="text-left">位置：<{$r['location']}></p>
