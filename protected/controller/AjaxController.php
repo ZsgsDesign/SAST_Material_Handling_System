@@ -489,7 +489,7 @@ class AjaxController extends BaseController
                     "renter_checked" => NULL
                 )
             );
-            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item_id,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 6) AND item.`owner` = ".$this->userinfo['uid'])w,'oid');
+            $target_oid=array_column($order->query("SELECT `order`.oid,`order`.item_id,`order`.owner_checked,item_id,item.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid WHERE (`order`.owner_checked = 6) AND item.`owner` = ".$this->userinfo['uid']),'oid');
             foreach($target_oid as $seq => $oid){
                 $order->update(
                     array(
