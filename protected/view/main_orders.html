@@ -26,11 +26,7 @@
         <tr class="row">
             <{/if}>
             <td class="col-lg-4 col-md-4 col-6" scope="row">
-                <{if $r['renter_id'] == $userinfo['uid']}>
-                <span class="badge badge-light">借用</span>
-                <{else}>
-                <span class="badge badge-dark">出借</span>
-                <{/if}>
+                <{if $r['renter_id'] == $userinfo['uid']}><span class="badge badge-pill badge-light">借用</span><{else}><span class="badge badge-pill badge-dark">出借</span><{/if}>
                 <{if $r['renter_id'] == $userinfo['uid']}>
                 <{if $r['scode'] == 1}>
                 <span class="badge badge-info">等待取用</span>

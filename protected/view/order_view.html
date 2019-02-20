@@ -1,5 +1,24 @@
 <style>
     <{include file="MHS.css" }>
+    avatar{
+        display: block;
+        position: relative;
+        text-align: center;
+        height: 6rem;
+    }
+    avatar > img{
+        display: block;
+        width:6rem;
+        height:6rem;
+        border-radius: 2000px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        top:0%;
+        left:0;
+        right:0;
+        position: absolute;
+        margin: auto;
+    }
     timeline {
         display: block;
         padding: 3em 2em 2em;
@@ -50,46 +69,51 @@
 </style>
 
 <div class="container mundb-standard-container">
-    <h3 class="mhs-title mb-5 mt-5">订单详情</h3>
-    <{if $order['scode'] == 1}>
+    <h3 class="mhs-title mb-3 mt-3">订单详情
+        <small>
+        <{if $order['renter_id'] == $userinfo['uid']}><span class="badge badge-pill badge-light">借用</span><{else}><span class="badge badge-pill badge-dark">出借</span><{/if}>
         <{if $order['renter_id'] == $userinfo['uid']}>
-        <div class="jumbotron alert-info">
+            <{if $order['scode'] == 1}><span class="badge badge-info">等待取用</span><{else if $order['scode'] == 2}><span class="badge badge-info">等待归还</span><{else if $order['scode'] == 3}><span class="badge badge-info">等待评价</span><{else if $order['scode'] == 4}><span class="badge badge-success">订单完成</span><{else if $order['scode'] == 5}><span class="badge badge-secondary">订单取消</span><{else if $order['scode'] == 6}><span class="badge badge-warning">您已超时未归还</span><{/if}>
+        <{else}>
+            <{if $order['scode'] == 1}><span class="badge badge-info">等待对方取用</span><{else if $order['scode'] == 2}><span class="badge badge-info">等待对方归还</span><{else if $order['scode'] == 3}><span class="badge badge-info">等待评价</span><{else if $order['scode'] == 4}><span class="badge badge-success">订单完成</span><{else if $order['scode'] == 5}><span class="badge badge-secondary">订单取消</span><{else if $order['scode'] == 6}><span class="badge badge-warning">对方超时未归还</span><{/if}>
+        <{/if}>
+        </small>
+    </h3>
+    <{if $order['scode'] == 1}>
+    <div class="jumbotron alert-info">
+        <{if $order['renter_id'] == $userinfo['uid']}>
             <h1><strong>等待取用</strong></h1>
-            <p class="lead">请到指定地点或与出借方联系以取得物品，取得后点击「确认取用」后开始计算归还时间。</p>
+            <p class="lead">订单已生成，请到指定地点或与出借方联系以取得物品，取得后点击「确认取用」后开始计算归还时间。<br><strong>请在当天完成确认取用，否则订单将强制取消。</strong></p> <!-- TODO 1天未确认取用强制取消 -->
             <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Confirm">确认取用</button>
             <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Cancel">取消订单</button>
-        </div>
         <{else}>
-        <div class="jumbotron alert-info">
-            <h1><strong>等待取用</strong></h1>
-            <p class="lead">在借用方取得物品并「确认取用」后开始计算归还时间。</p>
-        </div>
+            <h1><strong>等待对方取用</strong></h1>
+            <p class="lead">订单已生成，在借用方取得物品并「确认取用」后开始计算归还时间。</p>
         <{/if}>
+    </div>
     <{else if $order['scode'] == 2}>
+    <div class="jumbotron alert-primary">
         <{if $order['renter_id'] == $userinfo['uid']}>
-        <div class="jumbotron alert-primary">
             <h1><strong>等待归还</strong></h1>
-            <p class="lead">请在 「<{$order['due_time']}>」前归还物品，并提醒出借人「确认归还」。</p>
-        </div>
+            <p class="lead">已确认取得物品，请在 「<{$order['due_time']}>」前归还物品，并提醒出借方「确认归还」。</p>
         <{else}>
-        <div class="jumbotron alert-primary">
-            <h1><strong>等待归还</strong></h1>
-            <p class="lead">物品将在 「<{$order['due_time']}>」 前归还，请在借用人归还后点击「确认归还」。</p>
+            <h1><strong>等待对方归还</strong></h1>
+            <p class="lead">对方已确认取得物品，物品将在 「<{$order['due_time']}>」 前归还，请在借用方归还后点击「确认归还」。</p>
             <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Return">确认归还</button>
-        </div>
         <{/if}>
+    </div>
     <{else if $order['scode'] == 5}>
     <div class="jumbotron alert-warning">
         <h1><strong>订单已取消</strong></h1>
-        <p class="lead">该订单已被取消</p>
+        <p class="lead">该订单已被取消。</p>
     </div>
     <{else if $order['scode'] == 6}>
     <div class="jumbotron alert-danger">
-        <h1><strong>订单已超时</strong></h1>
+        <h1><strong>订单已逾期</strong></h1>
         <{if $order['renter_id'] == $userinfo['uid']}>
-        <p class="lead">该订单已超时,请尽快归还物品</p>
+        <p class="lead">该订单已逾期，请尽快归还物品，并提醒出借方「确认归还」，以免扣除更多的信用分。</p>
         <{else}>
-        <p class="lead">请不要着急，物品正在归还的路上</p>
+        <p class="lead">该订单已逾期，请提醒借用方尽快归还物品。<br><strong>如已收到物品，请点击「确认归还」。</strong></p>
         <button class="btn btn-lg btn-warning" data-toggle="modal" data-target="#Return">确认归还</button>
         <{/if}>
     </div>
@@ -99,40 +123,95 @@
         <p class="lead">该订单已完成，感谢您的使用。</p>
     </div>
     <{else if $order['scode'] == 3}>
+    <div class="jumbotron alert-info">
         <{if $order['renter_id'] == $userinfo['uid']}>
             <{if !strlen($order['renter_review'])}>
-                <div class="jumbotron alert-info">
                     <h1><strong>订单等待您的评价</strong></h1>
-                    <p class="lead">该物品已归还</p>
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Review">我要评价</button>
-                </div>
+                    <p class="lead">物品已归还，请您对本次借用进行评价。</p>
+                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Review">写评价</button>
             <{else}>
-                <div class="jumbotron alert-info">
-                    <h1><strong>订单等待出借人的评价</strong></h1>
-                    <p class="lead">该物品已归还</p>
-                </div>
+                    <h1><strong>订单等待出借方的评价</strong></h1>
+                    <p class="lead">物品已归还，请等待对方完成评价。</p>
             <{/if}>
         <{else}>
             <{if !strlen($order['owner_review'])}>
-                <div class="jumbotron alert-info">
                     <h1><strong>订单等待您的评价</strong></h1>
-                    <p class="lead">该物品已归还</p>
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Review">我要评价</button>
-                </div>
+                    <p class="lead">物品已归还，请您对本次借用进行评价。</p>
+                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#Review">写评价</button>
             <{else}>
-                <div class="jumbotron alert-info">
-                    <h1><strong>订单等待借用人的评价</strong></h1>
-                    <p class="lead">该物品已归还</p>
-                </div>
+                    <h1><strong>订单等待借用方的评价</strong></h1>
+                    <p class="lead">物品已归还，请等待对方完成评价。</p>
             <{/if}>
         <{/if}>
+    </div>
+    <{/if}>
+    <{if $order['scode'] == 4}>
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <card>
+                <div class="row mb-3 mt-3">
+                <div class="col-3">
+                    <avatar><img src="<{$userinfo['avatar']}>"></avatar>
+                </div>
+                <div class="col-9">
+                    <{if $order['renter_id'] == $userinfo['uid']}>
+                        <{if $order['renter_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['renter_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
+                        <p><{$order['renter_review_content']}></p>
+                    <{else}>
+                        <{if $order['owner_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['owner_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
+                        <p><{$order['owner_review_content']}></p>
+                    <{/if}>
+                </div>
+                </div>
+            </card>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <card>
+                <div class="row mb-3 mt-3">
+                    <div class="col-3">
+                        <avatar><img src="<{$userinfo['avatar']}>"></avatar> <!-- TODO 显示对方的头像-->
+                    </div>
+                    <div class="col-9">
+                        <{if $order['renter_id'] != $userinfo['uid']}>
+                            <{if $order['renter_review'] == '-1'}><h4 class="text-warning">对方评价：差评</h4><{else if $order['renter_review'] == '0'}><h4 class="text-dark">对方评价：中评</h4><{else}><h4 class="text-success">对方评价：好评</h4><{/if}>
+                            <p><{$order['renter_review_content']}></p>
+                        <{else}>
+                            <{if $order['owner_review'] == '-1'}><h4 class="text-warning">对方评价：差评</h4><{else if $order['owner_review'] == '0'}><h4 class="text-dark">对方评价：中评</h4><{else}><h4 class="text-success">对方评价：好评</h4><{/if}>
+                            <p><{$order['owner_review_content']}></p>
+                        <{/if}>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+    <{else if $order['scode'] == 3 && (strlen($order['renter_review']) || strlen($order['owner_review'])) }>
+    <card>
+        <div class="row mb-3 mt-3">
+            <div class="col-3 text-center">
+                <avatar><img src="<{$userinfo['avatar']}>"></avatar>
+            </div>
+            <div class="col-9">
+                <{if $order['renter_id'] == $userinfo['uid']}>
+                    <{if $order['renter_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['renter_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
+                    <p><{$order['renter_review_content']}></p>
+                <{else}>
+                    <{if $order['owner_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['owner_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
+                    <p><{$order['owner_review_content']}></p>
+                <{/if}>
+            </div>
+        </div>
+    </card>
     <{/if}>
     <card class="time-line-card">
         <!--timeline待order表增加return_time字段后再增加一个成功归还-->
         <{if $order['scode'] == 6}>
         <timeline date="<{$order['due_time']}>">
-            <h3>超时未归还</h3>
-            <p>请尽快归还物品，并提醒出借人「确认归还」。</p>
+            <h3>已逾期</h3>
+            <{if $order['renter_id'] == $userinfo['uid'] }>
+            <p>该订单已逾期，请尽快归还物品，并提醒出借方「确认归还」，以免扣除更多的信用分。</p>
+            <{else}>
+            <p>订单已逾期，请提醒借用方尽快归还物品。<strong>如已收到物品，请点击「确认归还」。</strong></p>
+            <{/if}>
         </timeline>
         <{else if $order['scode'] == 5}>
         <timeline date="<{$order['return_time']}>">
@@ -155,16 +234,16 @@
         <timeline date="<{$order['rent_time']}>">
             <h3>等待归还</h3>
             <{if $order['renter_id'] == $userinfo['uid'] }>
-            <p>已确认取得物品，请在 「<{$order['due_time']}>」 前归还物品，并提醒出借人「确认归还」。</p>
+            <p>已确认取得物品，请在 「<{$order['due_time']}>」 前归还物品，并提醒出借方「确认归还」。</p>
             <{else}>
-            <p>对方已确认取得物品，最迟在 「<{$order['due_time']}>」 前归还。</p>
+            <p>对方已确认取得物品，物品将在 「<{$order['due_time']}>」 前归还，请在借用方归还后点击「确认归还」。</p>
             <{/if}>
         </timeline>
         <{/if}>
         <timeline date="<{$order['create_time']}>">
             <h3>等待取用</h3>
             <{if $order['renter_id'] == $userinfo['uid'] }>
-            <p>订单已生成，请到指定地点或与出借方联系以取得物品，取得后点击「确认取用」后开始计算归还时间。</p>
+            <p>订单已生成，请到指定地点或与出借方联系以取得物品，取得后点击「确认取用」后开始计算归还时间。<strong>请在当天完成确认取用，否则订单将强制取消。</strong></p>
             <{else}>
             <p>订单已生成，等待对方取得物品并在「确认取用」后开始计算归还时间。</p>
             <{/if}>
@@ -178,7 +257,7 @@
             </div>
             <div class="col-xl-10 col-md-9 col-sm-8 col-7">
                 <div>
-                    <h3><{$order['name']}></h3>
+                    <h3><a href="<{$MHS_DOMAIN}>/item/detail/<{$order['iid']}>"><{$order['name']}></a></h3>
                 </div>
             </div>
         </div>
@@ -193,13 +272,12 @@
                 <td><{$order['create_time']}></td>
             </tr>
             <tr>
-                <{if $order['renter_id'] == $userinfo['uid']}>
-                <th scope="row">出借人</th>
+                <th scope="row">出借方</th>
                 <td><{$order['real_name']}></td>
-                <{else}>
-                <th scope="row">借用人</th>
+            </tr>
+            <tr>
+                <th scope="row">借用方</th>
                 <td><{$order['renter_real_name']}></td>
-                <{/if}>
             </tr>
             <tr>
                 <th scope="row">借用时限</th>
