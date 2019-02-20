@@ -18,6 +18,7 @@ class AccountController extends BaseController
         $this->url="ucenter";
         $this->msg1=$this->msg2="";
         $action=arg("action");
+        $this->rtn=$rtn=arg("return");
         if ($action==="register") {
 
             $db=new Model("users");
@@ -67,7 +68,7 @@ class AccountController extends BaseController
             $uid=$db->create($user);
             $_SESSION['OPENID']=$OPENID;
 
-            $this->jump("{$this->MHS_DOMAIN}/");
+            $this->jump("{$this->MHS_DOMAIN}/".$rtn);
 
         //echo json_encode($output);
         } elseif ($action==="login") { //如果是登录
@@ -86,7 +87,7 @@ class AccountController extends BaseController
                 return self::account_err_report("邮箱或密码错误", 0);
             } else {
                 $_SESSION['OPENID']=$OPENID;
-                $this->jump("{$this->MHS_DOMAIN}/");
+                $this->jump("{$this->MHS_DOMAIN}/".$rtn);
             }
         }
     }

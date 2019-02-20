@@ -105,7 +105,7 @@
             </div>
                 <div class="tab-content" id="accountTabContent">
                     <div class="tab-pane fade <{ if $current==0 }>show active<{/if}>" id="login" role="tabpanel" aria-labelledby="login-tab">
-                        <form class="needs-validation" action="?action=login" method="post" id="login_form" novalidate>
+                        <form class="needs-validation" action="?action=login<{if !empty($rtn)}>&return=<{$rtn}><{/if}>" method="post" id="login_form" novalidate>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="email" class="bmd-label-floating">电子邮箱</label>
@@ -127,7 +127,7 @@
                         </form>
                     </div>
                     <div class="tab-pane fade <{ if $current==1 }>show active<{/if}>" id="register" role="tabpanel" aria-labelledby="register-tab">
-                        <form class="needs-validation" action="?action=register" method="post" id="register_form" novalidate>
+                        <form class="needs-validation" action="?action=register<{if !empty($rtn)}>&return=<{$rtn}><{/if}>" method="post" id="register_form" novalidate>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="email" class="bmd-label-floating">电子邮箱</label>

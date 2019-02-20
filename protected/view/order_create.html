@@ -1,36 +1,22 @@
 <style>
-    card {
-    display: block;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
-    border-radius: 4px;
-    transition: .2s ease-out .0s;
-    color: #7a8e97;
-    background: #fff;
-    padding: 1rem;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    margin-bottom: 2rem;
-    }
-    .mhs-img-detail {
-        width:10rem;
-        height:10rem;
-    }  
+    <{include file="MHS.css" }>
+
     card.mhs-card > div{
         text-align: center;
-        padding: 1rem;
+        padding: 0.5rem;
     }
 
 </style>
 
 <div class="container mundb-standard-container"> 
-<h3 class="mhs-title mb-5 mt-5">创建订单</h3>
+<h3 class="mhs-title mb-3 mt-3">创建订单</h3>
 <{foreach $order_item as $seq => $r}>
 <card class="mhs-card">
     <div class="row item" iid="<{$r['item_id']}>" count="<{$r['count']}>">      
-            <div class="col-md-3 col-sm-12 col-12">
-                    <img class="mhs-img-detail rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$r['item_id']}>?size=400">
+            <div class="col-md-3 col-sm-4 col-6">
+                    <img class="mhs-item-img-order rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$r['item_id']}>?size=400">
             </div>
-            <div class="col-md-9 col-sm-12 col-12">
+            <div class="col-md-9 col-sm-8 col-6">
                     <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$r['item_id']}>"><{$r['name']}></a></h4>
                     <p class="text-left">出借方：<{$r['real_name']}></p>
                     <p class="text-left">位置：<{$r['location']}></p>
@@ -39,7 +25,7 @@
     </div>
 </card>
 <{/foreach}>
-<h5>总计：<{count($order_item)}> 件物品，共 <{$total_count}> 个。</h5>
+<h5 class="mt-3">总计：<{count($order_item)}> 件物品，共 <{$total_count}> 个。</h5>
 <script>
     let submit=function(){
         NodeList.prototype.map=Array.prototype.map;
@@ -65,6 +51,6 @@
     }
 </script>
 <div class="text-right">
-    <button type="button" class="btn btn-outline-primary" onclick="submit()">下单</button>
+    <button type="button" class="btn btn-outline-primary mhs-button-cart" onclick="submit()">下单</button>
 </div>
 </div>
