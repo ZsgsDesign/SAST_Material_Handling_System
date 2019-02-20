@@ -1,0 +1,76 @@
+<div class="modal fade" id="Confirm" tabindex="-1" role="dialog" aria-labelledby="Confirm" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认取用</h5>
+            </div>
+            <div class="modal-body">
+                <p>您确定取得物品了吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="confirm()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Cancel" tabindex="-1" role="dialog" aria-labelledby="Cancel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认取消</h5>
+            </div>
+            <div class="modal-body">
+                <p>您确定取消该订单吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="cancel()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Return" tabindex="-1" role="dialog" aria-labelledby="Return" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认归还</h5>
+            </div>
+            <div class="modal-body">
+                <p>您确定物品已归还了吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="_return()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Review" tabindex="-1" role="dialog" aria-labelledby="Review" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">写评价</h5>
+            </div>
+            <div class="modal-body">
+                <p>您想给这次借用怎样的评价呢?</p>
+                <div class="form-group mb-3 mt-3">
+                    <label>评价等级</label>
+                    <div class="radio text-center">
+                        <label class="text-success" for="good"><input class="form-control" type="radio" name="review-type" id="good" value="1" checked="checked" >好评</label>
+                        <label class="text-info" for="middle"><input class="form-control" type="radio" name="review-type" id="middle" value="0" >中评</label>
+                        <label class="text-warning" for="bad"><input class="form-control" type="radio" name="review-type" id="bad" value="-1" >差评</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="review-text" class="bmd-label-floating">评价内容</label>
+                    <textarea class="form-control" id="review-text" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="review($('input:radio:checked').val(),$('#review-text').val())">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
