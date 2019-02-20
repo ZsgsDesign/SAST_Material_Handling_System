@@ -8,6 +8,7 @@ class MainController extends BaseController
         
         $sort=strtolower(@arg("sort"));
         $this->keyword = $keyword=strtolower(@arg("keyword"));
+        $keyword=addslashes($keyword);
         $page=@arg("page");
         $filter=strtolower(@arg('filter'));
         $this->args=[
