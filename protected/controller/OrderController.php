@@ -8,6 +8,9 @@ class OrderController extends BaseController
         $this->url="order/view";
         $this->title="查看订单";
         $oid=arg('oid');
+        if(!$this->islogin)
+            $this->jump("{$this->MHS_DOMAIN}/account/?return=orders");
+
         $order=new Model('`order`');
         $users=new Model('`user`');
         if(empty($oid)){
@@ -53,6 +56,9 @@ class OrderController extends BaseController
         $this->url="order/create";
         $selected=arg('item');//不传值 默认全选
         $this->title="创建订单";
+        if(!$this->islogin)
+            $this->jump("{$this->MHS_DOMAIN}/account/");
+
         $cart=new Model('cart');
         $sql="SELECT a.*,users.real_name FROM (SELECT cart.*,item.`name`,item.scode,item.`owner`,item.location FROM cart JOIN item ON cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE a.scode = 1 AND a.`user`= ".$this->userinfo['uid']." ";
         if(!empty($selected)){

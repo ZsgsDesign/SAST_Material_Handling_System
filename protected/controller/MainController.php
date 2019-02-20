@@ -5,7 +5,8 @@ class MainController extends BaseController
     {
         $this->url="index";
         $this->title="首页";
-        
+        if(!$this->islogin)
+            return;
         $sort=strtolower(@arg("sort"));
         $this->keyword = $keyword=strtolower(@arg("keyword"));
         $page=@arg("page");
@@ -39,7 +40,7 @@ class MainController extends BaseController
                 $conditions[':userCredit']=$this->userinfo['credit'];
                 $filter=" AND credit_limit > ".$conditions[':userCredit'];
             case 'mine':
-                $conditions[0]=$conditions[0].'AND owner = :owner ';
+                $conditions[0]=$conditions[0].'AND owner = :owner AND scode > -1';
                 $conditions[':owner']=$this->userinfo['uid'];
                 $filter='AND owner = '.$this->userinfo['uid'];
                 break;
@@ -76,23 +77,24 @@ class MainController extends BaseController
 
         $this->pager=$items->page;
         $this->items_info=$items_res;
-        if($this->islogin){
-            $order=new Model('`order`');
-            $order_res_ownerchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE item.`owner` = ".$this->userinfo['uid']),'owner_checked');
-            $order_res_ownerchecked_count=empty($order_res_ownerchecked)?[]:array_count_values(array_filter($order_res_ownerchecked));
-            $order_res_renterchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE `order`.renter_id = ".$this->userinfo['uid']),'renter_checked');
-            $order_res_renterchecked_count=empty(@$order_res_renterchecked)?[]:array_count_values(array_filter($order_res_renterchecked));
-            $checked_count_typeA=0+@$order_res_ownerchecked_count['1']+@$order_res_ownerchecked_count['2']+@$order_res_ownerchecked_count['3']+@$order_res_ownerchecked_count['5']+@$order_res_renterchecked_count['1']+@$order_res_renterchecked_count['2']+@$order_res_renterchecked_count['3']+@$order_res_renterchecked_count['5'];
-            $checked_count_typeB=0+@$order_res_ownerchecked_count['6']+@$order_res_renterchecked_count['6'];
-            $this->count_typeA=$checked_count_typeA;
-            $this->count_typeB=$checked_count_typeB;
-        }
+
+        $order=new Model('`order`');
+        $order_res_ownerchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE item.`owner` = ".$this->userinfo['uid']),'owner_checked');
+        $order_res_ownerchecked_count=empty($order_res_ownerchecked)?[]:array_count_values(array_filter($order_res_ownerchecked));
+        $order_res_renterchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE `order`.renter_id = ".$this->userinfo['uid']),'renter_checked');
+        $order_res_renterchecked_count=empty(@$order_res_renterchecked)?[]:array_count_values(array_filter($order_res_renterchecked));
+        $checked_count_typeA=0+@$order_res_ownerchecked_count['1']+@$order_res_ownerchecked_count['2']+@$order_res_ownerchecked_count['3']+@$order_res_ownerchecked_count['5']+@$order_res_renterchecked_count['1']+@$order_res_renterchecked_count['2']+@$order_res_renterchecked_count['3']+@$order_res_renterchecked_count['5'];
+        $checked_count_typeB=0+@$order_res_ownerchecked_count['6']+@$order_res_renterchecked_count['6'];
+        $this->count_typeA=$checked_count_typeA;
+        $this->count_typeB=$checked_count_typeB;
     }
 
     public function actionCart()
     {
         $this->url="cart";
         $this->title="购物车";
+        if(!$this->islogin)
+            $this->jump("{$this->MHS_DOMAIN}/account/?return=cart");
         $cart=new Model("cart");
         $item=new Model("item");
         $users=new Model("users");
@@ -103,7 +105,8 @@ class MainController extends BaseController
     public function actionOrders(){
         $this->url="orders";
         $this->title="我的订单";
-
+        if(!$this->islogin)
+            $this->jump("{$this->MHS_DOMAIN}/account/?return=orders");
         $order=new Model('`order`');
         
         $typeA=array();
