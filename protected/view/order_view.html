@@ -96,6 +96,27 @@
     <{else if $order['scode'] == 4}>
     <div class="jumbotron alert-success">
         <h1><strong>订单已完成</strong></h1>
+        <p class="lead">
+            <br/>
+            <span style="font-size:30px;font-weight:bold">TA&nbsp;</span>给了您一个
+            <{if $userinfo['uid'] == $order['renter_id']}>
+                    <{if $order['owner_review'] == -1}>
+                        <strong>差评👎</strong>
+                    <{else if $order['owner_review'] == 0}>
+                        <strong>中评🤔</strong>
+                    <{else if $order['owner_review'] == 1}>
+                        <strong>好评👍</strong>
+                    <{/if}>
+            <{else}>
+                <{if $order['renter_review'] == -1}>
+                    <strong>差评👎</strong>
+                <{else if $order['renter_review'] == 0}>
+                    <strong>中评🤔</strong>
+                <{else if $order['renter_review'] == 1}>
+                    <strong>好评👍</strong>
+                <{/if}>
+            <{/if}>
+        </p>
         <p class="lead">该订单已完成，感谢您的使用。</p>
     </div>
     <{else if $order['scode'] == 3}>
