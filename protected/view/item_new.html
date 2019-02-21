@@ -98,6 +98,7 @@
         <div class="text-right">
             <{if $iid != -1}>
                 <button id="delete-btn" class="btn btn-outline-danger" onclick="deleteItem(<{$iid}>)">彻底删除</button>
+                <!--TODO这边需要加个确认框-->
             <{/if}>
             <button class="btn btn-outline-primary" onclick="publish()">发布物品</button>
         </div>

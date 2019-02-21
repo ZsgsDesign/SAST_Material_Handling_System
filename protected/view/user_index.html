@@ -193,6 +193,7 @@
                     <{else}>
                     <div class="row">
                         <{foreach $items_info as $seq => $r}>
+                            <{if $r['scode'] != -2}>
                             <{if $isMe}>
                             <div class="col-lg-3 col-md-4 col-6">
                                 <card class="item-card text-center mb-3">
@@ -225,6 +226,7 @@
                                     <button class="btn btn-primary mhs-button" onclick="addToCart(<{$r['iid']}>,<{$seq}>);"><i class="MDI cart"></i></button>
                                 </card>
                             </div>
+                            <{/if}>
                             <{/if}>
                         <{/foreach}>
                     </div>

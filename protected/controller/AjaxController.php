@@ -44,7 +44,7 @@ class AjaxController extends BaseController
 
             $iid=$item->create(
                 array(
-                    'scode' => "1",//此处约定物品无库存的状态码为0，物品有库存为1，物品下架为-1
+                    'scode' => "1",//此处约定物品无库存的状态码为0，物品有库存为1，物品下架为-1，让该物品对owner隐藏为-2
                     'name' => $name,
                     'count' => $number,
                     "owner" => $this->userinfo['uid'],
@@ -93,11 +93,14 @@ class AjaxController extends BaseController
             }
             else{
                 $items=new Model('item');
-                $items->delete(
+                $items->update(
                     array(
                         "iid = :iid AND owner = :owner",
                         ":iid" => $iid,
                         ":owner" => $this->userinfo['uid']
+                    ),
+                    array(
+                        "scode" => -2
                     )
                 );
                 SUCCESS::Catcher("成功删除!");
