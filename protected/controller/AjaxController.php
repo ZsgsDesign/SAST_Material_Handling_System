@@ -456,6 +456,7 @@ class AjaxController extends BaseController
     }
     public function actionClearChecked(){
         $type=arg("type");//可能的值有A和B，
+        $type=strtoupper($type);
         $order=new Model('`order`');
         if($type === 'A'){
             $order->update(
