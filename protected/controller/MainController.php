@@ -109,6 +109,8 @@ class MainController extends BaseController
         if(!$this->islogin)
             $this->jump("{$this->MHS_DOMAIN}/account/?return=orders");
         $order=new Model('`order`');
+        $page=arg('page');
+        $page=max(1,$page);
         
         $typeA=array();
         $typeB=array();
@@ -148,9 +150,13 @@ class MainController extends BaseController
                 array_unshift($order_res,$temp);
             }
         }
+        $order->pager($page,8,6,count($order_res));
+
+        if(!empty($order->page)){
+            $order_res=array_slice($order_res,($page-1)*8,8,false);
+        }
         $this->orders=$order_res;
-
-
+        $this->pager=$order->page;
         
         $this->info_count=count($typeA)+count($typeB);
     }

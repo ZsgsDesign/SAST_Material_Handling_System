@@ -87,6 +87,20 @@
         <{/foreach}>
         </tbody>
     </table>
+    <{if $pager !==null }>
+    <ul class="pagination justify-content-center">
+        <li style="display:inherit" class="page-item <{if $pager['current_page'] == $pager['prev_page']}> disabled <{/if}>">
+            <a class="page-link" href="<{$MHS_DOMAIN}>/orders/?page=<{$pager['prev_page']}>" tabindex="-1"  aria-disabled="true" >首页</a>
+            <a class="page-link" href="<{$MHS_DOMAIN}>/orders/?page=<{$pager['prev_page']}>" tabindex="-1"  aria-disabled="true" >上一页</a>
+        </li>
+        <{foreach $pager["all_pages"] as $i}>
+            <li class="page-item <{if $i == $pager['current_page']}> active <{/if}> "><a class="page-link" href="<{$MHS_DOMAIN}>/orders/?page=<{$i}>"><{$i}></a></li>
+        <{/foreach}>
+        <li class="page-item <{if $pager['current_page'] == $pager['next_page']}> disabled <{/if}>">
+            <a class="page-link" href="<{$MHS_DOMAIN}>/orders/?page=<{$pager['next_page']}>">下一页</a>
+        </li>
+    </ul>
+    <{/if}>
     <{else}>
     <div class="text-center">
         <p class="text-primary mt-5 mb-3">这里空空如也，快去借吧～</p>
