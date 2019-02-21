@@ -103,7 +103,7 @@
         <{/if}>
     </div>
     <{else if $order['scode'] == 5}>
-    <div class="jumbotron alert-warning">
+    <div class="jumbotron alert-secondary">
         <h1><strong>订单已取消</strong></h1>
         <p class="lead">该订单已被取消。</p>
     </div>
@@ -205,7 +205,8 @@
             </card>
         </div>
     </div>
-    <{else if $order['scode'] == 3 && (strlen($order['renter_review']) || strlen($order['owner_review'])) }>
+    <{else if $order['scode'] == 3 }>
+    <{if ($order['renter_id'] == $userinfo['uid'] && strlen($order['renter_review'])) || ($order['renter_id'] != $userinfo['uid'] && strlen($order['owner_review'])) }>
     <card>
         <div class="row mb-3 mt-3">
             <div class="col-3 text-center">
@@ -222,6 +223,7 @@
             </div>
         </div>
     </card>
+    <{/if}>
     <{/if}>
     <card class="time-line-card">
         <!--timeline待order表增加return_time字段后再增加一个成功归还-->
