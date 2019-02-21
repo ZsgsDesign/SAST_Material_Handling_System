@@ -82,6 +82,29 @@ class AjaxController extends BaseController
         }
     }
 
+    public function actionDeleteItem(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        else{
+            $iid=arg('iid');
+            if(empty($iid)){
+                ERR::Catcher(1003);
+            }
+            else{
+                $items=new Model('item');
+                $items->delete(
+                    array(
+                        "iid = :iid AND owner = :owner",
+                        ":iid" => $iid,
+                        ":owner" => $this->userinfo['uid']
+                    )
+                );
+                SUCCESS::Catcher("成功删除!");
+            }
+        }
+    }
+
     public function actionRemoveItem(){
         if (!($this->islogin)) {
             ERR::Catcher(2001);

@@ -17,6 +17,9 @@
         max-height: 15rem;
         object-fit: cover;
     }
+    #delete-btn{
+        margin-right: 20px;
+    }
     @media all and (max-width:1200px) and (min-width:992px){
         .responsive>div{
             min-width: 600px;
@@ -64,14 +67,6 @@
                     <span class="bmd-help">物品名称包含关键词可以更好地被搜索到哦。</span>
                 </div>
                 <div class="form-group">
-                    <!-- <label for="time_limit" class="bmd-label-floating">借用时限</label>
-                    <select class="form-control" id="time_limit">
-                        <option <{if $item_info['limit_time'] == 1}> selected <{/if}> >1 天</option>
-                        <option <{if $item_info['limit_time'] == 3}> selected <{/if}> >3 天</option>
-                        <option <{if $item_info['limit_time'] == 7}> selected <{/if}> >7 天</option>
-                        <option <{if $item_info['limit_time'] == 15}> selected <{/if}> >15天</option>
-                        <option <{if $item_info['limit_time'] == 20}> selected <{/if}> >30天</option>
-                    </select> -->
                     <label for="number" class="bmd-label-floating">借用时限(天)</label>
                     <input type="number" id="time_limit" placeholder="物品应于多少天内归还" class="form-control" min="1" value="<{$item_info['limit_time']}>">
                     <span class="bmd-help">该物品在"确认借用"后要求在规定天数内归还。</span>
@@ -101,6 +96,9 @@
             </div>
         </div>
         <div class="text-right">
+            <{if $iid != -1}>
+                <button id="delete-btn" class="btn btn-outline-danger" onclick="deleteItem(<{$iid}>)">彻底删除</button>
+            <{/if}>
             <button class="btn btn-outline-primary" onclick="publish()">发布物品</button>
         </div>
     </card>
@@ -212,6 +210,12 @@
             }
         });
 
+    }
+    function deleteItem(iid){
+        $.post('<{$MHS_DOMAIN}>/ajax/DeleteItem',{iid:iid},function(data,status){
+            console.log(data,status);
+            location.href="<{$MHS_DOMAIN}>/user?tab=item";
+        })
     }
 
 </script>
