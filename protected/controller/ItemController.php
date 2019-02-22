@@ -58,13 +58,13 @@ class ItemController extends BaseController
                     $messages_res[$seq]['time']="刚刚";
                 }
                 else if($diff_time < 3600){
-                    $messages_res[$seq]['time']=round($diff_time/60)."分钟前";
+                    $messages_res[$seq]['time']=round($diff_time/60)." 分钟前";
                 }
                 else if($diff_time < 86400){
-                    $messages_res[$seq]['time']=round($diff_time/3600)."小时前";
+                    $messages_res[$seq]['time']=round($diff_time/3600)." 小时前";
                 }
                 else if($diff_time < 258200){
-                    $messages_res[$seq]['time']=round($diff_time/86400)."天前";
+                    $messages_res[$seq]['time']=round($diff_time/86400)." 天前";
                 }
                 else{
                     $messages_res[$seq]['time']=date("Y年m月d日",strtotime($value['time']));
