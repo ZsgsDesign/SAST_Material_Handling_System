@@ -90,14 +90,17 @@ class ItemController extends BaseController
                 }
             }
             foreach($message_info as $seq => $value){
-                if(count($value['comments']) === 0){
-                    $message_info[$seq]['comments']=NULL;
-                }
                 if($value['reference'] == -1){
                     array_splice($message_info,$seq,1);
                 }
             }
-            // dump($message_info);
+            foreach($message_info as $seq => $value){
+                if(count($value['comments']) === 0){
+                    $message_info[$seq]['comments']=NULL;
+                }
+            }
+
+             dump($message_info);
             $this->messages=$message_info;
 
         }
