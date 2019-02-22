@@ -536,4 +536,33 @@ class AjaxController extends BaseController
             ERR::Catcher(1004);//参数非法
         }
     }
+    public function actionLeaveMessage(){
+        if (!($this->islogin)) {
+            ERR::Catcher(2001);
+        }
+        else{
+            $iid=arg('iid');
+            $content=arg('content');
+            $reference=arg('reference');
+            $messages=new Model('messages');
+            if(empty($iid)||(empty($content)&&$content!=0)){
+                ERR::Catcher(1003);
+            }
+            else{
+                if($reference!==NULL&&!($messages->find(array("mid = :mid",":mid" => intval($reference))))){
+                    ERR::Catcher(1004);
+                }
+                $mid=$messages->create(
+                    array(
+                        "item_id" => $iid,
+                        "user_id" => $this->userinfo['uid'],
+                        "time" => date("Y-m-d H:i:s",time()),
+                        "content" => $content,
+                        "reference" => $reference
+                    )
+                );
+                SUCCESS::Catcher("留言成功!");
+            }
+        }
+    }
 }

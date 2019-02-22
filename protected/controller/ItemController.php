@@ -65,7 +65,7 @@ class ItemController extends BaseController
                 }
             }
             $this->messages=$message_info;
-            dump($message_info);
+            // dump($message_info);
 
         }
         $this->title=$this->item_info["name"]." - 物品详情";
