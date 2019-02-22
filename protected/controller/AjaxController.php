@@ -601,7 +601,12 @@ class AjaxController extends BaseController
                 }
                 else{
                     $temp_like=unserialize($temp_like);
-                    array_push($temp_like,$this->userinfo['uid']);
+                    if(!in_array($this->userinfo['uid'],$temp_like)){
+                        array_push($temp_like,$this->userinfo['uid']);
+                    }
+                    else{
+                        ERR::Catcher(1004);//已点赞过
+                    }
                 }
                 $messages->update(
                     array(
