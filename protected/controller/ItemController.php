@@ -50,7 +50,7 @@ class ItemController extends BaseController
                 "publisher_order_count" => $order_count, //总出借笔数
                 "publisher_item_count" => $item_count, //发布物品数
             );
-            $messages_res=$messages->query("SELECT `messages`.*,`users`.uid,`users`.real_name FROM `messages` JOIN `users` ON `messages`.`user_id` = `users`.`uid` WHERE `messages`.item_id = ".$iid);
+            $messages_res=$messages->query("SELECT `messages`.*,`users`.uid,`users`.real_name,`users`.avatar FROM `messages` JOIN `users` ON `messages`.`user_id` = `users`.`uid` WHERE `messages`.item_id = ".$iid);
             $message_info=array();            
             foreach($messages_res as $seq => $value){
                 $diff_time = strtotime('now') - strtotime($value['time']);
@@ -81,6 +81,7 @@ class ItemController extends BaseController
                 if($message['reference'] !== NULL && $message['reference'] != -1){
                     $messages_res[$seq]['refer_real_name']=matchColumn($messages_res,'mid',$message['reference'],'real_name');
                     $messages_res[$seq]['refer_id']=matchColumn($messages_res,'mid',$message['reference'],'uid');
+                    $messages_res[$seq]['refer_avatar']=matchColumn($messages_res,'mid',$message['reference'],'avatar');
                     $root_message=$message;
                     while($root_message['reference']){
                         $root_message=$messages_res[matchColumn($messages_res,'mid',$root_message['reference'],'KEY')];
@@ -93,6 +94,7 @@ class ItemController extends BaseController
                     $message_info[$seq]['comments']=NULL;
                 }
             }
+            dump($message_info);
             $this->messages=$message_info;
 
         }
