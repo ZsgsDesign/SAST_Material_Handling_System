@@ -16,7 +16,6 @@
         top:0%;
         left:0;
         right:0;
-        position: absolute;
         margin: auto;
     }
     timeline {
@@ -169,36 +168,40 @@
     <{if $order['scode'] == 4}>
     <div class="row">
         <div class="col-md-6 col-sm-12">
-            <card>
-                <div class="row mb-3 mt-3">
-                <div class="col-3">
-                    <avatar><img src="<{$userinfo['avatar']}>"></avatar>
-                </div>
-                <div class="col-9">
+            <card class="p-3">
+                <div class="media">
                     <{if $order['renter_id'] == $userinfo['uid']}>
-                        <{if $order['renter_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['renter_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
-                        <p><{$order['renter_review_content']}></p>
+                    <avatar class="mr-3 align-self-start"><img src="<{$order['renter_avatar']}>"></avatar>
                     <{else}>
-                        <{if $order['owner_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['owner_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
-                        <p><{$order['owner_review_content']}></p>
+                    <avatar class="mr-3 align-self-start"><img src="<{$order['avatar']}>"></avatar>
                     <{/if}>
-                </div>
+                    <div class="media-body">
+                        <{if $order['renter_id'] == $userinfo['uid']}>
+                        <{if $order['renter_review'] == '-1'}><h5 class="mt-0 text-warning">我的评价：差评</h5><{else if $order['renter_review'] == '0'}><h5 class="mt-0 text-dark">我的评价：中评</h5><{else}><h5 class="mt-0 text-success">我的评价：好评</h5><{/if}>
+                        <{$order['renter_review_content']}>
+                        <{else}>
+                        <{if $order['owner_review'] == '-1'}><h5 class="mt-0 text-warning">我的评价：差评</h5><{else if $order['owner_review'] == '0'}><h5 class="mt-0 text-dark">我的评价：中评</h5><{else}><h5 class="mt-0 text-success">我的评价：好评</h5><{/if}>
+                        <{$order['owner_review_content']}>
+                        <{/if}>
+                    </div>
                 </div>
             </card>
         </div>
         <div class="col-md-6 col-sm-12">
-            <card>
-                <div class="row mb-3 mt-3">
-                    <div class="col-3">
-                        <avatar><img src="<{$userinfo['avatar']}>"></avatar> <!-- TODO 显示对方的头像-->
-                    </div>
-                    <div class="col-9">
+            <card class="p-3">
+                <div class="media">
+                    <{if $order['renter_id'] != $userinfo['uid']}>
+                    <avatar class="mr-3 align-self-start"><img src="<{$order['renter_avatar']}>"></avatar>
+                    <{else}>
+                    <avatar class="mr-3 align-self-start"><img src="<{$order['avatar']}>"></avatar>
+                    <{/if}>
+                    <div class="media-body">
                         <{if $order['renter_id'] != $userinfo['uid']}>
-                            <{if $order['renter_review'] == '-1'}><h4 class="text-warning">对方评价：差评</h4><{else if $order['renter_review'] == '0'}><h4 class="text-dark">对方评价：中评</h4><{else}><h4 class="text-success">对方评价：好评</h4><{/if}>
-                            <p><{$order['renter_review_content']}></p>
+                        <{if $order['renter_review'] == '-1'}><h5 class="mt-0 text-warning">对方评价：差评</h5><{else if $order['renter_review'] == '0'}><h5 class="mt-0 text-dark">对方评价：中评</h5><{else}><h5 class="mt-0 text-success">对方评价：好评</h5><{/if}>
+                        <{$order['renter_review_content']}>
                         <{else}>
-                            <{if $order['owner_review'] == '-1'}><h4 class="text-warning">对方评价：差评</h4><{else if $order['owner_review'] == '0'}><h4 class="text-dark">对方评价：中评</h4><{else}><h4 class="text-success">对方评价：好评</h4><{/if}>
-                            <p><{$order['owner_review_content']}></p>
+                        <{if $order['owner_review'] == '-1'}><h5 class="mt-0 text-warning">对方评价：差评</h5><{else if $order['owner_review'] == '0'}><h5 class="mt-0 text-dark">对方评价：中评</h5><{else}><h5 class="mt-0 text-success">对方评价：好评</h5><{/if}>
+                        <{$order['owner_review_content']}>
                         <{/if}>
                     </div>
                 </div>
@@ -207,18 +210,20 @@
     </div>
     <{else if $order['scode'] == 3 }>
     <{if ($order['renter_id'] == $userinfo['uid'] && strlen($order['renter_review'])) || ($order['renter_id'] != $userinfo['uid'] && strlen($order['owner_review'])) }>
-    <card>
-        <div class="row mb-3 mt-3">
-            <div class="col-3 text-center">
-                <avatar><img src="<{$userinfo['avatar']}>"></avatar>
-            </div>
-            <div class="col-9">
+    <card class="p-3">
+        <div class="media">
+            <{if $order['renter_id'] == $userinfo['uid']}>
+            <avatar class="mr-3 align-self-start"><img src="<{$order['renter_avatar']}>"></avatar>
+            <{else}>
+            <avatar class="mr-3 align-self-start"><img src="<{$order['avatar']}>"></avatar>
+            <{/if}>
+            <div class="media-body">
                 <{if $order['renter_id'] == $userinfo['uid']}>
-                    <{if $order['renter_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['renter_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
-                    <p><{$order['renter_review_content']}></p>
+                <{if $order['renter_review'] == '-1'}><h5 class="mt-0 text-warning">我的评价：差评</h5><{else if $order['renter_review'] == '0'}><h5 class="mt-0 text-dark">我的评价：中评</h5><{else}><h5 class="mt-0 text-success">我的评价：好评</h5><{/if}>
+                <{$order['renter_review_content']}>
                 <{else}>
-                    <{if $order['owner_review'] == '-1'}><h4 class="text-warning">我的评价：差评</h4><{else if $order['owner_review'] == '0'}><h4 class="text-dark">我的评价：中评</h4><{else}><h4 class="text-success">我的评价：好评</h4><{/if}>
-                    <p><{$order['owner_review_content']}></p>
+                <{if $order['owner_review'] == '-1'}><h5 class="mt-0 text-warning">我的评价：差评</h5><{else if $order['owner_review'] == '0'}><h5 class="mt-0 text-dark">我的评价：中评</h5><{else}><h5 class="mt-0 text-success">我的评价：好评</h5><{/if}>
+                <{$order['owner_review_content']}>
                 <{/if}>
             </div>
         </div>
