@@ -234,7 +234,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick="sendComment($('#comment-text').val(),null);">确定</button>
+                <button type="button" class="btn btn-primary" onclick="sendComment($('#comment-text').val());">确定</button>
             </div>
         </div>
     </div>
@@ -248,27 +248,19 @@
     });
     let seletedComment = null;
     let refer = null;
+
     function sendComment(content) {
-        $.post('<{$MHS_DOMAIN}>/ajax/LeaveMessage',{
-            iid:<{$item_info['iid']}>,
-            content:content,
-            reference:refer
-        },function (result) {
-            setTimeout(function (){
-                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-            },1000);
-            location.reload();
-        });
+        let data={};
+        if(refer === null)
+            data={iid:<{$item_info['iid']}>,content:content}
+        else
+            data={iid:<{$item_info['iid']}>,content:content,reference:refer};
+        $.post('<{$MHS_DOMAIN}>/ajax/LeaveMessage', data ,function () {location.reload();});
     }
     function deleteComment() {
         $.post('<{$MHS_DOMAIN}>/ajax/WithdrawMessage',{
             mid:seletedComment
-    },function (result) {
-            setTimeout(function (){
-                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-            },1000);
-            location.reload();
-        });
+    },function () {location.reload();});
     }
 </script>
 <script>
