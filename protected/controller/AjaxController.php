@@ -584,4 +584,42 @@ class AjaxController extends BaseController
             ERR::Catcher(1004);
         }
     }
+    public function actionLikeMessage(){
+        $mid=arg('mid');
+        if(!empty($mid)){
+            $messages=new Model('messages');
+            $messages_res=$messages->find(
+                array(
+                    "mid = :mid",
+                    ":mid" => $mid
+                )
+            );
+            if(!empty($messages_res)){
+                $temp_like=$messages_res['liked'];
+                if(empty($temp_like)){
+                    $temp_like=array($this->userinfo['uid']);
+                }
+                else{
+                    $temp_like=unserialize($temp_like);
+                    array_push($temp_like,$this->userinfo['uid']);
+                }
+                $messages->update(
+                    array(
+                        "mid = :mid",
+                        ":mid" => $mid
+                    ),
+                    array(
+                        "liked" => serialize($temp_like)
+                    )
+                );
+                SUCCESS::Catcher("点赞成功!");
+            }
+            else{
+                ERR::Catcher(1004);
+            }
+        }
+        else{
+            ERR::Catcher(1003);
+        }
+    }
 }

@@ -69,6 +69,7 @@ class ItemController extends BaseController
                 else{
                     $messages_res[$seq]['time']=date("Y年m月d日",strtotime($value['time']));
                 }
+                $messages_res[$seq]['liked']=unserialize($value['liked']) === false ? 0 :count(unserialize($value['liked']));
             }
 
             foreach($messages_res as $seq => $message){
@@ -90,17 +91,18 @@ class ItemController extends BaseController
                 }
             }
             foreach($message_info as $seq => $value){
-                if($value['reference'] == -1){
-                    array_splice($message_info,$seq,1);
-                }
-            }
-            foreach($message_info as $seq => $value){
                 if(count($value['comments']) === 0){
                     $message_info[$seq]['comments']=NULL;
                 }
             }
+            for($i=0;$i<count($message_info);$i++){
+                if($message_info[$i]['reference'] == -1){
+                    array_splice($message_info,$i,1);
+                    $i--;
+                }
+            }
 
-            //  dump($message_info);
+            // dump($message_info);
             $this->messages=$message_info;
 
         }
@@ -148,7 +150,6 @@ class ItemController extends BaseController
             "location" => $item_res["location"], //物品地点
             "desc" => $desc //物品描述
         );
-        //dump($this->item_info);
         $this->display("item_new.html"); //共用前端
 
     }
