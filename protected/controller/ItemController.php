@@ -68,8 +68,12 @@ class ItemController extends BaseController
                     array_push($message_info[matchColumn($message_info,'mid',$root_message['mid'],'KEY')]['comments'],$messages_res[$seq]);
                 }
             }
+            foreach($message_info as $seq => $value){
+                if(count($value['comments']) === 0){
+                    $message_info[$seq]['comments']=NULL;
+                }
+            }
             $this->messages=$message_info;
-            dump($this->messages);
 
         }
         $this->title=$this->item_info["name"]." - 物品详情";
