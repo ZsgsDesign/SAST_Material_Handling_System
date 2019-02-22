@@ -51,7 +51,23 @@ class ItemController extends BaseController
                 "publisher_item_count" => $item_count, //发布物品数
             );
             $messages_res=$messages->query("SELECT `messages`.*,`users`.uid,`users`.real_name FROM `messages` JOIN `users` ON `messages`.`user_id` = `users`.`uid` WHERE `messages`.item_id = ".$iid);
-            $message_info=array();
+            $message_info=array();            
+            foreach($messages_res as $seq => $value){
+                $diff_time = strtotime('now') - strtotime($value['time']);
+                if($diff_time < 60){
+                    $messages_res[$seq]['time']="刚刚";
+                }
+                else if($diff_time < 3600){
+                    $messages_res[$seq]['time']=round($diff_time/60)."分钟前";
+                }
+                else if($diff_time < 86400){
+                    $messages_res[$seq]['time']=round($diff_time/3600)."小时前";
+                }
+                else if($diff_time < 258200){
+                    $messages_res[$seq]['time']=round($diff_time/86400)."天前";
+                }
+            }
+
             foreach($messages_res as $seq => $message){
                 if($message['reference'] === NULL && $message['reference'] != -1){
                     array_push($message_info,$message);
