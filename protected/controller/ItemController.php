@@ -66,6 +66,9 @@ class ItemController extends BaseController
                 else if($diff_time < 258200){
                     $messages_res[$seq]['time']=round($diff_time/86400)."天前";
                 }
+                else{
+                    $messages_res[$seq]['time']=date("Y年m月d日",strtotime($value['time']));
+                }
             }
 
             foreach($messages_res as $seq => $message){
@@ -90,6 +93,7 @@ class ItemController extends BaseController
                     $message_info[$seq]['comments']=NULL;
                 }
             }
+            dump($message_info);
             $this->messages=$message_info;
 
         }
