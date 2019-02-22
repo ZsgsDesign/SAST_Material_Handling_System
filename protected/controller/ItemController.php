@@ -93,7 +93,6 @@ class ItemController extends BaseController
                     $message_info[$seq]['comments']=NULL;
                 }
             }
-            dump($message_info);
             $this->messages=$message_info;
 
         }
