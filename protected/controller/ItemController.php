@@ -50,6 +50,7 @@ class ItemController extends BaseController
                 "publisher_item_count" => $item_count, //发布物品数
             );
             
+            
         }
         $this->title=$this->item_info["name"]." - 物品详情";
     }
