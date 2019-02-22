@@ -8,6 +8,24 @@
     statistic{
         display: block;
     }
+    avatar{
+        display: block;
+        position: relative;
+        text-align: center;
+        height: 4rem;
+    }
+    avatar > img{
+        display: block;
+        width:4rem;
+        height:4rem;
+        border-radius: 2000px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        top:0%;
+        left:0;
+        right:0;
+        margin: auto;
+    }
 </style>
 
 <div class="container mundb-standard-container"> 
@@ -143,8 +161,84 @@
                 </div>
             </div>
     </card>
+    <card class="p-3">
+        <div class="text-center">
+            <h5 class="text-primary">留言</h5>
+            <button type="button" class="btn btn-primary" onclick="refer=null;
+            $('#comment-title').html('发布留言');
+            $('#Comment').modal('show');"><i class="MDI comment-remove-outline"></i>发布评论</button>
+        </div>
+        <{foreach $messages as $r}>
+        <div class="media">
+            <avatar class="mr-3 align-self-start"><img src="<{$r['avatar']}>"></avatar>
+            <div class="media-body">
+                <{if $r['uid'] == $userinfo['uid'] }><h5 class="mt-0 text-primary">我</h5><{else}><h5 class="mt-0"><a href="<{$MHS_DOMAIN}>/user/<{$r['uid']}>"><{$r['real_name']}></a></h5><{/if}>
+                <{$r['content']}>
+                <br><small><{$r['time']}></small>
+                <button type="button" class="btn btn-warning btn-sm"><i class="MDI heart"></i> 10010</button> <!-- TODO -->
+                <button type="button" class="btn btn-primary btn-sm" onclick="refer=<{$r['mid']}>;$('#comment-title').html('回复<{$r['real_name']}>');$('#Comment').modal('show');"><i class="MDI comment"></i> <{if empty($r['comments'])}>评论<{else}><{count($r['comments'])}><{/if}></button>
+                <{if $item_info['owner'] == $userinfo['uid']}>
+                <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$r['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
+                <{else if $r['uid'] == $userinfo['uid']}>
+                <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$r['mid']}>;$('#Delete').modal('show');"><i class="MDI delete"></i> 删除</button> <!-- 自己删除自己的评论 -->
+                <{/if}>
+                <{foreach $r['comments'] as $q}>
+                <div class="media mt-3">
+                    <avatar class="mr-3 align-self-start"><img src="<{$q['avatar']}>"></avatar>
+                    <div class="media-body">
+                        <h5 class="mt-0"><{if $q['uid'] == $userinfo['uid'] }>我<{else}><{$q['real_name']}><{/if}><strong> 回复 </strong><{if $q['refer_id'] == $userinfo['uid'] }>我<{else}><{$q['refer_real_name']}><{/if}></h5>
+                        <{$q['content']}>
+                        <br><small><{$q['time']}></small>
+                        <button type="button" class="btn btn-secondary btn-sm"><i class="MDI heart"></i>喜欢</button> <!-- TODO -->
+                        <button type="button" class="btn btn-info btn-sm" onclick="refer=<{$q['mid']}>;$('#comment-title').html('回复 <{$q['real_name']}>');$('#Comment').modal('show');"><i class="MDI reply"></i> 回复</button>
+                        <{if $item_info['owner'] == $userinfo['uid']}>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
+                        <{else if $q['uid'] == $userinfo['uid']}>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI delete"></i>删除</button> <!-- 自己删除自己的评论 -->
+                        <{/if}>
+                    </div>
+                </div>
+                <{/foreach}>
+            </div>
+        </div>
+        <{/foreach}>
+    </card>
 </div>
-
+<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="Delete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">删除</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">您确定删除这个留言吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="deleteComment();">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Comment" tabindex="-1" role="dialog" aria-labelledby="Comment" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="comment-title">发布留言</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="comment-text" class="bmd-label-floating">留言文本(不超过140字)</label>
+                    <textarea class="form-control" id="comment-text" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="sendComment($('#comment-text').val(),null);">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" integrity="sha256-HbgiGHMLxHZ3kkAiixyvnaaZFNjNWLYKD/QG6PWaQPc=" crossorigin="anonymous" />
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -152,7 +246,30 @@
     document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行
         $('#desc').html(marked("<{$item_info['desc']}>"));
     });
-
+    let seletedComment = null;
+    let refer = null;
+    function sendComment(content) {
+        $.post('<{$MHS_DOMAIN}>/ajax/LeaveMessage',{
+            iid:<{$item_info['iid']}>,
+            content:content,
+            reference:refer
+        },function (result) {
+            setTimeout(function (){
+                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
+            },1000);
+            location.reload();
+        });
+    }
+    function deleteComment() {
+        $.post('<{$MHS_DOMAIN}>/ajax/WithdrawMessage',{
+            mid:seletedComment
+    },function (result) {
+            setTimeout(function (){
+                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
+            },1000);
+            location.reload();
+        });
+    }
 </script>
 <script>
     <{include file="MHS_Item.js" }>
