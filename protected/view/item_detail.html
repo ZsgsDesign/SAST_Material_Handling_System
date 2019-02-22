@@ -163,9 +163,12 @@
     </card>
     <card class="p-3">
         <div class="text-center">
-            <h5 class="text-primary">留言</h5>
+            <h4 class="text-primary">留言</h4>
             <button type="button" class="btn btn-dark" onclick="refer=null;$('#comment-title').html('发布留言');$('#Comment').modal('show');"><i class="MDI comment-remove-outline"></i>发布评论</button>
         </div>
+        <{if !count($messages)}>
+        <p class="text-center text-secondary">这里一条留言也没有～～</p>
+        <{/if}>
         <{foreach $messages as $r}>
         <div class="media">
             <avatar class="mr-3 align-self-start"><img src="<{$r['avatar']}>"></avatar>
@@ -264,7 +267,9 @@
     function deleteComment() {
         $.post('<{$MHS_DOMAIN}>/ajax/WithdrawMessage',{
             mid:seletedComment
-    },function () {location.reload();});
+    },function () {
+            location.reload();
+        });
     }
 </script>
 <script>
