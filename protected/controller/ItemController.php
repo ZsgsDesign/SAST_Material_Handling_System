@@ -72,7 +72,7 @@ class ItemController extends BaseController
             }
 
             foreach($messages_res as $seq => $message){
-                if($message['reference'] === NULL && $message['reference'] != -1){
+                if($message['reference'] === NULL||$message['reference'] == -1){
                     array_push($message_info,$message);
                     $message_info[count($message_info)-1]["comments"]=array();
                 }
@@ -83,7 +83,7 @@ class ItemController extends BaseController
                     $messages_res[$seq]['refer_id']=matchColumn($messages_res,'mid',$message['reference'],'uid');
                     $messages_res[$seq]['refer_avatar']=matchColumn($messages_res,'mid',$message['reference'],'avatar');
                     $root_message=$message;
-                    while($root_message['reference']){
+                    while($root_message['reference']&&$root_message['reference'] != -1){
                         $root_message=$messages_res[matchColumn($messages_res,'mid',$root_message['reference'],'KEY')];
                     }
                     array_push($message_info[matchColumn($message_info,'mid',$root_message['mid'],'KEY')]['comments'],$messages_res[$seq]);
@@ -93,8 +93,11 @@ class ItemController extends BaseController
                 if(count($value['comments']) === 0){
                     $message_info[$seq]['comments']=NULL;
                 }
+                if($value['reference'] == -1){
+                    array_splice($message_info,$seq,1);
+                }
             }
-            dump($message_info);
+            // dump($message_info);
             $this->messages=$message_info;
 
         }
