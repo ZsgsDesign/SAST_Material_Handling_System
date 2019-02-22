@@ -47,7 +47,7 @@ CREATE TABLE `messages`  (
   `user_id` int(11) NOT NULL COMMENT '留言者id',
   `time` datetime NULL COMMENT '留言时间',
   `content` varchar(255) NULL COMMENT '留言的内容',
-  `liked_count` bigint(20) ZEROFILL NULL COMMENT '该条留言的获赞数',
+  `liked` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '该条留言的获赞',
   `reference` bigint(20) NULL COMMENT '该留言所回复的留言的id',
   PRIMARY KEY (`mid`)
 );
