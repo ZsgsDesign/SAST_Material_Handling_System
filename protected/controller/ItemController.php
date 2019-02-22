@@ -61,10 +61,15 @@ class ItemController extends BaseController
             foreach($messages_res as $seq => $message){
                 if($message['reference'] !== NULL && $message['reference'] != -1){
                     $messages_res[$seq]['refer_real_name']=matchColumn($messages_res,'mid',$message['reference'],'real_name');
-                    array_push($message_info[matchColumn($message_info,'mid',$message['reference'],'KEY')]['comments'],$messages_res[$seq]);
+                    $root_message=$message;
+                    while($root_message['reference']){
+                        $root_message=$messages_res[matchColumn($messages_res,'mid',$root_message['reference'],'KEY')];
+                    }
+                    array_push($message_info[matchColumn($message_info,'mid',$root_message['mid'],'KEY')]['comments'],$messages_res[$seq]);
                 }
             }
             $this->messages=$message_info;
+            dump($this->messages);
 
         }
         $this->title=$this->item_info["name"]." - 物品详情";
