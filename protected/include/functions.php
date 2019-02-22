@@ -77,3 +77,20 @@ function generateRandStr($len)
     }
     return $code;
 }
+function matchColumn($arr=NULL,$columnName=NULL,$value=NULL,$targetColumn=NULL){
+    //该函数会历遍$arr,$arr为一个二维数组,$arr中键为$columnName的值为$value的元素的键为$targetColumn的值会被返回
+    $res=NULL;
+    if($arr!==NULL&&$columnName!==NULL&&$value!==NULL&&$targetColumn!==NULL){
+        foreach($arr as $seq => $item){
+            if($item[$columnName] == $value){
+                if($targetColumn === 'KEY'){
+                    $res=$seq;
+                }
+                else{
+                    $res=$item[$targetColumn];
+                }
+            }
+        }
+    }
+    return $res;
+}

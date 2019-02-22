@@ -12,6 +12,7 @@ class ItemController extends BaseController
         $user=new Model("users");
         $item=new Model("item");
         $order=new Model("order");
+        $messages=new Model('messages');
         $item_res=$item->find(array("iid=:iid",":iid" => $iid));
 
         if(empty($iid)||empty($item_res)){
@@ -49,8 +50,23 @@ class ItemController extends BaseController
                 "publisher_order_count" => $order_count, //总出借笔数
                 "publisher_item_count" => $item_count, //发布物品数
             );
-            
-            
+            $messages_res=$messages->query("SELECT `messages`.*,`users`.uid,`users`.real_name FROM `messages` JOIN `users` ON `messages`.`user_id` = `users`.`uid` WHERE `messages`.item_id = ".$iid);
+            $message_info=array();
+            foreach($messages_res as $seq => $message){
+                if($message['reference'] === NULL){
+                    array_push($message_info,$message);
+                    $message_info[count($message_info)-1]["comments"]=array();
+                }
+            }
+            foreach($messages_res as $seq => $message){
+                if($message['reference'] !== NULL){
+                    $messages_res[$seq]['refer_real_name']=matchColumn($messages_res,'mid',$message['reference'],'real_name');
+                    array_push($message_info[matchColumn($message_info,'mid',$message['reference'],'KEY')]['comments'],$messages_res[$seq]);
+                }
+            }
+            $this->messages=$message_info;
+            dump($message_info);
+
         }
         $this->title=$this->item_info["name"]." - 物品详情";
     }

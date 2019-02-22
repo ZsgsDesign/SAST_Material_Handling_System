@@ -38,6 +38,20 @@ CREATE TABLE `cart`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for messages
+-- ----------------------------
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages`  (
+  `mid` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '留言号',
+  `item_id` bigint(20) NOT NULL COMMENT '物品id',
+  `user_id` int(11) NOT NULL COMMENT '留言者id',
+  `time` datetime NULL COMMENT '留言时间',
+  `content` varchar(255) NULL COMMENT '留言的内容',
+  `liked_count` bigint(20) ZEROFILL NULL COMMENT '该条留言的获赞数',
+  `reference` bigint(20) NULL COMMENT '该留言所回复的留言的id',
+  PRIMARY KEY (`mid`)
+);
+-- ----------------------------
 -- Table structure for item
 -- ----------------------------
 DROP TABLE IF EXISTS `item`;
