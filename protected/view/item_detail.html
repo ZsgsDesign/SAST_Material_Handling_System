@@ -176,7 +176,7 @@
                 <{if $r['uid'] == $userinfo['uid'] }><h5 class="mt-0 text-primary">我</h5><{else}><h5 class="mt-0"><a href="<{$MHS_DOMAIN}>/user/<{$r['uid']}>"><{$r['real_name']}></a></h5><{/if}>
                 <{$r['content']}>
                 <br><small><{$r['time']}></small>
-                <button type="button" class="btn btn-warning btn-sm" id="like"><i class="MDI heart"></i> 10010</button> <!-- TODO -->
+                <button type="button" class="btn btn-sm <{if $r['i_liked']}>btn-warning<{else}>btn-secondary<{/if}>" id="like-<{$r['mid']}>" onclick="likeComment(<{$r['mid']}>);"><i class="MDI heart"></i> <{if !$r['liked']}>喜欢<{else}><{$r['liked']}><{/if}></button> <!-- TODO -->
                 <button type="button" class="btn btn-primary btn-sm" onclick="refer=<{$r['mid']}>;$('#comment-title').html('回复<{$r['real_name']}>');$('#Comment').modal('show');"><i class="MDI comment"></i> <{if empty($r['comments'])}>评论<{else}><{count($r['comments'])}><{/if}></button>
                 <{if $item_info['owner'] == $userinfo['uid']}>
                 <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$r['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
@@ -190,12 +190,12 @@
                         <h5 class="mt-0"><{if $q['uid'] == $userinfo['uid'] }>我<{else}><{$q['real_name']}><{/if}><strong> 回复 </strong><{if $q['refer_id'] == $userinfo['uid'] }>我<{else}><{$q['refer_real_name']}><{/if}></h5>
                         <{$q['content']}>
                         <br><small><{$q['time']}></small>
-                        <button type="button" class="btn btn-secondary btn-sm"><i class="MDI heart"></i>喜欢</button> <!-- TODO -->
+                        <button type="button" class="btn btn-sm <{if $q['i_liked']}>btn-warning<{else}>btn-secondary<{/if}>" id="like-<{$q['mid']}>" onclick="likeComment(<{$q['mid']}>);"><i class="MDI heart"></i> <{if !$q['liked']}>喜欢<{else}><{$q['liked']}><{/if}></button> <!-- TODO -->
                         <button type="button" class="btn btn-info btn-sm" onclick="refer=<{$q['mid']}>;$('#comment-title').html('回复 <{$q['real_name']}>');$('#Comment').modal('show');"><i class="MDI reply"></i> 回复</button>
                         <{if $item_info['owner'] == $userinfo['uid']}>
                         <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
                         <{else if $q['uid'] == $userinfo['uid']}>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI delete"></i>删除</button> <!-- 自己删除自己的评论 -->
+                        <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$q['mid']}>;$('#Delete').modal('show');"><i class="MDI delete"></i> 删除</button> <!-- 自己删除自己的评论 -->
                         <{/if}>
                     </div>
                 </div>
@@ -246,23 +246,25 @@
 <script>
     document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行
         $('#desc').html(marked("<{$item_info['desc']}>"));
-
-        $("#like").hover(function (){
-            $('#like').html('<i class="MDI heart"></i> 喜欢');
-        },function (){
-            $('#like').html('<i class="MDI heart"></i> 10086');
-        });
     });
+
     let seletedComment = null;
     let refer = null;
 
-    function sendComment(content) {
-        let data={};
-        if(refer === null)
-            data={iid:<{$item_info['iid']}>,content:content}
-        else
-            data={iid:<{$item_info['iid']}>,content:content,reference:refer};
-        $.post('<{$MHS_DOMAIN}>/ajax/LeaveMessage', data ,function () {location.reload();});
+    function likeComment(mid) {
+        $.post('<{$MHS_DOMAIN}>/ajax/LikeMessage',{
+            mid:mid
+        },function (result) {
+            result=JSON.parse(result);
+            if(result.ret==200){
+                let dat = parseInt($('#like-'+mid).text());
+                dat = isNaN(dat)?1:++dat;
+                $('#like-'+mid).html("<i class=\"MDI heart\"></i> "+dat);
+                $('#like-'+mid).removeClass("btn-secondary");
+                $('#like-'+mid).addClass("btn-warning");
+                console.log($('#like-'+mid).html());
+            }
+        });
     }
     function deleteComment() {
         $.post('<{$MHS_DOMAIN}>/ajax/WithdrawMessage',{
@@ -270,6 +272,14 @@
     },function () {
             location.reload();
         });
+    }
+    function sendComment(content) {
+        let data={};
+        if(refer === null)
+            data={iid:<{$item_info['iid']}>,content:content}
+    else
+        data={iid:<{$item_info['iid']}>,content:content,reference:refer};
+        $.post('<{$MHS_DOMAIN}>/ajax/LeaveMessage', data ,function () {location.reload();});
     }
 </script>
 <script>

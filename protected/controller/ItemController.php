@@ -69,7 +69,9 @@ class ItemController extends BaseController
                 else{
                     $messages_res[$seq]['time']=date("Y年m月d日",strtotime($value['time']));
                 }
-                $messages_res[$seq]['liked']=unserialize($value['liked']) === false ? 0 :count(unserialize($value['liked']));
+                $like_lst = unserialize($value['liked']);
+                $messages_res[$seq]['liked']= $like_lst === false ? 0 :count($like_lst);
+                $messages_res[$seq]['i_liked'] = $like_lst !== false && in_array($this->userinfo['uid'],$like_lst); //判断我的喜欢
             }
 
             foreach($messages_res as $seq => $message){
@@ -95,14 +97,11 @@ class ItemController extends BaseController
                     $message_info[$seq]['comments']=NULL;
                 }
             }
-            for($i=0;$i<count($message_info);$i++){
-                if($message_info[$i]['reference'] == -1){
+            for($i=count($message_info)-1;$i>-1;$i--)
+                if($message_info[$i]['reference'] == -1)
                     array_splice($message_info,$i,1);
-                    $i--;
-                }
-            }
 
-            // dump($message_info);
+             //dump($message_info);
             $this->messages=$message_info;
 
         }
