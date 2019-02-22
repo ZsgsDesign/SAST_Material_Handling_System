@@ -100,7 +100,7 @@ class ItemController extends BaseController
                 }
             }
 
-             dump($message_info);
+            //  dump($message_info);
             $this->messages=$message_info;
 
         }
