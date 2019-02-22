@@ -53,19 +53,18 @@ class ItemController extends BaseController
             $messages_res=$messages->query("SELECT `messages`.*,`users`.uid,`users`.real_name FROM `messages` JOIN `users` ON `messages`.`user_id` = `users`.`uid` WHERE `messages`.item_id = ".$iid);
             $message_info=array();
             foreach($messages_res as $seq => $message){
-                if($message['reference'] === NULL){
+                if($message['reference'] === NULL && $message['reference'] != -1){
                     array_push($message_info,$message);
                     $message_info[count($message_info)-1]["comments"]=array();
                 }
             }
             foreach($messages_res as $seq => $message){
-                if($message['reference'] !== NULL){
+                if($message['reference'] !== NULL && $message['reference'] != -1){
                     $messages_res[$seq]['refer_real_name']=matchColumn($messages_res,'mid',$message['reference'],'real_name');
                     array_push($message_info[matchColumn($message_info,'mid',$message['reference'],'KEY')]['comments'],$messages_res[$seq]);
                 }
             }
             $this->messages=$message_info;
-            // dump($message_info);
 
         }
         $this->title=$this->item_info["name"]." - 物品详情";

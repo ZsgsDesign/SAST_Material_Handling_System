@@ -565,4 +565,23 @@ class AjaxController extends BaseController
             }
         }
     }
+    public function actionWithdrawMessage(){
+        $mid=arg('mid');
+        $messages=new Model('messages');
+        if(($messages->find(array("mid = :mid AND user_id = :uid",":mid" => $mid,":uid" => $this->userinfo['uid'])))){
+            $messages->update(
+                array(
+                    "mid = :mid",
+                    ":mid" => $mid
+                ),
+                array(
+                    "reference" => -1
+                )
+            );
+            SUCCESS::Catcher("成功撤回留言!");
+        }
+        else{
+            ERR::Catcher(1004);
+        }
+    }
 }
