@@ -164,9 +164,7 @@
     <card class="p-3">
         <div class="text-center">
             <h5 class="text-primary">留言</h5>
-            <button type="button" class="btn btn-primary" onclick="refer=null;
-            $('#comment-title').html('发布留言');
-            $('#Comment').modal('show');"><i class="MDI comment-remove-outline"></i>发布评论</button>
+            <button type="button" class="btn btn-dark" onclick="refer=null;$('#comment-title').html('发布留言');$('#Comment').modal('show');"><i class="MDI comment-remove-outline"></i>发布评论</button>
         </div>
         <{foreach $messages as $r}>
         <div class="media">
@@ -175,7 +173,7 @@
                 <{if $r['uid'] == $userinfo['uid'] }><h5 class="mt-0 text-primary">我</h5><{else}><h5 class="mt-0"><a href="<{$MHS_DOMAIN}>/user/<{$r['uid']}>"><{$r['real_name']}></a></h5><{/if}>
                 <{$r['content']}>
                 <br><small><{$r['time']}></small>
-                <button type="button" class="btn btn-warning btn-sm"><i class="MDI heart"></i> 10010</button> <!-- TODO -->
+                <button type="button" class="btn btn-warning btn-sm" id="like"><i class="MDI heart"></i> 10010</button> <!-- TODO -->
                 <button type="button" class="btn btn-primary btn-sm" onclick="refer=<{$r['mid']}>;$('#comment-title').html('回复<{$r['real_name']}>');$('#Comment').modal('show');"><i class="MDI comment"></i> <{if empty($r['comments'])}>评论<{else}><{count($r['comments'])}><{/if}></button>
                 <{if $item_info['owner'] == $userinfo['uid']}>
                 <button type="button" class="btn btn-danger btn-sm" onclick="seletedComment=<{$r['mid']}>;$('#Delete').modal('show');"><i class="MDI comment-remove-outline"></i> 移除此评论</button> <!-- 物品发布者可以删除所有人的评论 -->
@@ -245,6 +243,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function(){ // 在 DOM 完全加载完后执行
         $('#desc').html(marked("<{$item_info['desc']}>"));
+
+        $("#like").hover(function (){
+            $('#like').html('<i class="MDI heart"></i> 喜欢');
+        },function (){
+            $('#like').html('<i class="MDI heart"></i> 10086');
+        });
     });
     let seletedComment = null;
     let refer = null;
