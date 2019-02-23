@@ -106,6 +106,7 @@ class ItemController extends BaseController
 
         }
         $this->title=$this->item_info["name"]." - 物品详情";
+        $this->current_tab = "intro";
     }
 
     public function actionNew()

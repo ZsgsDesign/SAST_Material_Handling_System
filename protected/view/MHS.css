@@ -82,6 +82,12 @@ card.order-card > div {
 .mhs-button-cart {
     border-radius: 20px;
 }
+.mhs-item-img-detailed {
+    border-radius: 20px !important;
+    max-width: 20rem;
+    max-height: 20rem;
+    object-fit: cover;
+}
 /* 来自mudi 的FAB */
 .mdui-fab-fixed{
     position: fixed !important;
