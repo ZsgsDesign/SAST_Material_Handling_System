@@ -278,15 +278,11 @@
         </timeline>
     </card>
 
-    <card class="order-card">
-        <div class="row">
-            <div class="col-xl-2 col-md-3 col-sm-4 col-5">
-                <img class="mhs-item-img-order rounded float-left" src="<{$MHS_DOMAIN}>/pic/<{$order['iid']}>?size=400">
-            </div>
-            <div class="col-xl-10 col-md-9 col-sm-8 col-7">
-                <div>
-                    <h3><a href="<{$MHS_DOMAIN}>/item/detail/<{$order['iid']}>"><{$order['name']}></a></h3>
-                </div>
+    <card class="order-card p-3">
+        <div class="media">
+            <img class="mhs-item-img-order" src="<{$MHS_DOMAIN}>/pic/<{$order['iid']}>?size=400">
+            <div class="media-body ml-3 mt-3">
+                <h4><a href="<{$MHS_DOMAIN}>/item/detail/<{$order['iid']}>"><{$order['name']}></a></h4>
             </div>
         </div>
         <table class="table table-borderless table-hover">
