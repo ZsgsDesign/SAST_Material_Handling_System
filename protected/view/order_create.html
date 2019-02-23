@@ -6,26 +6,70 @@
         padding: 0.5rem;
     }
 
+    .mhs-item-img-order-create {
+        border-radius: 20px !important;
+        max-width: 6rem;
+        max-height: 6rem;
+        object-fit: cover;
+    }
+    avatar{
+        display: block;
+        position: relative;
+        text-align: center;
+        height: 2.5rem;
+    }
+    avatar > img{
+        display: block;
+        width:2.5rem;
+        height:2.5rem;
+        border-radius: 2000px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 30px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        top:0%;
+        left:0;
+        right:0;
+        margin: auto;
+    }
+    .top-fc{
+        position: relative;
+        top: -1rem;
+    }
+    .wb {
+        word-break:break-all;
+    }
+    .mt-item{
+        margin-top: -1.5rem;
+    }
+    .mb-user{
+        margin-bottom: 2.5rem;
+    }
 </style>
 
 <div class="container mundb-standard-container"> 
 <h3 class="mhs-title mb-3 mt-3">创建订单</h3>
-<{foreach $order_item as $seq => $r}>
-<card class="mhs-card">
-    <div class="row item" iid="<{$r['item_id']}>" count="<{$r['count']}>">      
-            <div class="col-xl-2 col-md-3 col-sm-4 col-5">
-                    <img class="mhs-item-img-order rounded float-middle" src="<{$MHS_DOMAIN}>/pic/<{$r['item_id']}>?size=400">
+    <card class="p-1">
+        <{foreach $order_item as $r}>
+        <div class="media">
+            <avatar><img class=" mt-2 mr-2 ml-1" src="<{$r['avatar']}>"></avatar>
+            <div class="media-body">
+                <h5 class="mt-3 text-primary mb-user">出借方：<{$r['real_name']}></h5>
+                <{foreach $r['items'] as $seq => $q}>
+                <div class="media item mt-item" iid="<{$q['item_id']}>" count="<{$q['count']}>">
+                    <figure class="figure">
+                        <img class="align-self-center mhs-item-img-order-create figure-img img-fluid mb-0" src="<{$MHS_DOMAIN}>/pic/<{$q['item_id']}>?size=200">
+                        <figcaption class="figure-caption text-right top-fc"><span class="badge badge-pill badge-primary">X <{$q['count']}></span></figcaption>
+                    </figure>
+                    <div class="media-body ml-3">
+                        <h4 class="mt-0 wb"><a href="<{$MHS_DOMAIN}>/item/detail/<{$q['item_id']}>"><{$q['name']}></a></h4>
+                        <i class="MDI sitemap"></i>位置：<{$q['location']}>
+                    </div>
+                </div>
+                <{/foreach}>
             </div>
-            <div class="col-xl-10 col-md-9 col-sm-8 col-7">
-                    <h4 class="text-left"><a href="<{$MHS_DOMAIN}>/item/detail/<{$r['item_id']}>"><{$r['name']}></a></h4>
-                    <p class="text-left">出借方：<{$r['real_name']}></p>
-                    <p class="text-left">位置：<{$r['location']}></p>
-                    <p class="text-left">数量：<{$r['count']}></p>
-            </div>
-    </div>
-</card>
-<{/foreach}>
-<h5 class="mt-3">总计：<{count($order_item)}> 件物品，共 <{$total_count}> 个。</h5>
+        </div>
+        <{/foreach}>
+    </card>
+<h5 class="mt-3 text-primary">总计：<{$total_item}> 件物品，共 <{$total_count}> 个。</h5>
 <script>
     let submit=function(){
         NodeList.prototype.map=Array.prototype.map;

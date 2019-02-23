@@ -60,15 +60,26 @@ class OrderController extends BaseController
             $this->jump("{$this->MHS_DOMAIN}/account/");
 
         $cart=new Model('cart');
-        $sql="SELECT a.*,users.real_name FROM (SELECT cart.*,item.`name`,item.scode,item.`owner`,item.location FROM cart JOIN item ON cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE a.scode = 1 AND a.`user`= ".$this->userinfo['uid']." ";
+        $sql="SELECT a.*,users.real_name,users.uid,users.avatar FROM (SELECT cart.*,item.`name`,item.scode,item.`owner`,item.location FROM cart JOIN item ON cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE a.scode = 1 AND a.`user`= ".$this->userinfo['uid']." ";
         if(!empty($selected)){
             $items_sql=implode(" OR item_id=",$selected);
             $sql=$sql." AND( item_id=".$items_sql.")";
         }
         $cart_res=$cart->query($sql);
+        $cart_new_res = [];
+        foreach ($cart_res as $r){
+            if(!array_key_exists($r['uid'],$cart_new_res)){
+                $cart_new_res[$r['uid']]['real_name'] = $r['real_name'];
+                $cart_new_res[$r['uid']]['avatar'] = $r['avatar'];
+                $cart_new_res[$r['uid']]['items'] = [];
+            }
+            array_push($cart_new_res[$r['uid']]['items'],$r);
+        }
+
         $total_count=array_sum(array_column($cart_res,'count'));
         $this->total_count=$total_count;
-        $this->order_item=$cart_res;
+        $this->total_item=count($cart_res);
+        $this->order_item=$cart_new_res;
     }
 
 }
