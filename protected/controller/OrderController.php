@@ -55,30 +55,72 @@ class OrderController extends BaseController
     {
         $this->url="order/create";
         $selected=arg('item');//不传值 默认全选
+        //上面的参数是通过购物车下单时使用的，
+        //下面的参数是立即购买使用的
+        $iid=arg('iid');
+        $count=arg('count');
+
         $this->title="创建订单";
         if(!$this->islogin)
             $this->jump("{$this->MHS_DOMAIN}/account/");
 
-        $cart=new Model('cart');
-        $sql="SELECT a.*,users.real_name,users.uid,users.avatar FROM (SELECT cart.*,item.`name`,item.scode,item.`owner`,item.location FROM cart JOIN item ON cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE a.scode = 1 AND a.`user`= ".$this->userinfo['uid']." ";
-        if(!empty($selected)){
-            $items_sql=implode(" OR item_id=",$selected);
-            $sql=$sql." AND( item_id=".$items_sql.")";
-        }
-        $cart_res=$cart->query($sql);
-        $cart_new_res = [];
-        foreach ($cart_res as $r){
-            if(!array_key_exists($r['uid'],$cart_new_res)){
-                $cart_new_res[$r['uid']]['real_name'] = $r['real_name'];
-                $cart_new_res[$r['uid']]['avatar'] = $r['avatar'];
-                $cart_new_res[$r['uid']]['items'] = [];
+        if(!empty($selected)&&empty($iid)&&empty($count)){
+            $cart=new Model('cart');
+            $sql="SELECT a.*,users.real_name,users.uid,users.avatar FROM (SELECT cart.*,item.`name`,item.scode,item.`owner`,item.location FROM cart JOIN item ON cart.item_id=item.iid) AS a JOIN users ON a.`owner`=users.uid WHERE a.scode = 1 AND a.`user`= ".$this->userinfo['uid']." ";
+            if(!empty($selected)){
+                $items_sql=implode(" OR item_id=",$selected);
+                $sql=$sql." AND( item_id=".$items_sql.")";
             }
-            array_push($cart_new_res[$r['uid']]['items'],$r);
-        }
+            $cart_res=$cart->query($sql);
+            $cart_new_res = [];
+            foreach ($cart_res as $r){
+                if(!array_key_exists($r['uid'],$cart_new_res)){
+                    $cart_new_res[$r['uid']]['real_name'] = $r['real_name'];
+                    $cart_new_res[$r['uid']]['avatar'] = $r['avatar'];
+                    $cart_new_res[$r['uid']]['items'] = [];
+                }
+                array_push($cart_new_res[$r['uid']]['items'],$r);
+            }
 
-        $total_count=array_sum(array_column($cart_res,'count'));
+            $total_count=array_sum(array_column($cart_res,'count'));
+            $total_item=count($cart_res);
+        }
+        else if(empty($selected)&&!empty($iid)&&!empty($count)){
+            if(intval($count) > 0){
+                $item=new Model('item');
+                $item_res=$item->query("SELECT item.`name`,item.scode,item.`owner`,item.location,users.real_name,users.uid,users.avatar FROM item JOIN users ON users.uid = item.`owner` WHERE item.iid = ".$iid)[0];
+                $total_count=$count;
+                $total_item=1;
+                $cart_new_res=array(
+                        0 => [
+                        "real_name" => $item_res['real_name'],
+                        "avatar" => $item_res['avatar'],
+                        "items" => [
+                            [
+                                "user" => $this->userinfo['uid'],
+                                "item_id" => $count,
+                                "name" => $item_res['name'],
+                                "scode" => $item_res['scode'],
+                                "owner" => $item_res['owner'],
+                                "location" => $item_res['location'],
+                                "real_name" => $item_res['real_name'],
+                                "uid" => $item_res['uid'],
+                                "avatar" =>$item_res['avatar'],
+                                "count" => $count
+                            ]
+                        ]
+                    ]
+                );
+            }
+            else{
+                $this->jump("{$this->MHS_DOMAIN}/account/");
+            }
+        }
+        else{
+            $this->jump("{$this->MHS_DOMAIN}/account/");
+        }
         $this->total_count=$total_count;
-        $this->total_item=count($cart_res);
+        $this->total_item=$total_item;
         $this->order_item=$cart_new_res;
     }
 
