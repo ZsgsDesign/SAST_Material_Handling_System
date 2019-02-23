@@ -217,7 +217,7 @@ class MainController extends BaseController
 
         // $review_to_me=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,`order`.renter_review,`order`.renter_review_content,item.iid,item.`owner`,item.name FROM  `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND item.`owner` = ".$this->userinfo['uid']);
         // $review_from_me=$order->query("SELECT `order`.oid,`order`.renter_id,`order`.scode,`order`.owner_review,`order`.owner_review_content,item.iid,item.name FROM `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND  `order`.renter_id = ".$this->userinfo['uid']);
-        $review_all_about_me=$order->query("SELECT `order`.*,`item`.iid,`item`.`name`,`item`.`owner` FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE  `item`.`owner` = ".$this->userinfo['uid']." OR `order`.renter_id = ".$this->userinfo['uid']." AND `order`.scode = 4  ORDER BY `order`.return_time ASC");
+        $review_all_about_me=$order->query("SELECT `order`.*,`item`.iid,`item`.`name`,`item`.`owner` FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE  (`item`.`owner` = ".$this->userinfo['uid']." OR `order`.renter_id = ".$this->userinfo['uid'].") AND `order`.scode = '4'  ORDER BY `order`.return_time ASC");
         $others=array();
         foreach($review_all_about_me as $seq => $reviews){
             $temp=[];
