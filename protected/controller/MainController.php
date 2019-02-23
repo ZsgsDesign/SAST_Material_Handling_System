@@ -233,7 +233,7 @@ class MainController extends BaseController
         }
         if($review_type === 'me'){
             foreach($review_all_about_me as $seq => $review){
-                if($review['owner'] == $this->userinfo['uid']){
+                if($review['owner'] != $this->userinfo['uid']){
                     $review_all_about_me[$seq]['content']=$review_all_about_me[$seq]['renter_review_content'];
                     $review_all_about_me[$seq]['review']=$review_all_about_me[$seq]['renter_review'];
                 }
@@ -245,7 +245,7 @@ class MainController extends BaseController
         }
         else if($review_type === 'other'){
             foreach($review_all_about_me as $seq => $review){
-                if($review['owner'] != $this->userinfo['uid']){
+                if($review['owner'] == $this->userinfo['uid']){
                     $review_all_about_me[$seq]['content']=$review_all_about_me[$seq]['renter_review_content'];
                     $review_all_about_me[$seq]['review']=$review_all_about_me[$seq]['renter_review'];
                 }
