@@ -166,9 +166,10 @@ class MainController extends BaseController
         if(!$this->islogin) {
             $this->jump("{$this->MHS_DOMAIN}/account/");
         }//需要先登录才能查看任何人的主页
-
-        if(arg('uid'))
+        
+        if(arg('uid')){
             $uid = arg('uid');
+        }
         else
             $uid = $this->userinfo['uid'];
         $this->uinfo = getuserinfo_id($uid);
@@ -178,7 +179,8 @@ class MainController extends BaseController
         $this->call = $this->isMe ? "我" : $this->uinfo['real_name'];
         $this->url="usercenter";
         $this->title="个人中心";
-
+        
+        $review_type=strtolower(arg('review_type'));//默认是all , me, other
         $user=new Model("users");
         $good_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=1 OR item.owner=:uid AND `order`.renter_review=1", array(":uid"=>$uid)));
         $mid_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=0 OR item.owner=:uid AND `order`.renter_review=0", array(":uid"=>$uid)));
@@ -213,12 +215,86 @@ class MainController extends BaseController
             "scode3" => empty(@$order_owner_res_scode['3'])?0:$order_owner_res_scode['3']
         ];
 
-        $review_to_me=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,`order`.renter_review,`order`.renter_review_content,item.iid,item.`owner`,item.name FROM  `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND item.`owner` = ".$this->userinfo['uid']);
-        $review_from_me=$order->query("SELECT `order`.oid,`order`.renter_id,`order`.scode,`order`.owner_review,`order`.owner_review_content,item.iid,item.name FROM `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND  `order`.renter_id = ".$this->userinfo['uid']);
-        $this->review_to_me=$review_to_me;//这是完成的订单中，别人对我的评价
-        $this->review_from_me=$review_from_me;//这是完成的订单中，我对别人的评价
-        dump($review_to_me);
-        dump($review_from_me);
+        // $review_to_me=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,`order`.renter_review,`order`.renter_review_content,item.iid,item.`owner`,item.name FROM  `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND item.`owner` = ".$this->userinfo['uid']);
+        // $review_from_me=$order->query("SELECT `order`.oid,`order`.renter_id,`order`.scode,`order`.owner_review,`order`.owner_review_content,item.iid,item.name FROM `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND  `order`.renter_id = ".$this->userinfo['uid']);
+        $review_all_about_me=$order->query("SELECT `order`.*,`item`.iid,`item`.`name`,`item`.`owner` FROM `order` JOIN `item` ON `item`.iid = `order`.item_id WHERE  `item`.`owner` = ".$this->userinfo['uid']." OR `order`.renter_id = ".$this->userinfo['uid']." AND `order`.scode = 4  ORDER BY `order`.return_time ASC");
+        $others=array();
+        foreach($review_all_about_me as $seq => $reviews){
+            $temp=[];
+            $temp['uid']=(($reviews['owner'] == $this->userinfo['uid'] )?$reviews['renter_id']:$reviews['owner']);
+            array_push($others,$temp);
+        }
+        $others=$user->query("SELECT `users`.`uid`,`users`.`real_name`,`users`.`avatar` FROM `users` WHERE "." uid= ".implode(" OR uid = ",array_column($others,'uid')));
+        
+        foreach($review_all_about_me as $seq => $reviews){
+            $temp_user=(($reviews['owner'] == $this->userinfo['uid'])?$reviews['renter_id']:$reviews['owner']);
+            $review_all_about_me[$seq]['real_name']=matchColumn($others,'uid',$temp_user,'real_name');
+            $review_all_about_me[$seq]['avatar']=matchColumn($others,'uid',$temp_user,'avatar');
+        }
+        if($review_type === 'me'){
+            foreach($review_all_about_me as $seq => $review){
+                if($review['owner'] == $this->userinfo['uid']){
+                    $review_all_about_me[$seq]['content']=$review_all_about_me[$seq]['renter_review_content'];
+                    $review_all_about_me[$seq]['review']=$review_all_about_me[$seq]['renter_review'];
+                }
+                else{
+                    $review_all_about_me[$seq]['content']=$review_all_about_me[$seq]['owner_review_content'];
+                    $review_all_about_me[$seq]['review']=$review_all_about_me[$seq]['owner_review'];
+                }
+            }
+        }
+        else if($review_type === 'other'){
+            foreach($review_all_about_me as $seq => $review){
+                if($review['owner'] != $this->userinfo['uid']){
+                    $review_all_about_me[$seq]['content']=$review_all_about_me[$seq]['renter_review_content'];
+                    $review_all_about_me[$seq]['review']=$review_all_about_me[$seq]['renter_review'];
+                }
+                else{
+                    $review_all_about_me[$seq]['content']=$review_all_about_me[$seq]['owner_review_content'];
+                    $review_all_about_me[$seq]['review']=$review_all_about_me[$seq]['owner_review'];
+                }
+            }
+        }
+        else{
+            $typeMe=$review_all_about_me;
+            $typeOther=$review_all_about_me;
+            foreach($typeMe as $seq => $review){
+                if($review['owner'] == $this->userinfo['uid']){
+                    $typeMe[$seq]['content']=$typeMe[$seq]['renter_review_content'];
+                    $typeMe[$seq]['review']=$typeMe[$seq]['renter_review'];
+                }
+                else{
+                    $typeMe[$seq]['content']=$typeMe[$seq]['owner_review_content'];
+                    $typeMe[$seq]['review']=$typeMe[$seq]['owner_review'];
+                }
+            }
+            foreach($typeOther as $seq => $review){
+                if($review['owner'] != $this->userinfo['uid']){
+                    $typeOther[$seq]['content']=$typeOther[$seq]['renter_review_content'];
+                    $typeOther[$seq]['review']=$typeOther[$seq]['renter_review'];
+                }
+                else{
+                    $typeOther[$seq]['content']=$typeOther[$seq]['owner_review_content'];
+                    $typeOther[$seq]['review']=$typeOther[$seq]['owner_review'];
+                }
+            }
+            $review_all_about_me=array_merge($typeMe,$typeOther);
+        }
+        
+        foreach($review_all_about_me as $seq => $review){
+            unset($review_all_about_me[$seq]['scode']);
+            unset($review_all_about_me[$seq]['item_id']);
+            unset($review_all_about_me[$seq]['create_time']);
+            unset($review_all_about_me[$seq]['rent_time']);
+            unset($review_all_about_me[$seq]['return_time']);
+            unset($review_all_about_me[$seq]['renter_checked']);
+            unset($review_all_about_me[$seq]['owner_checked']);
+            unset($review_all_about_me[$seq]['owner_review_content']);
+            unset($review_all_about_me[$seq]['renter_review_content']);
+        }
+
+        $this->reviews=$review_all_about_me;
+        dump($this->reviews);
     }
 
     public function actionMhs()
