@@ -16,8 +16,14 @@
         top:0%;
         left:0;
         right:0;
-        position: absolute;
         margin: auto;
+    }
+    .avatar-sm {
+        height: 5rem !important;
+    }
+    .avatar-sm > img{
+        width:5rem !important;
+        height:5rem !important;
     }
     .tab .card-header{
         padding:0;
@@ -234,11 +240,72 @@
                 </div>
             </div>
             <div class="tab-pane fade <{ if $current_tab=='review' }>show active<{/if}>" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div class="card-body">
-                        <div class="atsast-empty text-center">
-                            <badge>暂未开放功能</badge>
+                <div class="card-body p-1">
+                    <{if $isMe}>
+                    <ul class="nav mt-3 mb-1 justify-content-center" >
+                        <li class="nav-item">
+                            <a class="nav-link" href="<{$MHS_DOMAIN}>/user?tab=review&review_type=all">全部评价</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<{$MHS_DOMAIN}>/user?tab=review&review_type=me">我给出的</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<{$MHS_DOMAIN}>/user?tab=review&review_type=other">对方给的</a>
+                        </li>
+                    </ul><{/if}>
+                    <hr class="atsast-line">
+                    <{if $isMe && $review_type == 'all'}>
+                    <{foreach $reviews as $r}>
+                    <div class="media ml-3 mb-3">
+                        <img class="mhs-item-img-review" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>">
+                        <div class="media-body">
+                            <h5 class="mt-0 ml-3 text-primary"><a href="<{$MHS_DOMAIN}>/order/view/<{$r['oid']}>"><{$r['name']}></a></h5>
+                            <div class="media ml-3 mb-3">
+                                <avatar class="avatar-sm mr-3 align-self-start"><img src="<{$userinfo['avatar']}>"></avatar>
+                                <div class="media-body">
+                                    <h5 class="mt-0 <{if $r['my_review']==1}>text-success<{else if $r['my_review']==0}>text-dark<{else}>text-warning<{/if}>"><{if $userinfo['uid']!=$r['renter_id']}><span class="badge badge-pill badge-dark">出借方</span><{else}><span class="badge badge-pill badge-light">借用方</span><{/if}>我给<{$r['real_name']}>的<{if $r['my_review']==1}>好评<{else if $r['my_review']==0}>中评<{else}>差评<{/if}></h5>
+                                    <{if strlen($r['my_review_content'])}><{$r['my_review_content']}><{else}>此用户没有填写评价内容。<{/if}>
+                                </div>
+                            </div>
+                            <div class="media ml-3 mb-3">
+                                <avatar class="avatar-sm mr-3 align-self-start"><img src="<{$r['avatar']}>"></avatar>
+                                <div class="media-body">
+                                    <h5 class="mt-0 <{if $r['other_review']==1}>text-success<{else if $r['other_review']==0}>text-dark<{else}>text-warning<{/if}>"><{if $userinfo['uid']==$r['renter_id']}><span class="badge badge-pill badge-dark">出借方</span><{else}><span class="badge badge-pill badge-light">借用方</span><{/if}><{$r['real_name']}>给我的<{if $r['other_review']==1}>好评<{else if $r['other_review']==0}>中评<{else}>差评<{/if}></h5>
+                                    <{if strlen($r['other_review_content'])}><{$r['other_review_content']}><{else}>此用户没有填写评价内容。<{/if}>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <hr class="atsast-line">
+                    <{/foreach}>
+                    <{else if $isMe && $review_type == 'me'}>
+                    <{foreach $reviews as $r}>
+                    <div class="media ml-3 mb-3">
+                        <avatar class="avatar-sm mr-3 align-self-start"><img src="<{$userinfo['avatar']}>"></avatar>
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary"><a href="<{$MHS_DOMAIN}>/order/view/<{$r['oid']}>"><{$r['name']}></a></h5>
+                            <{if strlen($r['content'])}><{$r['content']}><{else}>此用户没有填写评价内容。<{/if}>
+                            <br><small class="<{if $r['review']==1}>text-success<{else if $r['review']==0}>text-dark<{else}>text-warning<{/if}>">我给<{$r['real_name']}>的<{if $r['review']==1}>好评<{else if $r['review']==0}>中评<{else}>差评<{/if}></small>
+                        </div>
+                        <img class="mhs-item-img-review" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>">
+                    </div>
+                    <hr class="atsast-line">
+                    <{/foreach}>
+                    <{else}>
+                    <{foreach $reviews as $r}>
+                    <div class="media ml-3 mb-3">
+                        <img class="mhs-item-img-review" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>">
+                        <div class="media-body mr-3 text-right">
+                            <h5 class="mt-0 text-primary"><a href="<{$MHS_DOMAIN}>/order/view/<{$r['oid']}>"><{$r['name']}></a></strong></h5>
+                            <{if strlen($r['content'])}><{$r['content']}><{else}>此用户没有填写评价内容。<{/if}>
+                            <br><small class="<{if $r['review']==1}>text-success<{else if $r['review']==0}>text-dark<{else}>text-warning<{/if}>"><{$r['real_name']}>给我的<{if $r['review']==1}>好评<{else if $r['review']==0}>中评<{else}>差评<{/if}></small>
+                        </div>
+                        <avatar class="avatar-sm mr-3 align-self-start"><img src="<{$r['avatar']}>"></avatar>
+                    </div>
+                    <hr class="atsast-line">
+                    <{/foreach}>
+                    <{/if}>
+                </div>
             </div>
         </div>
     </div>
