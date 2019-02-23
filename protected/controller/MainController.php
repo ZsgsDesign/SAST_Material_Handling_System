@@ -213,8 +213,8 @@ class MainController extends BaseController
             "scode3" => empty(@$order_owner_res_scode['3'])?0:$order_owner_res_scode['3']
         ];
 
-        $review_to_me=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,`order`.renter_review,`order`.renter_review_content,item.iid,item.`owner` FROM  `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND item.`owner` = ".$this->userinfo['uid']);
-        $review_from_me=$order->query("SELECT `order`.oid,`order`.renter_id,`order`.scode,`order`.owner_review,`order`.owner_review_content FROM `order` WHERE `order`.scode = 4 AND  `order`.renter_id = ".$this->userinfo['uid']);
+        $review_to_me=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,`order`.renter_review,`order`.renter_review_content,item.iid,item.`owner`,item.name FROM  `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND item.`owner` = ".$this->userinfo['uid']);
+        $review_from_me=$order->query("SELECT `order`.oid,`order`.renter_id,`order`.scode,`order`.owner_review,`order`.owner_review_content,item.iid,item.name FROM `order` JOIN `item` ON item.iid = `order`.item_id WHERE `order`.scode = 4 AND  `order`.renter_id = ".$this->userinfo['uid']);
         $this->review_to_me=$review_to_me;//这是完成的订单中，别人对我的评价
         $this->review_from_me=$review_from_me;//这是完成的订单中，我对别人的评价
         dump($review_to_me);

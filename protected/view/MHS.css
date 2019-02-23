@@ -83,9 +83,15 @@ card.order-card > div {
     border-radius: 20px;
 }
 .mhs-item-img-detailed {
+     border-radius: 20px !important;
+     max-width: 20rem;
+     max-height: 20rem;
+     object-fit: cover;
+ }
+.mhs-item-img-review {
     border-radius: 20px !important;
-    max-width: 20rem;
-    max-height: 20rem;
+    max-width: 5rem;
+    max-height: 5rem;
     object-fit: cover;
 }
 /* 来自mudi 的FAB */
