@@ -68,7 +68,6 @@ a.card-link{
 /* ======= */
 /* 这是订单、购物车用的card 样式*/
 card.order-card {
-    padding: 0.5rem;
     margin-bottom: 0.5rem;
 }
 card.order-card > div {
@@ -82,4 +81,22 @@ card.order-card > div {
 }
 .mhs-button-cart {
     border-radius: 20px;
+}
+/* 来自mudi 的FAB */
+.mdui-fab-fixed{
+    position: fixed !important;
+}
+@media (min-width: 1px) {
+    .mdui-fab-fixed{
+        position: fixed !important;
+        right: 16px;
+        bottom: 16px;
+    }
+}
+@media (min-width: 1024px) {
+    .mdui-fab-fixed{
+        position: fixed !important;
+        right: 24px;
+        bottom: 24px;
+    }
 }

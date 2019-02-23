@@ -11,58 +11,34 @@
             max-width: 7rem !important;
             max-height: 7rem !important;
         }
-    }<!-- TODO 手机视图还需优化 -->
+    }
+    <!-- TODO 手机视图还需优化 -->
 </style>
 <div class="container mundb-standard-container"> 
-    <h2 class="mhs-title mb-5 mt-5">购物车</h2>
-    <{if count($cart_items) != 0}>
-    <div>
-        <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
-        <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
-        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),false)} if(index+1 === arr.length){location.reload()}});">删除所选</button>
-    </div>
-    <{/if}>
-    <script>
-        function addToCart_delete(id,reload=true) {
-            $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
-                iid:id,
-                count:-1,
-            },function(result) {
-                console.log(result);
-                result = JSON.parse(result);
-                console.log(result);
-                $.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
-            });
-            if(reload){
-                location.reload();
-            }
-        }
-        //TODO 后期记得修改一下snackbar的显示时间，修改为短一点
-        <{include file="MHS_Item.js" }>
-    </script>
+    <h2 class="mhs-title mb-3 mt-3">购物车</h2>
     <{if count($cart_items) == 0}>
     <h5 class="text-center text-info">这里空空如也，快去逛逛吧。</h5>
     <div class="row atsast-empty">
         <button type="button" class="btn btn-raised btn-info" onclick="location.href='<{$MHS_DOMAIN}>/'">返回首页</button>
     </div>
     <{else}>
+    <div>
+        <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=true})">全选</button>
+        <button type="button" class="btn btn-primary " onclick="document.querySelectorAll('.form-control').forEach(function(value){value.checked=false})">全不选</button>
+        <button type="button" class="btn btn-warning " onclick="document.querySelectorAll('.form-control').forEach(function(value,index,arr){if(value.checked===true){addToCart_delete(value.getAttribute('iid'),false)} if(index+1 === arr.length){location.reload()}});">删除所选</button>
+    </div>
     <{foreach $cart_items as $i => $item}>
-    <card class="order-card">
-        <div class="row justify-content-start">
-            <div class="col-1">
-                <div class="form-group">
+    <card class="order-card mb-3">
+            <div class="media">
+                <div class="form-group ml-2 mr-2">
                     <div class="checkbox">
                         <label for="agreement<{$item['item_id']}>"><input class="form-control" type="checkbox" name="agreement" id="agreement<{$item['item_id']}>" iid="<{$item['item_id']}>" <{if $item['scode'] != 1}> disabled <{/if}>></label>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-2 col-md-3 col-sm-4 col-3">
-                    <img class="mhs-item-img-order rounded float-left" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
-            </div>
-            <div class="col-xl-9 col-md-8 col-sm-7 col-7">
-                <div>
-                    <h5 class="text-left mundb-text-truncate-1"><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h5>
-                    <p class="text-left mundb-text-truncate-1">出借方：<a href="<{$MHS_DOMAIN}>/user/<{$item['owner']}>"><{$item['real_name']}></a></p>
+                <img class="mhs-item-img-order rounded float-left" src="<{$MHS_DOMAIN}>/pic/<{$item['item_id']}>?size=400">
+                <div class="media-body ml-3 mt-3">
+                    <h5 class="text-left mundb-text-truncate-1 "><a href="<{$MHS_DOMAIN}>/item/detail/<{$item['item_id']}>"><{$item['name']}></a></h5>
+                    <p class="text-left mundb-text-truncate-1 ">出借方：<a href="<{$MHS_DOMAIN}>/user/<{$item['owner']}>"><{$item['real_name']}></a></p>
                     <{if $item['scode'] == 1}>
                     <div class="btn-group">
                         <button id="minus<{$i}>" type="button" class="btn btn-sm btn-primary mhs-button-count" <{if $item['count'] < 2 }> disabled="disabled" <{/if}> onclick="minus(<{$i}>,<{$item['item_count']}>);addToCart(<{$item['item_id']}>,<{$i}>)">-</button>
@@ -78,12 +54,29 @@
                     <{/if}>
                 </div>
             </div>
-        </div>
     </card>
     <{/foreach}>
     <br>
-    <br>
     <script>
+    <{include file="MHS_Item.js" }>
+    </script>
+    <script>
+
+        function addToCart_delete(id,reload=true) {
+            $.post("<{$MHS_DOMAIN}>/ajax/AddToCart",{
+                iid:id,
+                count:-1,
+            },function(result) {
+                console.log(result);
+                //result = JSON.parse(result);
+                //console.log(result);
+                //$.snackbar({content: result.desc,style:"toast text-center atsast-toast"});
+            });
+            if(reload){
+                location.reload();
+            }
+        }
+
         let settlement=function(){
             NodeList.prototype.map=Array.prototype.map;
             function spliceFalse(arr){
@@ -114,9 +107,9 @@
                 window.location.href="<{$MHS_DOMAIN}>/order/create/"+args;
             }
         }
+
     </script>
-    <div class="text-right">
-        <button type="button" class="btn btn-outline-primary mhs-button-cart" onclick="settlement()">结算</button>
-    </div>
     <{/if}>
 </div>
+
+<button type="button" class="btn btn-success bmd-btn-fab mdui-fab-fixed active" onclick="settlement()"><i class="MDI check"></i> </button>
