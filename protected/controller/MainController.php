@@ -255,6 +255,22 @@ class MainController extends BaseController
                 }
             }
         }
+        else{
+            foreach($review_all_about_me as $seq => $review){
+                if($review['owner'] == $this->userinfo['uid']){
+                    $review_all_about_me[$seq]['my_review_content']=$review_all_about_me[$seq]['owner_review_content'];
+                    $review_all_about_me[$seq]['other_review_content']=$review_all_about_me[$seq]['renter_review_content'];
+                    $review_all_about_me[$seq]['my_review']=$review_all_about_me[$seq]['owner_review'];
+                    $review_all_about_me[$seq]['other_review']=$review_all_about_me[$seq]['renter_review'];
+                }
+                else{
+                    $review_all_about_me[$seq]['my_review_content']=$review_all_about_me[$seq]['renter_review_content'];
+                    $review_all_about_me[$seq]['other_review_content']=$review_all_about_me[$seq]['owner_review_content'];
+                    $review_all_about_me[$seq]['my_review']=$review_all_about_me[$seq]['renter_review'];
+                    $review_all_about_me[$seq]['other_review']=$review_all_about_me[$seq]['owner_review'];
+                }
+            }
+        }
         
         foreach($review_all_about_me as $seq => $review){
             unset($review_all_about_me[$seq]['scode']);
@@ -264,8 +280,10 @@ class MainController extends BaseController
             unset($review_all_about_me[$seq]['return_time']);
             unset($review_all_about_me[$seq]['renter_checked']);
             unset($review_all_about_me[$seq]['owner_checked']);
-            // unset($review_all_about_me[$seq]['owner_review_content']);
-            // unset($review_all_about_me[$seq]['renter_review_content']);
+            unset($review_all_about_me[$seq]['owner_review_content']);
+            unset($review_all_about_me[$seq]['renter_review_content']);
+            unset($review_all_about_me[$seq]['owner_review']);
+            unset($review_all_about_me[$seq]['renter_review']);
         }
 
         $this->reviews=$review_all_about_me;
