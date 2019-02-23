@@ -255,31 +255,6 @@ class MainController extends BaseController
                 }
             }
         }
-        else{
-            $typeMe=$review_all_about_me;
-            $typeOther=$review_all_about_me;
-            foreach($typeMe as $seq => $review){
-                if($review['owner'] == $this->userinfo['uid']){
-                    $typeMe[$seq]['content']=$typeMe[$seq]['renter_review_content'];
-                    $typeMe[$seq]['review']=$typeMe[$seq]['renter_review'];
-                }
-                else{
-                    $typeMe[$seq]['content']=$typeMe[$seq]['owner_review_content'];
-                    $typeMe[$seq]['review']=$typeMe[$seq]['owner_review'];
-                }
-            }
-            foreach($typeOther as $seq => $review){
-                if($review['owner'] != $this->userinfo['uid']){
-                    $typeOther[$seq]['content']=$typeOther[$seq]['renter_review_content'];
-                    $typeOther[$seq]['review']=$typeOther[$seq]['renter_review'];
-                }
-                else{
-                    $typeOther[$seq]['content']=$typeOther[$seq]['owner_review_content'];
-                    $typeOther[$seq]['review']=$typeOther[$seq]['owner_review'];
-                }
-            }
-            $review_all_about_me=array_merge($typeMe,$typeOther);
-        }
         
         foreach($review_all_about_me as $seq => $review){
             unset($review_all_about_me[$seq]['scode']);
@@ -289,8 +264,8 @@ class MainController extends BaseController
             unset($review_all_about_me[$seq]['return_time']);
             unset($review_all_about_me[$seq]['renter_checked']);
             unset($review_all_about_me[$seq]['owner_checked']);
-            unset($review_all_about_me[$seq]['owner_review_content']);
-            unset($review_all_about_me[$seq]['renter_review_content']);
+            // unset($review_all_about_me[$seq]['owner_review_content']);
+            // unset($review_all_about_me[$seq]['renter_review_content']);
         }
 
         $this->reviews=$review_all_about_me;
