@@ -444,6 +444,7 @@ class AjaxController extends BaseController
         $content=empty(arg('content'))?NULL:arg('content');//评价的文字内容 允许用户的文字评价为空
         if(!empty($oid)&&(!empty($review)||$review === '0')){
             $order_res=($order->query("SELECT `order`.oid,`order`.item_id,`order`.renter_id,`item`.iid,`item`.`owner` FROM `order` JOIN item ON `order`.item_id = item.iid where `order`.oid = ".$oid))[0];
+            $content = empty($content) ? "此用户没有填写评价内容。" : $content;
             if($this->userinfo['uid'] === $order_res['renter_id']){
                 $order->update(
                     array(
