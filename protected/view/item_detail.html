@@ -28,7 +28,7 @@
     }
     .d{
         position: fixed;
-        top: 50px;
+        top: 5px;
     }
 
 </style>
@@ -280,14 +280,31 @@
         function isVisible(selectid) {
             return !($(window).scrollTop() > ($(selectid).offset().top + $(selectid).outerHeight()) || ($(window).scrollTop() + $(window).height()) < $(selectid).offset().top);
         }
+        function getScrollTop() {
+            let scrollTop = 0;
+            if (document.documentElement && document.documentElement.scrollTop) {
+                scrollTop = document.documentElement.scrollTop;
+            } else if (document.body) {
+                scrollTop = document.body.scrollTop;
+            }
+            return scrollTop;
+        }
+        function isTopOfScreen(selectid){
+            return $(selectid).offset().top > getScrollTop() ? true :false;
+        }
 
         $(window).scroll(function(){
-            if(!isVisible('#navs-pos')) {
+            //console.log(document.querySelector('#navs'),document.querySelector('#comment').clientWidth);
+            document.querySelector('#navs').style.width=document.querySelector('#comment').clientWidth+'px';
+            if(!isVisible('#navs-pos')&&!isTopOfScreen('#navs-pos')) {
                 $('#navs').addClass('d');
             } else {
                 $('#navs').removeClass('d');
             }
         });
+        document.body.onresize=function(){
+            document.querySelector('#navs').style.width=document.querySelector('#comment').clientWidth+'px';
+        }
     });
 
     let seletedComment = null;
