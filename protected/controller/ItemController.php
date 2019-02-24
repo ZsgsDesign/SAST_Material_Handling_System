@@ -104,6 +104,9 @@ class ItemController extends BaseController
              //dump($message_info);
             $this->messages=$message_info;
 
+            $order_res=$order->query("SELECT `order`.oid,`order`.scode,`order`.item_id,`order`.renter_id,`order`.renter_review,`order`.renter_review_content,`order`.`count`,`order`.return_time,`users`.`uid`,`users`.real_name,`users`.avatar,`users`.credit FROM `order` JOIN `users` ON `users`.`uid` = `order`.renter_id WHERE `order`.scode = 4 AND `order`.item_id = ".$iid." ORDER BY `order`.return_time ASC");
+            $this->reviews=$order_res;
+
         }
         $this->title=$this->item_info["name"]." - 物品详情";
         $this->current_tab = "intro";
