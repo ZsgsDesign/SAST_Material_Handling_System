@@ -64,7 +64,9 @@
                     <{if $r['renter_id'] == $userinfo['uid'] && $r['scode'] == 1}>
                     <a class="dropdown-item text-primary" href="JavaScript:oid=<{$r['oid']}>;$('#Confirm').modal('show');">确认取用</a>
                     <a class="dropdown-item text-danger" href="JavaScript:oid=<{$r['oid']}>;$('#Cancel').modal('show');">取消订单</a>
-                    <{else if $r['renter_id'] != $userinfo['uid'] && ( $r['scode'] == 2 || $r['scode'] == 6}>
+                    <{else if $r['renter_id'] != $userinfo['uid'] && $r['scode'] == 2}>
+                    <a class="dropdown-item text-primary" href="JavaScript:oid=<{$r['oid']}>;$('#Return').modal('show');">确认归还</a>
+                    <{else if $r['renter_id'] != $userinfo['uid'] && $r['scode'] == 6}>
                     <a class="dropdown-item text-primary" href="JavaScript:oid=<{$r['oid']}>;$('#Return').modal('show');">确认归还</a>
                     <{else if $r['scode'] == 3 && $r['renter_id'] == $userinfo['uid'] && !strlen($r['renter_review'])}>
                     <a class="dropdown-item text-primary" href="JavaScript:oid=<{$r['oid']}>;$('#Review').modal('show');">写评价</a>
