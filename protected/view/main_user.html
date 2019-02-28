@@ -285,7 +285,7 @@
                         <div class="media-body">
                             <h5 class="mt-0 text-primary"><a href="<{$MHS_DOMAIN}>/order/view/<{$r['oid']}>"><{$r['name']}></a></h5>
                             <{if strlen($r['content'])}><{$r['content']}><{else}>此用户没有填写评价内容。<{/if}>
-                            <br><small class="<{if $r['review']==1}>text-success<{else if $r['review']==0}>text-dark<{else}>text-warning<{/if}>">我给<{$r['real_name']}>的<{if $r['review']==1}>好评<{else if $r['review']==0}>中评<{else}>差评<{/if}></small>
+                            <br><small class="<{if $r['my_review']==1}>text-success<{else if $r['my_review']==0}>text-dark<{else}>text-warning<{/if}>">我给<{$r['real_name']}>的<{if $r['my_review']==1}>好评<{else if $r['my_review']==0}>中评<{else}>差评<{/if}></small>
                         </div>
                         <img class="mhs-item-img-review" src="<{$MHS_DOMAIN}>/pic/<{$r['iid']}>">
                     </div>
@@ -298,7 +298,7 @@
                         <div class="media-body mr-3 text-right">
                             <h5 class="mt-0 text-primary"><a href="<{$MHS_DOMAIN}>/order/view/<{$r['oid']}>"><{$r['name']}></a></strong></h5>
                             <{if strlen($r['content'])}><{$r['content']}><{else}>此用户没有填写评价内容。<{/if}>
-                            <br><small class="<{if $r['review']==1}>text-success<{else if $r['review']==0}>text-dark<{else}>text-warning<{/if}>"><{$r['real_name']}>给我的<{if $r['review']==1}>好评<{else if $r['review']==0}>中评<{else}>差评<{/if}></small>
+                            <br><small class="<{if $r['other_review']==1}>text-success<{else if $r['other_review']==0}>text-dark<{else}>text-warning<{/if}>"><{$r['real_name']}>给我的<{if $r['other_review']==1}>好评<{else if $r['other_review']==0}>中评<{else}>差评<{/if}></small>
                         </div>
                         <avatar class="avatar-sm mr-3 align-self-start"><img src="<{$r['avatar']}>"></avatar>
                     </div>
