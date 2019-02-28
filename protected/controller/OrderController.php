@@ -98,7 +98,7 @@ class OrderController extends BaseController
                         "items" => [
                             [
                                 "user" => $this->userinfo['uid'],
-                                "item_id" => $count,
+                                "item_id" => $iid,
                                 "name" => $item_res['name'],
                                 "scode" => $item_res['scode'],
                                 "owner" => $item_res['owner'],
