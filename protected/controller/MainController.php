@@ -165,6 +165,7 @@ class MainController extends BaseController
         $this->pager=$order->page;
         
         $this->info_count=count($typeA)+count($typeB);
+        dump($this->orders)
     }
 
     public function actionUser()
