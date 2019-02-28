@@ -187,7 +187,7 @@ class MainController extends BaseController
         $this->url="usercenter";
         $this->title="个人中心";
         
-        $this->review_type = $review_type=strtolower(arg('review_type'));//默认是all , me, other
+        $this->review_type = $review_type=strtolower(empty(arg('review_type')) ? "all" : arg('review_type'));//默认是all , me, other
         $user=new Model("users");
         $good_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=1 OR item.owner=:uid AND `order`.renter_review=1", array(":uid"=>$uid)));
         $mid_count=count($user->query("SELECT `order`.*, item.* FROM `order` JOIN item ON `order`.item_id=item.iid WHERE `order`.renter_id=:uid AND `order`.owner_review=0 OR item.owner=:uid AND `order`.renter_review=0", array(":uid"=>$uid)));
