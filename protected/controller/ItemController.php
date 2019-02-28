@@ -15,9 +15,9 @@ class ItemController extends BaseController
         $messages=new Model('messages');
         $item->update(array("iid = :iid",":iid" => $iid),array(
             "order_count" => count($order->query("SELECT item_id FROM `order` WHERE item_id = ".$iid." AND scode = 4")),
-            "gcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = 1 ")),
-            "mcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = 0 ")),
-            "bcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = -1 "))
+            "gcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = 1 AND scode = 4 ")),
+            "mcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = 0 AND scode = 4 ")),
+            "bcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = -1 AND scode = 4 "))
             
         ));
         $item_res=$item->find(array("iid=:iid",":iid" =>  $iid));
