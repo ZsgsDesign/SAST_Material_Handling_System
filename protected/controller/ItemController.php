@@ -13,11 +13,12 @@ class ItemController extends BaseController
         $item=new Model("item");
         $order=new Model("order");
         $messages=new Model('messages');
+        $order_res_count=array_count_values(array_column($order->query("SELECT renter_review FROM `order` WHERE item_id = ".$iid." AND scode = 4"),'renter_review'));
         $item->update(array("iid = :iid",":iid" => $iid),array(
             "order_count" => count($order->query("SELECT item_id FROM `order` WHERE item_id = ".$iid." AND scode = 4")),
-            "gcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = 1 AND scode = 4 ")),
-            "mcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = 0 AND scode = 4 ")),
-            "bcount" => count($order->query("SELECT * FROM `order` WHERE item_id = ".$iid." AND renter_review = -1 AND scode = 4 "))
+            "gcount" => array_key_exists(1,$order_res_count)?$order_res_count[1]:0,
+            "mcount" => array_key_exists(0,$order_res_count)?$order_res_count[0]:0,
+            "bcount" => array_key_exists(-1,$order_res_count)?$order_res_count[-1]:0
             
         ));
         $item_res=$item->find(array("iid=:iid",":iid" =>  $iid));
