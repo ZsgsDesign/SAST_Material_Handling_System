@@ -230,6 +230,8 @@ class MainController extends BaseController
             $temp_user=(($reviews['owner'] == $this->userinfo['uid'])?$reviews['renter_id']:$reviews['owner']);
             $review_all_about_me[$seq]['real_name']=matchColumn($others,'uid',$temp_user,'real_name');
             $review_all_about_me[$seq]['avatar']=matchColumn($others,'uid',$temp_user,'avatar');
+            $review_all_about_me[$seq]['content']=null;
+            $review_all_about_me[$seq]['review']=null;
         }
         if($review_type === 'me'){
             foreach($review_all_about_me as $seq => $review){
@@ -287,7 +289,7 @@ class MainController extends BaseController
         }
 
         $this->reviews=$review_all_about_me;
-        dump($this->reviews);
+        // dump($this->reviews);
     }
 
     public function actionMhs()
