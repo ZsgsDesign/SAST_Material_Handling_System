@@ -289,7 +289,7 @@ class MainController extends BaseController
         }
 
         $this->reviews=$review_all_about_me;
-        // dump($this->reviews);
+        dump($this->reviews);
     }
 
     public function actionMhs()
