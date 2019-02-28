@@ -13,7 +13,14 @@ class ItemController extends BaseController
         $item=new Model("item");
         $order=new Model("order");
         $messages=new Model('messages');
-        $item_res=$item->find(array("iid=:iid",":iid" => $iid));
+        $item->update(array("iid = :iid",":iid" => $iid),array(
+            "order_count" => count($order->query("SELECT item_id FROM `order` WHERE item_id = ".$iid." AND scode = 4")),
+            "gcount" => count($order->query("SELECT renter_review FROM `order` WHERE item_id = ".$iid." AND renter_review = '1'")),
+            "mcount" => count($order->query("SELECT renter_review FROM `order` WHERE item_id = ".$iid." AND renter_review = '0'")),
+            "gcount" => count($order->query("SELECT renter_review FROM `order` WHERE item_id = ".$iid." AND renter_review = '-1'"))
+            
+        ));
+        $item_res=$item->find(array("iid=:iid",":iid" =>  $iid));
 
         if(empty($iid)||empty($item_res)){
             $this->title = "很抱歉，您查看的物品找不到了！";
