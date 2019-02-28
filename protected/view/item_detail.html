@@ -205,6 +205,9 @@
             </card>
             <card id="review" class="p-3">
                 <h5 class="text-center text-info">借用评价</h5>
+                <{if !count($reviews)}>
+                <p class="text-center text-secondary">这里一条评价也没有～～</p>
+                <{/if}>
                 <{foreach $reviews as $r}>
                 <div class="media mt-3">
                     <avatar class="mr-3 align-self-start"><img src="<{$r['avatar']}>"><span class="badge badge-pill top-fc <{if $r['renter_review']==1}>badge-success">好评<{else if $r['renter_review']==0}>badge-dark">中评<{else}>badge-warning">差评<{/if}></span></avatar>
