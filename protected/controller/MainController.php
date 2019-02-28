@@ -51,8 +51,15 @@ class MainController extends BaseController
         }
 
         $items = new Model("item");
+        $order=new Model('`order`');
         //TODO 2   关于是否展示已出借完的物品，后期再讨论讨论吧
         //建议不展示，因为筛选中有显示无货功能
+        $order_count_res=array_count_values(array_column($order->query("SELECT item_id FROM `order` WHERE scode = 4 "),'item_id'));
+        $update_array=array();
+        foreach($order_count_res as $id => $count ){
+            $items->update(array("iid = :iid",":iid" => $id),array("order_count" => $count));
+        }
+
         if($sort==="bycount"){
             $items_res=$items->findAll($conditions,'order_count DESC',"*",array($page,8,6));
         }
@@ -79,7 +86,6 @@ class MainController extends BaseController
         $this->pager=$items->page;
         $this->items_info=$items_res;
 
-        $order=new Model('`order`');
         $order_res_ownerchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE item.`owner` = ".$this->userinfo['uid']),'owner_checked');
         $order_res_ownerchecked_count=empty($order_res_ownerchecked)?[]:array_count_values(array_filter($order_res_ownerchecked));
         $order_res_renterchecked=array_column($order->query("SELECT `order`.oid,`order`.owner_checked,`order`.renter_checked,`order`.renter_id,item.owner,item.iid FROM `order` JOIN item ON item.iid = `order`.`item_id` WHERE `order`.renter_id = ".$this->userinfo['uid']),'renter_checked');
